@@ -1,0 +1,225 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{30124083-65b9-497a-83ca-347302c366dc}</UniqueIdentifier>
+      <Extensions>.qc</Extensions>
+    </Filter>
+    <Filter Include="Release">
+      <UniqueIdentifier>{2f21082c-a1b3-48e0-9631-7d8a1932b0c9}</UniqueIdentifier>
+      <Extensions>.txt;.cfg;.scr</Extensions>
+    </Filter>
+    <Filter Include="HTML files">
+      <UniqueIdentifier>{50859b2e-d9a9-4c9d-a068-27dd576fb81a}</UniqueIdentifier>
+      <Extensions>.html;.cgi</Extensions>
+    </Filter>
+    <Filter Include="PERL files">
+      <UniqueIdentifier>{2cd74daa-e185-453f-9444-6e99c5f95b3a}</UniqueIdentifier>
+      <Extensions>pl</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{0799a230-f42c-4c1f-b679-625e68ff2366}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;fi;fd</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="admin.qc">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="angles.qc">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="array.qc">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="auto.qc">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="buttons.qc">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="client.qc">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="combat.qc">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="console.qc">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="Debug.qc">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="defs.qc">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="display.qc">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="doors.qc">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="elodefs.qc">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="elohim.qc">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="internal.qc">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="items.qc">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="match.qc">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="misc.qc">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="models.qc">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="monsters.qc">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="motd.qc">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="name.qc">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="net.qc">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="observer.qc">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="options.qc">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="plats.qc">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="player.qc">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="progs.src">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="proquake.qc">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="qsmack.qc">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="quaketag.qc">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="quaketv.qc">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="ratings.qc">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="Score.qc">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="sprites.qc">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="stats.qc">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="strings.qc">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="subs.qc">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="Training.qc">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="triggers.qc">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="userdefs.qc">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="utils.qc">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="votables.qc">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="vote.qc">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="weapons.qc">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="world.qc">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="zone.qc">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="..\RELEASE\autoexec.cfg">
+      <Filter>Release</Filter>
+    </None>
+    <None Include="..\Release\ban.cfg">
+      <Filter>Release</Filter>
+    </None>
+    <None Include="..\Release\crmod.cfg">
+      <Filter>Release</Filter>
+    </None>
+    <None Include="..\RELEASE\levels.cfg">
+      <Filter>Release</Filter>
+    </None>
+    <None Include="..\RELEASE\userdefs.cfg">
+      <Filter>Release</Filter>
+    </None>
+    <None Include="..\html\download.html">
+      <Filter>HTML files</Filter>
+    </None>
+    <None Include="..\html\help.html">
+      <Filter>HTML files</Filter>
+    </None>
+    <None Include="..\html\index.html">
+      <Filter>HTML files</Filter>
+    </None>
+    <None Include="..\html\main.html">
+      <Filter>HTML files</Filter>
+    </None>
+    <None Include="..\html\manual.html">
+      <Filter>HTML files</Filter>
+    </None>
+    <None Include="..\html\menu.html">
+      <Filter>HTML files</Filter>
+    </None>
+    <None Include="..\html\old_news1.html">
+      <Filter>HTML files</Filter>
+    </None>
+    <None Include="..\html\whatsnew.html">
+      <Filter>HTML files</Filter>
+    </None>
+    <None Include="..\html\cgi-bin\servers.pl">
+      <Filter>PERL files</Filter>
+    </None>
+    <None Include="crmod.bsc" />
+    <None Include="Make.bat" />
+    <None Include="..\Userdefs.cfg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\Release\manual.txt">
+      <Filter>Release</Filter>
+    </Text>
+    <Text Include="..\Release\readme.txt">
+      <Filter>Release</Filter>
+    </Text>
+    <Text Include="..\html\cgi-bin\servers.txt">
+      <Filter>PERL files</Filter>
+    </Text>
+    <Text Include="changes.log" />
+  </ItemGroup>
+</Project>

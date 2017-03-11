@@ -1,0 +1,96 @@
+1-8		Weapons
+9-19    impulse limbo
+20-37   Qsmack Impulses
+38		Used for sping
+39		disconnect checker
+40-99	valid QSMACK1 impulses
+100		help-server
+101		help-observer
+102		elohim_info??
+
+
+105		help-misc
+106		commands
+107		levels, warp
+108		admin
+109		motd
+110		killstats
+111		efficiency, eff
+112		stats
+113		quadstats
+115		yes
+116		no
+117		vinfo
+118     <used for debugging>
+119		ignore-this
+120		ready
+121		notready
+122		nolock
+123		ready?
+124		timerstop
+125		timerstart
+126		ghostcode
+127		ghost
+128		score
+129		help-match
+130		lock
+140		observer
+141		walk
+142		flyme
+143		chase, chasecam
+144		help-walk
+145		help-fly
+146		help-chase
+147		cycle
+148		headsup
+149		eyecam
+150		smooth
+151		tourney
+
+200		help-admin
+208		normal
+209		practice
+210		match
+211     obits
+212		ghostlist
+213		kick!, skick
+214		abortmatch
+215		timelimit5
+216		timelimit10
+217		timelimit15
+218		timelimit20
+219		timelimit25
+220		timelimit30
+221		setquad
+222		setpent
+223		setring
+224		setspooge
+225		nogibs
+226		lowgibs
+227		highgibs
+228		modevote
+229		options
+
+
+230		0
+231		1
+232		2
+233		3
+234		4
+235		5
+236		6
+237		7
+238		8
+239		9
+240		10
+241		11
+242		12
+243		13
+244		14
+245		15
+246		nextspawn
+247		makespawn
+248		nextcam
+249		makecam
+250		spot
+

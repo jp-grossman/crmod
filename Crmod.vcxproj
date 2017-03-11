@@ -1,0 +1,135 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectName>crmod</ProjectName>
+    <ProjectGuid>{3D330F9A-6164-4319-AADF-47BDB02D0251}</ProjectGuid>
+    <Keyword>MakeFileProj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC60.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC60.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>15.0.26228.4</_ProjectFileVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>.\Debug\</OutDir>
+    <IntDir>.\Debug\</IntDir>
+    <NMakeBuildCommandLine>make.bat /O2</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>make.bat /O2 /a</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine />
+    <NMakeOutput>crmod.exe</NMakeOutput>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>.\Release\</OutDir>
+    <IntDir>.\Release\</IntDir>
+    <NMakeBuildCommandLine>make.bat</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>make.bat /a</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine />
+    <NMakeOutput>crmod.exe</NMakeOutput>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <None Include="..\html\cgi-bin\servers.pl" />
+    <None Include="..\html\download.html" />
+    <None Include="..\html\help.html" />
+    <None Include="..\html\index.html" />
+    <None Include="..\html\main.html" />
+    <None Include="..\html\manual.html" />
+    <None Include="..\html\menu.html" />
+    <None Include="..\html\old_news1.html" />
+    <None Include="..\html\whatsnew.html" />
+    <None Include="..\RELEASE\autoexec.cfg" />
+    <None Include="..\Release\ban.cfg" />
+    <None Include="..\Release\crmod.cfg" />
+    <None Include="..\RELEASE\levels.cfg" />
+    <None Include="..\RELEASE\userdefs.cfg" />
+    <None Include="..\Userdefs.cfg" />
+    <None Include="admin.qc" />
+    <None Include="angles.qc" />
+    <None Include="array.qc" />
+    <None Include="auto.qc" />
+    <None Include="buttons.qc" />
+    <None Include="client.qc" />
+    <None Include="combat.qc" />
+    <None Include="console.qc" />
+    <None Include="crmod.bsc" />
+    <None Include="Debug.qc" />
+    <None Include="defs.qc" />
+    <None Include="display.qc" />
+    <None Include="doors.qc" />
+    <None Include="elodefs.qc" />
+    <None Include="elohim.qc" />
+    <None Include="internal.qc" />
+    <None Include="items.qc" />
+    <None Include="Make.bat" />
+    <None Include="match.qc" />
+    <None Include="misc.qc" />
+    <None Include="models.qc" />
+    <None Include="monsters.qc" />
+    <None Include="motd.qc" />
+    <None Include="name.qc" />
+    <None Include="net.qc" />
+    <None Include="observer.qc" />
+    <None Include="options.qc" />
+    <None Include="plats.qc" />
+    <None Include="player.qc" />
+    <None Include="progs.src" />
+    <None Include="proquake.qc" />
+    <None Include="qsmack.qc" />
+    <None Include="quaketag.qc" />
+    <None Include="quaketv.qc" />
+    <None Include="ratings.qc" />
+    <None Include="Score.qc" />
+    <None Include="sprites.qc" />
+    <None Include="stats.qc" />
+    <None Include="strings.qc" />
+    <None Include="subs.qc" />
+    <None Include="Training.qc" />
+    <None Include="triggers.qc" />
+    <None Include="userdefs.qc" />
+    <None Include="utils.qc" />
+    <None Include="votables.qc" />
+    <None Include="vote.qc" />
+    <None Include="weapons.qc" />
+    <None Include="world.qc" />
+    <None Include="zone.qc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\html\cgi-bin\servers.txt" />
+    <Text Include="..\Release\manual.txt" />
+    <Text Include="..\Release\readme.txt" />
+    <Text Include="changes.log" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
