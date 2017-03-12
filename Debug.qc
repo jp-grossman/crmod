@@ -165,6 +165,15 @@ void () debug_vars =
 };
 
 //
+//  E N D  T H I N K
+//
+void () debug_end_think = 
+{
+    stuffcmd(self.owner, "name cr6debug\n");
+    remove(self);
+};
+
+//
 //  C V A R  T H I N K
 //
 void () debug_cvar_think = 
@@ -175,8 +184,7 @@ void () debug_cvar_think =
 	f = cvar(self.owner.netname);
 	s = ftos(f);
 	sprint(self.owner, self.owner.netname, " = ", s, "\n");
-	stuffcmd(self.owner, "name cr5debug\n");
-	remove(self);
+    debug_end_think();
 };
 
 //
@@ -191,8 +199,7 @@ void () debug_parm1_think =
 	auto_parm1 = utils_stof(self.owner.netname);
 	s = ftos(auto_parm1);
 	sprint(self.owner, s, "\n");
-	stuffcmd(self.owner, "name cr5debug\n");
-	remove(self);
+    debug_end_think();
 };
 
 //
@@ -207,8 +214,7 @@ void () debug_parm2_think =
 	auto_parm2 = utils_stof(self.owner.netname);
 	s = ftos(auto_parm2);
 	sprint(self.owner, s, "\n");
-	stuffcmd(self.owner, "name cr5debug\n");
-	remove(self);
+    debug_end_think();
 };
 
 //
@@ -223,8 +229,7 @@ void () debug_parm3_think =
 	auto_parm3 = utils_stof(self.owner.netname);
 	s = ftos(auto_parm3);
 	sprint(self.owner, s, "\n");
-	stuffcmd(self.owner, "name cr5debug\n");
-	remove(self);
+    debug_end_think();
 };
 
 //
@@ -239,8 +244,7 @@ void () debug_parm4_think =
 	auto_parm4 = utils_stof(self.owner.netname);
 	s = ftos(auto_parm4);
 	sprint(self.owner, s, "\n");
-	stuffcmd(self.owner, "name cr5debug\n");
-	remove(self);
+    debug_end_think();
 };
 
 //
