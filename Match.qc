@@ -227,6 +227,66 @@ void () match_bprint_score =
 	}
 };
 
+void () match_ffa_bprint_score = 
+{
+    local entity player, next, sorted_players, prev;
+    local string score, srank, tie;
+    local float i, rank, prev_frags;
+
+    // Initialize the sort
+    sorted_players = elohim_sentinel.next_player;
+    player = sorted_players.next_player;
+    sorted_players.next_player = world;
+
+    // Sort the players
+    while (player)
+    {
+        next = player.next_player;
+
+        if (player.frags > sorted_players.frags)
+        {
+            // Insert at the start of the list
+            player.next_player = sorted_players;
+            sorted_players = player;
+        }
+        else
+        {
+            // Insert after some other player
+            prev = sorted_players;
+            while (prev.next_player != world && prev.next_player.frags >= player.frags)
+                prev = prev.next_player;
+            player.next_player = prev.next_player;
+            prev.next_player = player;
+        }
+
+        player = next;
+    }
+    elohim_sentinel.next_player = sorted_players;
+
+    // Print the scores
+    i = 1;
+    prev_frags = -1;
+    for (player = sorted_players ; player ; player = player.next_player)
+    {
+        // Check for a tie
+        if (player.frags == prev_frags || (player.next_player != world && player.next_player.frags == player.frags))
+            tie = "\b*\] ";
+        else
+            tie = " \] ";
+
+        // Update the rank
+        if (player.frags != prev_frags)
+            rank = i;
+        prev_frags = player.frags;
+
+        // Print the score
+        score = ftos(player.frags);
+        srank = strings_ftos_gold2(rank);
+        announce6("\[", srank, tie, player.name15, " \b- ", score);
+        i = i + 1;
+    }
+};
+
 //
 //  M A T C H  B P R I N T  T I M E
 //
@@ -339,6 +399,8 @@ void () match_overtime_think =
 //
 void () match_end =
 {
+    local entity player;
+
     if (self.classname == "elohim_match_timer")
     {
         // Regular match end (timer ran out)
@@ -382,7 +444,10 @@ void () match_end =
     utils_do_players(match_gib_player); 
     match_show_timelimit();       
     announce("The match is over");
-    match_bprint_score();
+    if (teamplay)
+        match_bprint_score();
+    else
+        match_ffa_bprint_score();
 
     if (elohim_first_place.frags == elohim_second_place.frags)
         announce("Tie game!");
