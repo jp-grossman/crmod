@@ -221,5 +221,6 @@
       <Filter>PERL files</Filter>
     </Text>
     <Text Include="changes.log" />
+    <Text Include="impulses.txt" />
   </ItemGroup>
 </Project>

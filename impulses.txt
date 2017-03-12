@@ -3,12 +3,30 @@
 20-37   Qsmack Impulses
 38		Used for sping
 39		disconnect checker
-40-99	valid QSMACK1 impulses
+
+40      dbinfo
+41      dbflags
+42      dbvars
+43      dbcvar
+44      dbclient
+45      dbcflags
+46      dbparm1
+47      dbparm2
+48      dbparm3
+49      dbparm4
+50      dbparms
+51      dbplayers
+52      dbteams
+53      dbsettings
+54      dbents
+55      ebwingl
+58      dbbinds
+59      dbhelp
+
 100		help-server
 101		help-observer
-102		elohim_info??
-
-
+103     rules/temaplay/deathmatch/timelimit/fraglimit/noexit
+104     unused (reserved for debugging)
 105		help-misc
 106		commands
 107		levels, warp
@@ -21,8 +39,8 @@
 115		yes
 116		no
 117		vinfo
-118     <used for debugging>
-119		ignore-this
+118     ticrate
+119		ignorethis
 120		ready
 121		notready
 122		nolock
@@ -34,6 +52,10 @@
 128		score
 129		help-match
 130		lock
+131     show scores
+132     hide scores
+133     rockets
+134     timer
 140		observer
 141		walk
 142		flyme
@@ -44,33 +66,65 @@
 147		cycle
 148		headsup
 149		eyecam
-150		smooth
+150		smooth      (backwards compatability)
 151		tourney
+153     camera
+154     autocam/autocamera/quaketv
+155     autochase
+156     help-camera
+170     killstats
+171     efficiency/eff
+172     stats
+173     quadstats
+174     badstats
+175     teamstats
+178     autostats
+179     help-stats
+180     ignorethis
+181     ignorethis
+182     (quake tag)
+183     ratings
 
-200		help-admin
-208		normal
-209		practice
-210		match
+190     episode 1
+191     episode 2
+192     episode 3
+193     episode 4
+194     episode 5
+195     episode 6
+196     episode 7
+
+197*    bans
+198*    unban
+200*	help-admin
+204*    autoss
+205*    crban
+206*    ips
+207*    dmset
+208*    maxteams
+
+212*	ghostlist
+213*	kick!/skick/crkick
+214*	abortmatch
+
+
+209     faststart
+210     autopause
 211     obits
-212		ghostlist
-213		kick!, skick
-214		abortmatch
-215		timelimit5
-216		timelimit10
-217		timelimit15
-218		timelimit20
-219		timelimit25
-220		timelimit30
-221		setquad
-222		setpent
-223		setring
-224		setspooge
-225		nogibs
-226		lowgibs
-227		highgibs
-228		modevote
-229		options
-
+215     timeset
+216     otset
+217     normal/ffa
+218     practice
+219     match
+220     individual
+221     setquad
+222     setpent
+223     setring
+224*    safepractice
+225     nogibs
+226     lowgibs
+227     highgibs
+228*    modevote
+229*    options
 
 230		0
 231		1
@@ -88,9 +142,11 @@
 243		13
 244		14
 245		15
-246		nextspawn
-247		makespawn
-248		nextcam
-249		makecam
-250		spot
 
+246*	nextspawn
+247*	makespawn
+248*	nextcam
+249*	makecam
+250*	spot
+
+251     vote-admin
