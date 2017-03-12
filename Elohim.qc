@@ -265,9 +265,9 @@ void () elohim_init_world =
     local string szmode;
     local float temp;
 
-    elohim_version       = "\bClanRing CRMod++ V\6.\5e";
-    elohim_version_info  = "CRMod++ V6.5e 2:29pm 5/26/14";
-    crmod_version_number = "6.5e";  
+    elohim_version       = "\bClanRing CRMod++ V\6.\6";
+    elohim_version_info  = "CRMod++ V6.6 7:42am 3/12/2017";
+    crmod_version_number = "6.6";  
 
     elohim_playmode = cvar("samelevel");
 

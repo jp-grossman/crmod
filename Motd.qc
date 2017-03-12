@@ -28,17 +28,17 @@ string motd_bottom;
 //
 void () motd_init_world =
 {
-    motd_top1 = "€‚ΓμαξÒιξη ΓÒΝοδ«« Φ®—€‚\n";
-    motd_top2 = "€‚ΓμαξÒιξη ΓÒΝοδ«« Φ®—€‚\n\n";
-    motd_top3 = "€‚ΓμαξÒιξη ΓÒΝοδ«« Φ®—€‚\n\n\n";
-    motd_top4 = "€‚ΓμαξÒιξη ΓÒΝοδ«« Φ®—€‚\n\bhttp://www.crmod.com\n\n\n";
-    motd_top5 = "€‚ΓμαξÒιξη ΓÒΝοδ«« Φ®—€‚\nby J.P. Grossman\n\bhttp://www.crmod.com\n\n\n";
-    motd_top7_1 = "€ƒ‚ΓμαξÒιξη ΓÒΝοδ«« Φ®—€ƒ‚\n\nby J.P. Grossman\n\bhttp://www.crmod.com\n\n\n";
-    motd_top7_2 = "€ƒ‚ΓμαξÒιξη ΓÒΝοδ«« Φ®—€ƒ‚\n\nby J.P. Grossman\n\bhttp://www.crmod.com\n\n\n";
-    motd_top7_3 = "€ƒ‚ΓμαξÒιξη ΓÒΝοδ«« Φ®—€ƒ‚\n\nΫ by J.P. Grossman έ\nΫ \bhttp://www.crmod.com έ\n\n\n";
-    motd_top7_4 = "€ƒ‚ΓμαξÒιξη ΓÒΝοδ«« Φ®—€ƒ‚\n\nby J.P. Grossman‘\n\bhttp://www.crmod.com‘\n\n\n";
-    motd_top7_5 = "€ƒ‚ΓμαξÒιξη ΓÒΝοδ«« Φ®—€ƒ‚\n\nby J.P. Grossman‘\n\bhttp://www.crmod.com‘\n\n\n";
-    motd_top7_6 = "€ƒ‚ΓμαξÒιξη ΓÒΝοδ«« Φ®—€ƒ‚\n\nΫ by J.P. Grossman έ\nΫ \bhttp://www.crmod.com έ\n\n\n";
+    motd_top1 = "€‚ΓμαξÒιξη ΓÒΝοδ«« Φ\6\b.\6€‚\n";
+    motd_top2 = "€‚ΓμαξÒιξη ΓÒΝοδ«« Φ\6\b.\6€‚\n\n";
+    motd_top3 = "€‚ΓμαξÒιξη ΓÒΝοδ«« Φ\6\b.\6€‚\n\n\n";
+    motd_top4 = "€‚ΓμαξÒιξη ΓÒΝοδ«« Φ\6\b.\6€‚\n\bhttp://www.crmod.com\n\n\n";
+    motd_top5 = "€‚ΓμαξÒιξη ΓÒΝοδ«« Φ\6\b.\6€‚\nby J.P. Grossman\n\bhttp://www.crmod.com\n\n\n";
+    motd_top7_1 = "€ƒ‚ΓμαξÒιξη ΓÒΝοδ«« Φ\6\b.\6€ƒ‚\n\nby J.P. Grossman\n\bhttp://www.crmod.com\n\n\n";
+    motd_top7_2 = "€ƒ‚ΓμαξÒιξη ΓÒΝοδ«« Φ\6\b.\6€ƒ‚\n\nby J.P. Grossman\n\bhttp://www.crmod.com\n\n\n";
+    motd_top7_3 = "€ƒ‚ΓμαξÒιξη ΓÒΝοδ«« Φ\6\b.\6€ƒ‚\n\nΫ by J.P. Grossman έ\nΫ \bhttp://www.crmod.com έ\n\n\n";
+    motd_top7_4 = "€ƒ‚ΓμαξÒιξη ΓÒΝοδ«« Φ\6\b.\6€ƒ‚\n\nby J.P. Grossman‘\n\bhttp://www.crmod.com‘\n\n\n";
+    motd_top7_5 = "€ƒ‚ΓμαξÒιξη ΓÒΝοδ«« Φ\6\b.\6€ƒ‚\n\nby J.P. Grossman‘\n\bhttp://www.crmod.com‘\n\n\n";
+    motd_top7_6 = "€ƒ‚ΓμαξÒιξη ΓÒΝοδ«« Φ\6\b.\6€ƒ‚\n\nΫ by J.P. Grossman έ\nΫ \bhttp://www.crmod.com έ\n\n\n";
     motd_bottom = "€‚";
 };
 
@@ -96,7 +96,7 @@ void () motd_think =
 		else if (self.count == 12)
 			centerprint(self.owner, "€‚Òιξη ΓÒΝοδ«« €‚\n\n\n\n");
 		else if (self.count == 13)
-			centerprint(self.owner, "€‚αξÒιξη ΓÒΝοδ«« Φ€‚\n\n\n\n");
+			centerprint(self.owner, "€‚αξÒιξη ΓÒΝοδ«« Φ\6€‚\n\n\n\n");
 		else if (self.count == 14)
 			centerprint(self.owner, motd_top1, "\n\n\n");
 		else if (self.count == 15)
