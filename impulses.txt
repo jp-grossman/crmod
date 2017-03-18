@@ -96,6 +96,9 @@
 197*    bans
 198*    unban
 200*	help-admin
+201*    elostart
+202*    elosame
+203*    eloclose
 204*    autoss
 205*    crban
 206*    ips
