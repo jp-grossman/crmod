@@ -391,10 +391,10 @@ void () admin_list_ghosts =
         return;
     }
 	if (teamplay)
-		sprint(self, "     name      ücodeü   team   üfrags\n");
+		sprint(self, "     name      Ã¼codeÃ¼   team   Ã¼frags\n");
 	else
-		sprint(self, "     name      ücodeü  colour  üfrags\n");
-	sprint(self, "­­­­­­­­­­­­­­­«­­­­«­­­­­­­­­­«­­­­­\n");
+		sprint(self, "     name      Ã¼codeÃ¼  colour  Ã¼frags\n");
+	sprint(self, "Â­Â­Â­Â­Â­Â­Â­Â­Â­Â­Â­Â­Â­Â­Â­Â«Â­Â­Â­Â­Â«Â­Â­Â­Â­Â­Â­Â­Â­Â­Â­Â«Â­Â­Â­Â­Â­\n");
     while (e)
     {
         if (e.owner.owner != e)
@@ -403,22 +403,22 @@ void () admin_list_ghosts =
 			local float frag;
 			num = ftos(e.count);
 
-	        sprint(self, e.name15, "ü ", num, " ü");
+	        sprint(self, e.name15, "Ã¼ ", num, " Ã¼");
             frag = e.frags;
     
 			szTeam = strings_get_teamname2(e.height);
 			if (frag < -99)
-				pad = "ü";
+				pad = "Ã¼";
 			else if (frag < -9)
-				pad = "ü ";
+				pad = "Ã¼ ";
 			else if (frag < 0)
-				pad = "ü  ";
+				pad = "Ã¼  ";
 			else if (frag < 10)
-				pad = "ü   ";
+				pad = "Ã¼   ";
 			else if (frag < 100)
-				pad = "ü  ";
+				pad = "Ã¼  ";
 			else
-				pad = "ü ";
+				pad = "Ã¼ ";
 			num = ftos(frag);
 			sprint(self, szTeam, pad, num, "\n");
 		}
