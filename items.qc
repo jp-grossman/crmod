@@ -1323,7 +1323,7 @@ void() item_artifact_invisibility =
 	self.items = IT_INVISIBILITY;
 	setsize (self, '-16 -16 -24', '16 16 32');
 	self.noise3 = " is invisible";			// ELOHIM_MOD
-	self.noise4 = " is ŽInvisibleŽ\n";		// ELOHIM_MOD
+	self.noise4 = " is ÂŽInvisibleÂŽ\n";		// ELOHIM_MOD
 	StartItem ();
 };
 
