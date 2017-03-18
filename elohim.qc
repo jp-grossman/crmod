@@ -4,7 +4,7 @@
 // This is the main file for CRMod++.  CRMod++ was derived from the
 // Elohim server, which is why everything is still called "elohim".
 //
-// Developed by J.P. Grossman (a.k.a. ùMephistopheles) and Paul Baker
+// Developed by J.P. Grossman (a.k.a. Ã¹Mephistopheles) and Paul Baker
 //
 // All code by J.P. Grossman unless otherwise commented.
 //
@@ -1095,56 +1095,56 @@ void () elohim_info =
 void () elohim_commands =
 {
     // regular user commands
-    sprint(self, " vinfo®®®®®®®®®®\1\1\7 help-server®®®\1\0\0\n");
-    sprint(self, " help-misc®®®®®®\1\0\5 help-match®®®®\1\2\9\n");
-    sprint(self, " help-observer®®\1\0\1 help-walk®®®®®\1\4\4\n");
-    sprint(self, " help-fly®®®®®®®\1\4\5 help-chase®®®®\1\4\6\n");
-    sprint(self, " help-camera®®®®\1\5\6 commands®®®®®®\1\0\6\n");
-	sprint(self, " levels®®®®®®®®®\1\0\7 autoweapon®®®®\1\1\4\n");
-    sprint(self, " autoweaponon®®®\1\1\1 motd®®®®®®®®®®\1\0\9\n");
-    sprint(self, " observer®®®®®®®\1\4\0 walk®®®®®®®®®®\1\4\1\n");
-    sprint(self, " flyme®®®®®®®®®®\1\4\2 chase®®®®®®®®®\1\4\3\n");
-    sprint(self, " eyecam®®®®®®®®®\1\4\9 camera®®®®®®®®\1\5\3\n");
-	sprint(self, " autochase®®®®®®\1\5\5 autocam®®®®®®®\1\5\4\n");
-    sprint(self, " headsup®®®®®®®®\1\4\8 smooth®®®®®®®®N/A\n");
-    sprint(self, " tourney®®®®®®®®\1\5\1 yes®®®®®®®®®®®\1\1\5\n");
-    sprint(self, " no®®®®®®®®®®®®®\1\1\6 ready®®®®®®®®®\1\2\0\n");
-    sprint(self, " notready®®®®®®®\1\2\1 ready?®®®®®®®®\1\2\3\n");
-    sprint(self, " unlock®®®®®®®®®\1\2\2 lock®®®®®®®®®®\1\3\0\n");
-    sprint(self, " timerstop®®®®®®\1\2\4 timerstart®®®®\1\2\5\n");
-	sprint(self, " +teamscores®®®®N/A -teamscores®®®N/A\n");
-    sprint(self, " timeset®®®®®®®®\2\1\5 otset®®®®®®®®®\2\1\6\n");
-    sprint(self, " ghostcode®®®®®®N/A ghost®®®®®®®®®\1\2\7\n");
-    sprint(self, " score®®®®®®®®®®\1\2\8 nogibs®®®®®®®®\2\2\5\n");
-    sprint(self, " lowgibs®®®®®®®®\2\2\6 highgibs®®®®®®\2\2\7\n");
-    sprint(self, " setquad®®®®®®®®\2\2\1 setpent®®®®®®®\2\2\2\n");
-    sprint(self, " setring®®®®®®®®\2\2\3 normal®®®®®®®®\2\1\7\n");
-    sprint(self, " practice®®®®®®®\2\1\8 match®®®®®®®®®\2\1\9\n");
-	sprint(self, " individual®®®®®\2\2\0 ticrate®®®®®®®\1\1\8\n");
-    sprint(self, " killstats®®®®®®\1\7\0 efficiency®®®®\1\7\1\n");
-    sprint(self, " stats®®®®®®®®®®\1\7\2 quadstats®®®®®\1\7\3\n");
-	sprint(self, " badstats®®®®®®®\1\7\4 autostats®®®®®\1\7\8\n"); 
-	sprint(self, " help-stats®®®®®\1\7\9 commentary®®®®\1\4\7\n");
-	sprint(self, " obits®®®®®®®®®®\2\1\1 rules®®®®®®®®®\1\0\3\n");
-	sprint(self, " rockets®®®®®®®®\1\3\3 autopause®®®®®\2\1\0\n");
-	sprint(self, " admins®®®®®®®®®\1\1\0 teamstats®®®®®\1\7\5\n");
-	sprint(self, " timer®®®®®®®®®®\1\3\4 pq®®®®®®®®®®®®\1\1\2\n");
-	sprint(self, " faststart®®®®®®\2\0\9 admin®®®®®®®®®\1\0\8\n");
-	sprint(self, " vote-admin®®®®®\2\5\1 ratings®®®®®®®\1\8\3\n");
+    sprint(self, " vinfoÂ®Â®Â®Â®Â®Â®Â®Â®Â®Â®\1\1\7 help-serverÂ®Â®Â®\1\0\0\n");
+    sprint(self, " help-miscÂ®Â®Â®Â®Â®Â®\1\0\5 help-matchÂ®Â®Â®Â®\1\2\9\n");
+    sprint(self, " help-observerÂ®Â®\1\0\1 help-walkÂ®Â®Â®Â®Â®\1\4\4\n");
+    sprint(self, " help-flyÂ®Â®Â®Â®Â®Â®Â®\1\4\5 help-chaseÂ®Â®Â®Â®\1\4\6\n");
+    sprint(self, " help-cameraÂ®Â®Â®Â®\1\5\6 commandsÂ®Â®Â®Â®Â®Â®\1\0\6\n");
+	sprint(self, " levelsÂ®Â®Â®Â®Â®Â®Â®Â®Â®\1\0\7 autoweaponÂ®Â®Â®Â®\1\1\4\n");
+    sprint(self, " autoweapononÂ®Â®Â®\1\1\1 motdÂ®Â®Â®Â®Â®Â®Â®Â®Â®Â®\1\0\9\n");
+    sprint(self, " observerÂ®Â®Â®Â®Â®Â®Â®\1\4\0 walkÂ®Â®Â®Â®Â®Â®Â®Â®Â®Â®\1\4\1\n");
+    sprint(self, " flymeÂ®Â®Â®Â®Â®Â®Â®Â®Â®Â®\1\4\2 chaseÂ®Â®Â®Â®Â®Â®Â®Â®Â®\1\4\3\n");
+    sprint(self, " eyecamÂ®Â®Â®Â®Â®Â®Â®Â®Â®\1\4\9 cameraÂ®Â®Â®Â®Â®Â®Â®Â®\1\5\3\n");
+	sprint(self, " autochaseÂ®Â®Â®Â®Â®Â®\1\5\5 autocamÂ®Â®Â®Â®Â®Â®Â®\1\5\4\n");
+    sprint(self, " headsupÂ®Â®Â®Â®Â®Â®Â®Â®\1\4\8 smoothÂ®Â®Â®Â®Â®Â®Â®Â®N/A\n");
+    sprint(self, " tourneyÂ®Â®Â®Â®Â®Â®Â®Â®\1\5\1 yesÂ®Â®Â®Â®Â®Â®Â®Â®Â®Â®Â®\1\1\5\n");
+    sprint(self, " noÂ®Â®Â®Â®Â®Â®Â®Â®Â®Â®Â®Â®Â®\1\1\6 readyÂ®Â®Â®Â®Â®Â®Â®Â®Â®\1\2\0\n");
+    sprint(self, " notreadyÂ®Â®Â®Â®Â®Â®Â®\1\2\1 ready?Â®Â®Â®Â®Â®Â®Â®Â®\1\2\3\n");
+    sprint(self, " unlockÂ®Â®Â®Â®Â®Â®Â®Â®Â®\1\2\2 lockÂ®Â®Â®Â®Â®Â®Â®Â®Â®Â®\1\3\0\n");
+    sprint(self, " timerstopÂ®Â®Â®Â®Â®Â®\1\2\4 timerstartÂ®Â®Â®Â®\1\2\5\n");
+	sprint(self, " +teamscoresÂ®Â®Â®Â®N/A -teamscoresÂ®Â®Â®N/A\n");
+    sprint(self, " timesetÂ®Â®Â®Â®Â®Â®Â®Â®\2\1\5 otsetÂ®Â®Â®Â®Â®Â®Â®Â®Â®\2\1\6\n");
+    sprint(self, " ghostcodeÂ®Â®Â®Â®Â®Â®N/A ghostÂ®Â®Â®Â®Â®Â®Â®Â®Â®\1\2\7\n");
+    sprint(self, " scoreÂ®Â®Â®Â®Â®Â®Â®Â®Â®Â®\1\2\8 nogibsÂ®Â®Â®Â®Â®Â®Â®Â®\2\2\5\n");
+    sprint(self, " lowgibsÂ®Â®Â®Â®Â®Â®Â®Â®\2\2\6 highgibsÂ®Â®Â®Â®Â®Â®\2\2\7\n");
+    sprint(self, " setquadÂ®Â®Â®Â®Â®Â®Â®Â®\2\2\1 setpentÂ®Â®Â®Â®Â®Â®Â®\2\2\2\n");
+    sprint(self, " setringÂ®Â®Â®Â®Â®Â®Â®Â®\2\2\3 normalÂ®Â®Â®Â®Â®Â®Â®Â®\2\1\7\n");
+    sprint(self, " practiceÂ®Â®Â®Â®Â®Â®Â®\2\1\8 matchÂ®Â®Â®Â®Â®Â®Â®Â®Â®\2\1\9\n");
+	sprint(self, " individualÂ®Â®Â®Â®Â®\2\2\0 ticrateÂ®Â®Â®Â®Â®Â®Â®\1\1\8\n");
+    sprint(self, " killstatsÂ®Â®Â®Â®Â®Â®\1\7\0 efficiencyÂ®Â®Â®Â®\1\7\1\n");
+    sprint(self, " statsÂ®Â®Â®Â®Â®Â®Â®Â®Â®Â®\1\7\2 quadstatsÂ®Â®Â®Â®Â®\1\7\3\n");
+	sprint(self, " badstatsÂ®Â®Â®Â®Â®Â®Â®\1\7\4 autostatsÂ®Â®Â®Â®Â®\1\7\8\n"); 
+	sprint(self, " help-statsÂ®Â®Â®Â®Â®\1\7\9 commentaryÂ®Â®Â®Â®\1\4\7\n");
+	sprint(self, " obitsÂ®Â®Â®Â®Â®Â®Â®Â®Â®Â®\2\1\1 rulesÂ®Â®Â®Â®Â®Â®Â®Â®Â®\1\0\3\n");
+	sprint(self, " rocketsÂ®Â®Â®Â®Â®Â®Â®Â®\1\3\3 autopauseÂ®Â®Â®Â®Â®\2\1\0\n");
+	sprint(self, " adminsÂ®Â®Â®Â®Â®Â®Â®Â®Â®\1\1\0 teamstatsÂ®Â®Â®Â®Â®\1\7\5\n");
+	sprint(self, " timerÂ®Â®Â®Â®Â®Â®Â®Â®Â®Â®\1\3\4 pqÂ®Â®Â®Â®Â®Â®Â®Â®Â®Â®Â®Â®\1\1\2\n");
+	sprint(self, " faststartÂ®Â®Â®Â®Â®Â®\2\0\9 adminÂ®Â®Â®Â®Â®Â®Â®Â®Â®\1\0\8\n");
+	sprint(self, " vote-adminÂ®Â®Â®Â®Â®\2\5\1 ratingsÂ®Â®Â®Â®Â®Â®Â®\1\8\3\n");
 
     // admin commands
     if (self.style & ELOHIM_ADMINISTRATOR)
     {
-		sprint(self, " help-admin®®®®®\2\0\0 options®®®®®®®\2\2\9\n");
-		sprint(self, " safepractice®®®\2\2\4 crkick®®®®®®®®\2\1\3\n");
-		sprint(self, " abortmatch®®®®®\2\1\4 ghostlist®®®®®\2\1\2\n");
-		sprint(self, " modevote®®®®®®®\2\2\8 spot®®®®®®®®®®\2\5\0\n");
-		sprint(self, " nextspawn®®®®®®\2\4\6 makespawn®®®®®\2\4\7\n");
-		sprint(self, " nextcam®®®®®®®®\2\4\8 makecam®®®®®®®\2\4\9\n");
-		sprint(self, " dmset®®®®®®®®®®\2\0\7 qsmack®®®®®®®®\3\7\n");
-		sprint(self, " maxteams®®®®®®®\2\0\8 autoss®®®®®®®®\2\0\4\n");
-		sprint(self, " crban®®®®®®®®®®\2\0\5 unban®®®®®®®®®\1\9\8\n");
-		sprint(self, " ips®®®®®®®®®®®®\2\0\6 bans®®®®®®®®®®\1\9\7\n");
+		sprint(self, " help-adminÂ®Â®Â®Â®Â®\2\0\0 optionsÂ®Â®Â®Â®Â®Â®Â®\2\2\9\n");
+		sprint(self, " safepracticeÂ®Â®Â®\2\2\4 crkickÂ®Â®Â®Â®Â®Â®Â®Â®\2\1\3\n");
+		sprint(self, " abortmatchÂ®Â®Â®Â®Â®\2\1\4 ghostlistÂ®Â®Â®Â®Â®\2\1\2\n");
+		sprint(self, " modevoteÂ®Â®Â®Â®Â®Â®Â®\2\2\8 spotÂ®Â®Â®Â®Â®Â®Â®Â®Â®Â®\2\5\0\n");
+		sprint(self, " nextspawnÂ®Â®Â®Â®Â®Â®\2\4\6 makespawnÂ®Â®Â®Â®Â®\2\4\7\n");
+		sprint(self, " nextcamÂ®Â®Â®Â®Â®Â®Â®Â®\2\4\8 makecamÂ®Â®Â®Â®Â®Â®Â®\2\4\9\n");
+		sprint(self, " dmsetÂ®Â®Â®Â®Â®Â®Â®Â®Â®Â®\2\0\7 qsmackÂ®Â®Â®Â®Â®Â®Â®Â®\3\7\n");
+		sprint(self, " maxteamsÂ®Â®Â®Â®Â®Â®Â®\2\0\8 autossÂ®Â®Â®Â®Â®Â®Â®Â®\2\0\4\n");
+		sprint(self, " crbanÂ®Â®Â®Â®Â®Â®Â®Â®Â®Â®\2\0\5 unbanÂ®Â®Â®Â®Â®Â®Â®Â®Â®\1\9\8\n");
+		sprint(self, " ipsÂ®Â®Â®Â®Â®Â®Â®Â®Â®Â®Â®Â®\2\0\6 bansÂ®Â®Â®Â®Â®Â®Â®Â®Â®Â®\1\9\7\n");
     }
     elohim_help_change();
 };
@@ -1228,55 +1228,55 @@ void () elohim_show_rules =
 	if (elohim_playmode & ELOHIM_MATCH_MODE) 
 	{
 		if (teamplay) 
-			sprint(self, "match mode\n");
+			sprint(self, "Âmatch modeÂ\n");
 		else
-			sprint(self, "individual mode\n");
+			sprint(self, "Âindividual modeÂ\n");
 	}
 	else if (elohim_playmode & ELOHIM_PRACTICE_MODE)
-		sprint (self,"practice mode\n");
+		sprint (self,"Âpractice modeÂ\n");
 	else
-		sprint (self,"normal mode\n");
+		sprint (self,"Ânormal modeÂ\n");
 
 	temp = cvar ("deathmatch");
-	sprint(self,"deathmatch®®®");
+	sprint(self,"deathmatchÂ®Â®Â®");
 	utils_print_float (temp);
 	temp = cvar ("teamplay");
-	sprint(self,"teamplay®®®®®");
+	sprint(self,"teamplayÂ®Â®Â®Â®Â®");
 	utils_print_float (temp);
-	sprint(self,"timelimit®®®®");
+	sprint(self,"timelimitÂ®Â®Â®Â®");
 	if (elohim_playmode & ELOHIM_MATCH_MODE) 
 	{
 		utils_print_float(elohim_timelimit);
 		if (elohim_overtime > 0) 
 		{
-			sprint (self,"overtime®®®®®");
+			sprint (self,"overtimeÂ®Â®Â®Â®Â®");
 			utils_print_float (elohim_overtime);
 		}
 		else if (elohim_overtime == ADMIN_NORMAL_MODE)
-			sprint (self,"overtime®®®®®disabled\n");
+			sprint (self,"overtimeÂ®Â®Â®Â®Â®disabled\n");
 		else
-			sprint (self,"overtime®®®®®sudden death\n");
+			sprint (self,"overtimeÂ®Â®Â®Â®Â®sudden death\n");
 	}
 	else
 	{
 		temp = cvar ("timelimit");
 		utils_print_float (temp);
 		temp = cvar ("fraglimit");
-		sprint(self,"fraglimit®®®®");
+		sprint(self,"fraglimitÂ®Â®Â®Â®");
 		utils_print_float (temp);
 		temp = cvar ("noexit");
-		sprint(self,"noexit®®®®®®®");
+		sprint(self,"noexitÂ®Â®Â®Â®Â®Â®Â®");
 		utils_print_float (temp);
 	}
 	if (elohim_playmode & (ELOHIM_NO_QUAD | ELOHIM_NO_PENT | ELOHIM_NO_RING))
 	{
 		if (elohim_playmode & ELOHIM_NO_QUAD)
-			sprint(self, "Quad is ÏÆÆ");
+			sprint(self, "ÂQuad is ÃÃ†Ã†");
 		if (elohim_playmode & ELOHIM_NO_PENT)
-			sprint(self, "Pent is ÏÆÆ");
+			sprint(self, "ÂPent is ÃÃ†Ã†");
 		if (elohim_playmode & ELOHIM_NO_RING)
-			sprint(self, "Ring is ÏÆÆ");
-        sprint(self, "\n");
+			sprint(self, "ÂRing is ÃÃ†Ã†");
+        sprint(self, "Â\n");
 	}
 };
 
@@ -1305,7 +1305,7 @@ void () elohim_admins =
 		return;
 	}
 	
-	sprint(self, "\n      name       ü code \n");
+	sprint(self, "\n      name       Ã¼ code \n");
 	sprint(self, "\b-----------------+------\n");
 	e = find(world, classname, "player");
 	while (e)
@@ -1316,7 +1316,7 @@ void () elohim_admins =
 				s = "V";
 			else
 				s = ftos(e.crmod_hack_count);
-			sprint(self, " ", e.name15, " ü  ", s, "\n");
+			sprint(self, " ", e.name15, " Ã¼  ", s, "\n");
 		}
 		e = find(e, classname, "player");
 	}
