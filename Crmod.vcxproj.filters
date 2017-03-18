@@ -104,9 +104,6 @@
     <None Include="player.qc">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="progs.src">
-      <Filter>Source Files</Filter>
-    </None>
     <None Include="proquake.qc">
       <Filter>Source Files</Filter>
     </None>
@@ -209,6 +206,7 @@
     <None Include="crmod.bsc" />
     <None Include="Make.bat" />
     <None Include="..\Userdefs.cfg" />
+    <None Include="progs.src" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\Release\manual.txt">
@@ -222,5 +220,6 @@
     </Text>
     <Text Include="changes.log" />
     <Text Include="impulses.txt" />
+    <Text Include="README.txt" />
   </ItemGroup>
 </Project>

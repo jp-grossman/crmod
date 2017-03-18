@@ -129,6 +129,7 @@
     <Text Include="..\Release\readme.txt" />
     <Text Include="changes.log" />
     <Text Include="impulses.txt" />
+    <Text Include="README.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
