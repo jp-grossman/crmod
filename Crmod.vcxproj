@@ -82,7 +82,7 @@
     <None Include="combat.qc" />
     <None Include="console.qc" />
     <None Include="crmod.bsc" />
-    <None Include="Debug.qc" />
+    <None Include="debug.qc" />
     <None Include="defs.qc" />
     <None Include="display.qc" />
     <None Include="doors.qc" />
@@ -108,7 +108,7 @@
     <None Include="quaketag.qc" />
     <None Include="quaketv.qc" />
     <None Include="ratings.qc" />
-    <None Include="Score.qc" />
+    <None Include="score.qc" />
     <None Include="sprites.qc" />
     <None Include="stats.qc" />
     <None Include="strings.qc" />

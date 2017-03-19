@@ -48,32 +48,32 @@ void () stats_show_badstats =
     sprint(self, "self - percent damage done to self\n");
     sprint(self, "team - percent damage done to team\n");
     sprint(self, "\n");
-    sprint(self, "      name     Ã¼ paks Ã¼Â self Ã¼ team \n");
-    sprint(self, "Â­Â­Â­Â­Â­Â­Â­Â­Â­Â­Â­Â­Â­Â­Â­Â«Â­Â­Â­Â­Â­Â­Â«Â­Â­Â­Â­Â­Â­Â«Â­Â­Â­Â­Â­Â­\n");
+    sprint(self, "      name     ü paks ü self ü team \n");
+    sprint(self, "­­­­­­­­­­­­­­­«­­­­­­«­­­­­­«­­­­­­\n");
 
     player = elohim_sentinel.owner.next_player;
     while (player)
     {
         tot_enemy = player.dest2_x + player.dest2_y + player.dest2_z + player.dest_y;
 		tot_done = tot_enemy + player.crmod_badstats_y + player.crmod_badstats_z;
-        sprint(self, player.name15, "Ã¼");
+        sprint(self, player.name15, "ü");
         if (player == self)
         {
-            sprint(self, " Â");
+            sprint(self, " ");
             utils_print_int3(player.crmod_badstats_x);
-            sprint(self, "â€˜Ã¼ Â");
+            sprint(self, "‘ü ");
 			stats_print_percent3(player.crmod_badstats_y, tot_done);
-            sprint(self, "â€˜Ã¼ Â");
+            sprint(self, "‘ü ");
 			stats_print_percent3(player.crmod_badstats_z, tot_done);
-            sprint(self, "â€˜");
+            sprint(self, "‘");
         }
         else
         {
             sprint(self, "  ");
             utils_print_int3(player.crmod_badstats_x);
-            sprint(self, " Ã¼  ");
+            sprint(self, " ü  ");
 			stats_print_percent3(player.crmod_badstats_y, tot_done);
-            sprint(self, " Ã¼  ");
+            sprint(self, " ü  ");
 			stats_print_percent3(player.crmod_badstats_z, tot_done);
         }
 		sprint(self, "\n");
@@ -101,42 +101,42 @@ void () stats_show_quadstats =
     sprint(self, "slf   - number of times killed self\n");
     sprint(self, "tm    - number of teammates killed\n");
     sprint(self, "\n");
-    sprint(self, "     name      Ã¼quadsÃ¼effÃ¼oppÃ¼slfÃ¼tm \n");
-    sprint(self, "Â­Â­Â­Â­Â­Â­Â­Â­Â­Â­Â­Â­Â­Â­Â­Â«Â­Â­Â­Â­Â­Â«Â­Â­Â­Â«Â­Â­Â­Â«Â­Â­Â­Â«Â­Â­Â­\n");
+    sprint(self, "     name      üquadsüeffüoppüslfütm \n");
+    sprint(self, "­­­­­­­­­­­­­­­«­­­­­«­­­«­­­«­­­«­­­\n");
 
     player = elohim_sentinel.owner.next_player;
 	pteam = player.next_team;
 	
     while (player)
     {
-        sprint(self, player.name15, "Ã¼");
+        sprint(self, player.name15, "ü");
         if (player == self)
         {
-            sprint(self, "Â");
+            sprint(self, "");
             utils_print_int3(player.crmod_qdwep_z);
-            sprint(self, "â€˜Ã¼");
+            sprint(self, "‘ü");
         }
         else
         {
             sprint(self, " ");
             utils_print_int3(player.crmod_qdwep_z);
-            sprint(self, " Ã¼");
+            sprint(self, " ü");
         }
         stats_print_percent3(player.crmod_qdwep_x, player.crmod_qdwep_y);
-        sprint(self, "Ã¼");
+        sprint(self, "ü");
         utils_print_int3(player.crmod_qdkill_x);
-        sprint(self, "Ã¼");
+        sprint(self, "ü");
         utils_print_int3(player.crmod_qdkill_z);
-        sprint(self, "Ã¼");
+        sprint(self, "ü");
         utils_print_int3(player.crmod_qdkill_y);
         sprint(self, "\n");
         player = player.next_player;
 
 		if (useteams && (player.next_team != pteam))
 		{
-			sprint(self, pteam.mdl, "Ã¼ ");
+			sprint(self, pteam.mdl, "ü ");
 			utils_print_int3_gold(pteam.dest2_x);
-			sprint(self, " Ã¼   Ã¼   Ã¼   Ã¼\n");
+			sprint(self, " ü   ü   ü   ü\n");
 			pteam = player.next_team;
 		}
     }
@@ -154,31 +154,31 @@ void () stats_show_killstats =
     sprint(self, "tm  - number of teammates killed\n");
     sprint(self, "kld - number of times killed by enemy\n");
     sprint(self, "\n");
-    sprint(self, "     name      Ã¼fragsÃ¼oppÃ¼slfÃ¼tm Ã¼kld\n");
-    sprint(self, "Â­Â­Â­Â­Â­Â­Â­Â­Â­Â­Â­Â­Â­Â­Â­Â«Â­Â­Â­Â­Â­Â«Â­Â­Â­Â«Â­Â­Â­Â«Â­Â­Â­Â«Â­Â­Â­\n");
+    sprint(self, "     name      üfragsüoppüslfütm ükld\n");
+    sprint(self, "­­­­­­­­­­­­­­­«­­­­­«­­­«­­­«­­­«­­­\n");
 
     player = elohim_sentinel.owner.next_player;
     while (player)
     {
-        sprint(self, player.name15, "Ã¼");
+        sprint(self, player.name15, "ü");
         if (player == self)
         {
-            sprint(self, "Â");
+            sprint(self, "");
             utils_print_int3(player.frags);
-            sprint(self, "â€˜Ã¼");
+            sprint(self, "‘ü");
         }
         else
         {
             sprint(self, " ");
             utils_print_int3(player.frags);
-            sprint(self, " Ã¼");
+            sprint(self, " ü");
         }
         utils_print_int3(player.frags + player.mangle_x + player.mangle_y);
-        sprint(self, "Ã¼");
+        sprint(self, "ü");
         utils_print_int3(player.mangle_x);
-        sprint(self, "Ã¼");
+        sprint(self, "ü");
         utils_print_int3(player.mangle_y);
-        sprint(self, "Ã¼");
+        sprint(self, "ü");
         utils_print_int3(player.mangle_z);
 		sprint(self, "\n");
         player = player.next_player;
@@ -225,29 +225,29 @@ void () stats_show_efficiency =
     sprint(self, "rox - rocket efficiency\n");
     sprint(self, "lg  - lightning gun efficiency\n");
     sprint(self, "\n");
-    sprint(self, "     name      Ã¼bulÃ¼nlsÃ¼roxÃ¼lg Ã¼total\n");
-    sprint(self, "Â­Â­Â­Â­Â­Â­Â­Â­Â­Â­Â­Â­Â­Â­Â­Â«Â­Â­Â­Â«Â­Â­Â­Â«Â­Â­Â­Â«Â­Â­Â­Â«Â­Â­Â­Â­Â­\n");
+    sprint(self, "     name      übulünlsüroxülg ütotal\n");
+    sprint(self, "­­­­­­­­­­­­­­­«­­­«­­­«­­­«­­­«­­­­­\n");
 
     player = elohim_sentinel.owner.next_player;
     while (player)
     {
-        sprint(self, player.name15, "Ã¼");
+        sprint(self, player.name15, "ü");
         stats_print_percent3(player.dest2_x, player.dest1_x);
-        sprint(self, "Ã¼");
+        sprint(self, "ü");
         stats_print_percent3(player.dest2_y, player.dest1_y);
-        sprint(self, "Ã¼");
+        sprint(self, "ü");
         stats_print_percent3(player.dest_y, player.dest_x);
-        sprint(self, "Ã¼");
+        sprint(self, "ü");
         stats_print_percent3(player.dest2_z, player.dest1_z);
-        sprint(self, "Ã¼");
+        sprint(self, "ü");
 
         tot_fired = player.dest1_x + player.dest1_y + player.dest1_z + player.dest_x;
         tot_done = player.dest2_x + player.dest2_y + player.dest2_z + player.dest_y;
         if (player == self)
         {
-            sprint(self, "Â");
+            sprint(self, "");
             stats_print_percent3(tot_done, tot_fired);
-            sprint(self, "â€˜");
+            sprint(self, "‘");
         }
         else
         {
@@ -280,23 +280,23 @@ void () stats_show_summary =
     sprint(self, "\n");
     if (useteams)
     {
-        sprint(self, "     name      Ã¼   team  Ã¼kill Ã¼weapn\n");
-        sprint(self, "Â­Â­Â­Â­Â­Â­Â­Â­Â­Â­Â­Â­Â­Â­Â­Â«Â­Â­Â­Â­Â­Â­Â­Â­Â­Â«Â­Â­Â­Â­Â­Â«Â­Â­Â­Â­Â­\n");
+        sprint(self, "     name      ü   team  ükill üweapn\n");
+        sprint(self, "­­­­­­­­­­­­­­­«­­­­­­­­­«­­­­­«­­­­­\n");
     }
     else
     {
-        sprint(self, "     name      Ã¼kill Ã¼weapn\n");
-        sprint(self, "Â­Â­Â­Â­Â­Â­Â­Â­Â­Â­Â­Â­Â­Â­Â­Â«Â­Â­Â­Â­Â­Â«Â­Â­Â­Â­Â­\n");
+        sprint(self, "     name      ükill üweapn\n");
+        sprint(self, "­­­­­­­­­­­­­­­«­­­­­«­­­­­\n");
     }
 	player = elohim_sentinel.owner.next_player;
 
     while (player)
     {
-        sprint(self, player.name15, "Ã¼");
+        sprint(self, player.name15, "ü");
         if (useteams)
 		{
 			teamname = strings_get_teamname3(player.height);
-            sprint(self, teamname, " Ã¼");
+            sprint(self, teamname, " ü");
 		}
 
         kfrac = player.frags + player.mangle_x + player.mangle_y;
@@ -305,17 +305,17 @@ void () stats_show_summary =
         wfrac = player.dest2_x + player.dest2_y + player.dest2_z + player.dest_y;
         if (player == self)
         {
-            sprint(self, "Â");
+            sprint(self, "");
             stats_print_percent3(kfrac, ktot);
-            sprint(self, "â€˜Ã¼Â");
+            sprint(self, "‘ü");
             stats_print_percent3(wfrac, wtot);
-            sprint(self, "â€˜");
+            sprint(self, "‘");
         }
         else
         {
             sprint(self, " ");
             stats_print_percent3(kfrac, ktot);
-            sprint(self, " Ã¼ ");
+            sprint(self, " ü ");
             stats_print_percent3(wfrac, wtot);
         }
         sprint(self, "\n");
@@ -332,15 +332,15 @@ void (vector v) stats_format_vector =
 {
 	local string s;
 
-	sprint(self, "Ã¼");
+	sprint(self, "ü");
 	if (v_x < 10)
 		sprint(self, " ");
 	s = ftos(v_x);
-	sprint(self, s, "Å½");
+	sprint(self, s, "");
 	if (v_y < 10)
 		sprint(self, " ");
 	s = ftos(v_y);
-	sprint(self, s, "Å½");
+	sprint(self, s, "");
 	if (v_z < 10)
 		sprint(self, " ");
 	s = ftos(v_z);
@@ -378,14 +378,14 @@ void () stats_show_teamstats =
 	while (pteam)
 	{
 		s = strings_get_teamname3(pteam.height);
-		sprint(self, "Ã¼", s);
+		sprint(self, "ü", s);
 		pteam = pteam.next_team;
 	}
-	sprint(self, "\nÂ­Â­Â­Â­Â­Â­Â­Â­Â­Â­");
+	sprint(self, "\n­­­­­­­­­­");
 	pteam = elohim_sentinel.owner.next_team;
 	while (pteam)
 	{
-		sprint(self, "Â«Â­Â­Â­Â­Â­Â­Â­Â­");
+		sprint(self, "«­­­­­­­­");
 		pteam = pteam.next_team;
 	}
 	sprint(self, "\nQ\b\.\6\6\6\.RING");
@@ -420,15 +420,15 @@ void () stats_show_teamstats =
 	pteam = elohim_sentinel.owner.next_team;
 	while (pteam)
 	{
-		sprint(self, "Ã¼");
+		sprint(self, "ü");
 		s = ftos(pteam.mangle_y);
 		if (pteam.mangle_y < 10)
 			sprint(self, " ");
-		sprint(self, "Â«", s, " ");
+		sprint(self, "«", s, " ");
 		s = ftos(pteam.mangle_z);
 		if (pteam.mangle_z < 10)
 			sprint(self, " ");
-		sprint(self, "Â­", s, " ");
+		sprint(self, "­", s, " ");
 		pteam = pteam.next_team;
 	}
 	sprint(self, "\n\bcontrol   ");
@@ -440,7 +440,7 @@ void () stats_show_teamstats =
 		control = 100 * pteam.mangle_x / elohim_sentinel.cnt;
 		f = floor(control);
 		s = ftos(f);
-		sprint(self, "Ã¼  %", s);
+		sprint(self, "ü  %", s);
 		f = floor((control - f) * 10);
 		s = ftos(f);
 		sprint(self, ".", s, " ");

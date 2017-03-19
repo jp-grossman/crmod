@@ -47,9 +47,6 @@
     <None Include="console.qc">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="Debug.qc">
-      <Filter>Source Files</Filter>
-    </None>
     <None Include="defs.qc">
       <Filter>Source Files</Filter>
     </None>
@@ -117,9 +114,6 @@
       <Filter>Source Files</Filter>
     </None>
     <None Include="ratings.qc">
-      <Filter>Source Files</Filter>
-    </None>
-    <None Include="Score.qc">
       <Filter>Source Files</Filter>
     </None>
     <None Include="sprites.qc">
@@ -207,6 +201,12 @@
     <None Include="Make.bat" />
     <None Include="..\Userdefs.cfg" />
     <None Include="progs.src" />
+    <None Include="score.qc">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="debug.qc">
+      <Filter>Source Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\Release\manual.txt">

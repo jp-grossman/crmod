@@ -777,25 +777,25 @@ void () match_timer_think1 =
             dprint("- ");
         if (elohim_playmode & ELOHIM_NO_QUAD)
 		{
-            bprint("ÂQuad is ÃÃ†Ã†");
+            bprint("Quad is ÏÆÆ");
 			dprint("Quad is OFF - ");
             utils_do_item(votables_disable_item, "item_artifact_super_damage");
 		}
         if (elohim_playmode & ELOHIM_NO_PENT)
 		{
-            bprint("ÂPent is ÃÃ†Ã†");
+            bprint("Pent is ÏÆÆ");
 			dprint("Pent is OFF - ");
             utils_do_item(votables_disable_item, "item_artifact_invulnerability");
 		}
         if (elohim_playmode & ELOHIM_NO_RING)
 		{
-            bprint("ÂRing is ÃÃ†Ã†");
+            bprint("Ring is ÏÆÆ");
 			dprint("Ring is OFF - ");
             utils_do_item(votables_disable_item, "item_artifact_invisibility");
 		}
 		if (elohim_playmode & (ELOHIM_NO_QUAD | ELOHIM_NO_PENT | ELOHIM_NO_RING))
 		{
-            bprint("Â\n");
+            bprint("\n");
 			dprint("\n");
 		}
 
@@ -1698,7 +1698,7 @@ void () match_pause_player =
 void () match_show_pause =
 {
     WriteByte(MSG_ALL, SVC_CENTERPRINT);
-    WriteString(MSG_ALL, "\{1}\{2}\{2}\{2}\{2}\{2}\{2}\{3}\nÂ„ÃÃÃ•Ã“Ã…Ã„Â†\nÂ‡ÂˆÂˆÂˆÂˆÂˆÂˆÂ‰");
+    WriteString(MSG_ALL, "\{1}\{2}\{2}\{2}\{2}\{2}\{2}\{3}\n„ĞÁÕÓÅÄ†\n‡ˆˆˆˆˆˆ‰");
     elohim_match_timer.nextthink = time + 0.5;
     elohim_match_timer.think = match_show_pause;
 };

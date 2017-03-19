@@ -588,14 +588,14 @@ void () debug_wingl =
 			if (e.style & ELOHIM_WINQUAKE)
 			{
 				if (e.style & ELOHIM_GLQUAKE)
-					sprint(self, "   ???         Ã¼ ", e.netname, "\n");
+					sprint(self, "   ???         ü ", e.netname, "\n");
 				else
-					sprint(self, "   WinQuake    Ã¼ ", e.netname, "\n");
+					sprint(self, "   WinQuake    ü ", e.netname, "\n");
 			}
 			else if (e.style & ELOHIM_GLQUAKE)
-				sprint(self, "   GlQuake     Ã¼ ", e.netname, "\n");
+				sprint(self, "   GlQuake     ü ", e.netname, "\n");
 			else
-				sprint(self, "   DosQuake    Ã¼ ", e.netname, "\n");
+				sprint(self, "   DosQuake    ü ", e.netname, "\n");
 		}
 		e = find(e, classname, "player");
 	}
