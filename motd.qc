@@ -28,18 +28,18 @@ string motd_bottom;
 //
 void () motd_init_world =
 {
-    motd_top1 = "β‚¬ΒΒΒΒΒΒΒβ€ΓƒΓ¬Γ΅Γ®Γ’Γ©Γ®Γ§ ΓƒΓ’ΓΓ―Γ¤Β«Β« Γ–\6\b.\6β‚¬ΒΒΒΒΒΒΒβ€\n";
-    motd_top2 = "β‚¬ΒΒΒΒΒΒΒβ€ΓƒΓ¬Γ΅Γ®Γ’Γ©Γ®Γ§ ΓƒΓ’ΓΓ―Γ¤Β«Β« Γ–\6\b.\6β‚¬ΒΒΒΒΒΒΒβ€\nΒΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΈ\n";
-    motd_top3 = "β‚¬ΒΒΒΒΒΒΒβ€ΓƒΓ¬Γ΅Γ®Γ’Γ©Γ®Γ§ ΓƒΓ’ΓΓ―Γ¤Β«Β« Γ–\6\b.\6β‚¬ΒΒΒΒΒΒΒβ€\n\nΒΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΈ\n";
-    motd_top4 = "β‚¬ΒΒΒΒΒΒΒβ€ΓƒΓ¬Γ΅Γ®Γ’Γ©Γ®Γ§ ΓƒΓ’ΓΓ―Γ¤Β«Β« Γ–\6\b.\6β‚¬ΒΒΒΒΒΒΒβ€\n\bhttp://www.crmod.com\n\nΒΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΈ\n";
-    motd_top5 = "β‚¬ΒΒΒΒΒΒΒβ€ΓƒΓ¬Γ΅Γ®Γ’Γ©Γ®Γ§ ΓƒΓ’ΓΓ―Γ¤Β«Β« Γ–\6\b.\6β‚¬ΒΒΒΒΒΒΒβ€\nby J.P. Grossman\n\bhttp://www.crmod.com\n\nΒΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΈ\n";
-    motd_top7_1 = "β‚¬ΒΒΖ’ΒΒΒΒβ€ΓƒΓ¬Γ΅Γ®Γ’Γ©Γ®Γ§ ΓƒΓ’ΓΓ―Γ¤Β«Β« Γ–\6\b.\6β‚¬ΒΒΒΒΖ’ΒΒβ€\n\nby J.P. Grossman\n\bhttp://www.crmod.com\n\nΒΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΈ\n";
-    motd_top7_2 = "β‚¬ΒΒΒΖ’ΒΒΒβ€ΓƒΓ¬Γ΅Γ®Γ’Γ©Γ®Γ§ ΓƒΓ’ΓΓ―Γ¤Β«Β« Γ–\6\b.\6β‚¬ΒΒΒΖ’ΒΒΒβ€\n\nby J.P. Grossman\n\bhttp://www.crmod.com\n\nΒΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΈ\n";
-    motd_top7_3 = "β‚¬ΒΒΒΒΖ’ΒΒβ€ΓƒΓ¬Γ΅Γ®Γ’Γ©Γ®Γ§ ΓƒΓ’ΓΓ―Γ¤Β«Β« Γ–\6\b.\6β‚¬ΒΒΖ’ΒΒΒΒβ€\n\nΓ› by J.P. Grossman Γ\nΓ› \bhttp://www.crmod.com Γ\n\nΒΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΈ\n";
-    motd_top7_4 = "β‚¬ΒΒΒΒΒΖ’Ββ€ΓƒΓ¬Γ΅Γ®Γ’Γ©Γ®Γ§ ΓƒΓ’ΓΓ―Γ¤Β«Β« Γ–\6\b.\6β‚¬ΒΖ’ΒΒΒΒΒβ€\n\nΒΕ½by J.P. GrossmanΕ½β€\nΒΕ½\bhttp://www.crmod.comΕ½β€\n\nΒΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΈ\n";
-    motd_top7_5 = "β‚¬ΒΒΒΒΖ’ΒΒβ€ΓƒΓ¬Γ΅Γ®Γ’Γ©Γ®Γ§ ΓƒΓ’ΓΓ―Γ¤Β«Β« Γ–\6\b.\6β‚¬ΒΒΖ’ΒΒΒΒβ€\n\nΒΕ½by J.P. GrossmanΕ½β€\nΒΕ½\bhttp://www.crmod.comΕ½β€\n\nΒΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΈ\n";
-    motd_top7_6 = "β‚¬ΒΒΒΖ’ΒΒΒβ€ΓƒΓ¬Γ΅Γ®Γ’Γ©Γ®Γ§ ΓƒΓ’ΓΓ―Γ¤Β«Β« Γ–\6\b.\6β‚¬ΒΒΒΖ’ΒΒΒβ€\n\nΓ› by J.P. Grossman Γ\nΓ› \bhttp://www.crmod.com Γ\n\nΒΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΎΕΈ\n";
-    motd_bottom = "β‚¬ΒΒΒΒΒΒΒΒΒΒΒΒΒΒΒΒΒΒΒΒΒΒΒΒΒΒΒΒΒΒΒΒΒΒΒΒΒβ€";
+    motd_top1 = "€‚ΓμαξÒιξη ΓÒΝοδ«« Φ\6\b.\6€‚\n";
+    motd_top2 = "€‚ΓμαξÒιξη ΓÒΝοδ«« Φ\6\b.\6€‚\n\n";
+    motd_top3 = "€‚ΓμαξÒιξη ΓÒΝοδ«« Φ\6\b.\6€‚\n\n\n";
+    motd_top4 = "€‚ΓμαξÒιξη ΓÒΝοδ«« Φ\6\b.\6€‚\n\bhttp://www.crmod.com\n\n\n";
+    motd_top5 = "€‚ΓμαξÒιξη ΓÒΝοδ«« Φ\6\b.\6€‚\nby J.P. Grossman\n\bhttp://www.crmod.com\n\n\n";
+    motd_top7_1 = "€ƒ‚ΓμαξÒιξη ΓÒΝοδ«« Φ\6\b.\6€ƒ‚\n\nby J.P. Grossman\n\bhttp://www.crmod.com\n\n\n";
+    motd_top7_2 = "€ƒ‚ΓμαξÒιξη ΓÒΝοδ«« Φ\6\b.\6€ƒ‚\n\nby J.P. Grossman\n\bhttp://www.crmod.com\n\n\n";
+    motd_top7_3 = "€ƒ‚ΓμαξÒιξη ΓÒΝοδ«« Φ\6\b.\6€ƒ‚\n\nΫ by J.P. Grossman έ\nΫ \bhttp://www.crmod.com έ\n\n\n";
+    motd_top7_4 = "€ƒ‚ΓμαξÒιξη ΓÒΝοδ«« Φ\6\b.\6€ƒ‚\n\nby J.P. Grossman‘\n\bhttp://www.crmod.com‘\n\n\n";
+    motd_top7_5 = "€ƒ‚ΓμαξÒιξη ΓÒΝοδ«« Φ\6\b.\6€ƒ‚\n\nby J.P. Grossman‘\n\bhttp://www.crmod.com‘\n\n\n";
+    motd_top7_6 = "€ƒ‚ΓμαξÒιξη ΓÒΝοδ«« Φ\6\b.\6€ƒ‚\n\nΫ by J.P. Grossman έ\nΫ \bhttp://www.crmod.com έ\n\n\n";
+    motd_bottom = "€‚";
 };
 
 void () motd_think =
@@ -68,35 +68,35 @@ void () motd_think =
 		if (self.count == 0)
 		{
 			centerprint(self.owner, "no bots"); // to kick stoogebots
-			centerprint(self.owner, "β‚¬Ββ€\n\n\n\n");
+			centerprint(self.owner, "€‚\n\n\n\n");
 		}
 
 		else if (self.count == 1)
-			centerprint(self.owner, "β‚¬ΒΒΒΒΒβ€\n\n\n\n");
+			centerprint(self.owner, "€‚\n\n\n\n");
 		else if (self.count == 2)
-			centerprint(self.owner, "β‚¬ΒΒΒΒΒΒΒΒΒβ€\n\n\n\n");
+			centerprint(self.owner, "€‚\n\n\n\n");
 		else if (self.count == 3)
-			centerprint(self.owner, "β‚¬ΒΒΒΒΒΒΒΒΒΒΒΒΒβ€\n\n\n\n");
+			centerprint(self.owner, "€‚\n\n\n\n");
 		else if (self.count == 4)
-			centerprint(self.owner, "β‚¬ΒΒΒΒΒΒΒΒΒΒΒΒΒΒΒΒΒβ€\n\n\n\n");
+			centerprint(self.owner, "€‚\n\n\n\n");
 		else if (self.count == 5)
-			centerprint(self.owner, "β‚¬ΒΒΒΒΒΒΒΒΒΒΒΒΒΒΒΒΒΒΒΒΒβ€\n\n\n\n");
+			centerprint(self.owner, "€‚\n\n\n\n");
 		else if (self.count == 6)
-			centerprint(self.owner, "β‚¬ΒΒΒΒΒΒΒΒΒΒΒΒΒΒΒΒΒΒΒΒΒΒΒΒΒβ€\n\n\n\n");
+			centerprint(self.owner, "€‚\n\n\n\n");
 		else if (self.count == 7)
-			centerprint(self.owner, "β‚¬ΒΒΒΒΒΒΒΒΒΒΒΒΒΒΒΒΒΒΒΒΒΒΒΒΒΒΒΒΒβ€\n\n\n\n");
+			centerprint(self.owner, "€‚\n\n\n\n");
 		else if (self.count == 8)
-			centerprint(self.owner, "β‚¬ΒΒΒΒΒΒΒΒΒΒΒΒΒΒΒΒΒΒΒΒΒΒΒΒΒΒΒΒΒΒΒΒΒβ€\n\n\n\n");
+			centerprint(self.owner, "€‚\n\n\n\n");
 		else if (self.count == 9)
-			centerprint(self.owner, "β‚¬ΒΒΒΒΒΒΒΒΒΒΒΒΒΒΒΒΒβ€Γ’β‚¬ΒΒΒΒΒΒΒΒΒΒΒΒΒΒΒΒΒβ€\n\n\n\n");
+			centerprint(self.owner, "€‚Ò€‚\n\n\n\n");
 		else if (self.count == 10)
-			centerprint(self.owner, "β‚¬ΒΒΒΒΒΒΒΒΒΒΒΒΒΒΒβ€ ΓƒΓ’ΓΓ―β‚¬ΒΒΒΒΒΒΒΒΒΒΒΒΒΒΒβ€\n\n\n\n");
+			centerprint(self.owner, "€‚ ΓÒΝο€‚\n\n\n\n");
 		else if (self.count == 11)
-			centerprint(self.owner, "β‚¬ΒΒΒΒΒΒΒΒΒΒΒΒΒβ€Γ®Γ§ ΓƒΓ’ΓΓ―Γ¤Β«β‚¬ΒΒΒΒΒΒΒΒΒΒΒΒΒβ€\n\n\n\n");
+			centerprint(self.owner, "€‚ξη ΓÒΝοδ«€‚\n\n\n\n");
 		else if (self.count == 12)
-			centerprint(self.owner, "β‚¬ΒΒΒΒΒΒΒΒΒΒΒβ€Γ’Γ©Γ®Γ§ ΓƒΓ’ΓΓ―Γ¤Β«Β« β‚¬ΒΒΒΒΒΒΒΒΒΒΒβ€\n\n\n\n");
+			centerprint(self.owner, "€‚Òιξη ΓÒΝοδ«« €‚\n\n\n\n");
 		else if (self.count == 13)
-			centerprint(self.owner, "β‚¬ΒΒΒΒΒΒΒΒΒβ€Γ΅Γ®Γ’Γ©Γ®Γ§ ΓƒΓ’ΓΓ―Γ¤Β«Β« Γ–\6β‚¬ΒΒΒΒΒΒΒΒΒβ€\n\n\n\n");
+			centerprint(self.owner, "€‚αξÒιξη ΓÒΝοδ«« Φ\6€‚\n\n\n\n");
 		else if (self.count == 14)
 			centerprint(self.owner, motd_top1, "\n\n\n");
 		else if (self.count == 15)
