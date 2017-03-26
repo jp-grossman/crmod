@@ -184,12 +184,30 @@ void () console_byte_aliases =
 };
 
 //
+//  P R I N T  P I N G
+// 
+void (entity player) console_print_ping =
+{
+	local float ping, i;
+	ping = 0;
+	for (i = 0 ; i < %16 ; i = i + %1)
+		ping = ping + player.cl[i + CL_PING_TIMES];
+	ping = floor(ping * 1000 / 16);
+	if (ping < 1000)
+		dprint(" ");
+	if (ping < 100)
+		dprint(" ");
+	if (ping < 10)
+		dprint(" ");
+	dprint(ftos(ping));
+};
+
+//
 //  P I N G
 //
 void () console_ping =
 {
 	local entity player;
-	local float ping, i;
 
 	dprint("Client ping times:\n");
 	player = find(world, classname, "player");
@@ -197,17 +215,8 @@ void () console_ping =
 	{
 		if (player.style & ELOHIM_CONNECTED)
 		{
-			ping = 0;
-			for (i = 0 ; i < %16 ; i = i + %1)
-				ping = ping + player.cl[i + CL_PING_TIMES];
-			ping = floor(ping * 1000 / 16);
-			if (ping < 1000)
-				dprint(" ");
-			if (ping < 100)
-				dprint(" ");
-			if (ping < 10)
-				dprint(" ");
-			dprint(ftos(ping), " ", player.name15text, "\n");
+			console_print_ping(player);
+			dprint(" ", player.name15text, "\n");
 		}
 		player = find(player, classname, "player");
 	}
@@ -268,6 +277,7 @@ void () console_show_status =
 void () console_show_debug_info =
 {
     local entity e;
+	local float p;
 
     dprint("clients:\n");
     e = find(world, classname, "player");
@@ -281,6 +291,10 @@ void () console_show_debug_info =
             dprint(temp, " ", e.name15text, " - Disconnected\n");
         e = find(e, classname, "player");
     }
+
+	p = AddInt(&sv, 4 * SV_MODELNAME);
+	p = AddInt(p, PQUAKEC_TO_PSTRING);
+	dprint("modelname = ", @p, "\n");
 };
 
 //
@@ -404,7 +418,7 @@ void () console_show_killstats =
 {
     local entity player;
 
-    dprint("      name       | frags | enemies | self | teammates | killed \n");
+    dprint("    KILLSTATS    | frags | enemies | self | teammates | killed \n");
     dprint("-----------------+-------+---------+------+-----------+--------\n");
 
 	player = elohim_sentinel.owner.next_player;
@@ -466,7 +480,7 @@ void () console_show_quadstats =
 	else
 		useteams = FALSE;
 
-	dprint("      name       | quads | efficiency | enemy | self  | teammates |\n");
+	dprint("    QUADSTATS    | quads | efficiency | enemy | self  | teammates \n");
 	dprint("-----------------+-------+------------+-------+-------+-----------\n");
 	
 	player = elohim_sentinel.owner.next_player;
@@ -512,7 +526,7 @@ void () console_show_badstats =
 		return;
 	}
 
-    dprint("      name       | paks | self | team \n");
+    dprint("    BADSTATS     | paks | self | team \n");
     dprint("-----------------+------+------+------\n");
 
     player = elohim_sentinel.owner.next_player;
@@ -540,7 +554,7 @@ void () console_show_efficiency =
     local entity player;
     local float tot_fired, tot_done;
 
-    dprint("      name       | bullets | nails | rockets | lightning | total \n");
+    dprint("   EFFICIENCY    | bullets | nails | rockets | lightning | total \n");
     dprint("-----------------+---------+-------+---------+-----------+-------\n");
 
     player = elohim_sentinel.owner.next_player;
@@ -575,24 +589,23 @@ void () console_show_stats =
     local entity player;
     local float wfrac, wtot, kfrac, ktot, useteams;
     local string teamname;
+	local float p;
 
 	if ((elohim_playmode & ELOHIM_MATCH_MODE) && teamplay)
 		useteams = TRUE;
 	else
 		useteams = FALSE;
 
-    if (useteams)
-    {
-        dprint("      name       |    team    | kill | weapon \n");
-        dprint("-----------------+------------+------+--------\n");
-    }
-    else
-    {
-        dprint("      name       | kill | weapon \n");
-        dprint("-----------------+------+--------\n");
-    }
-	player = elohim_sentinel.owner.next_player;
+	dprint("   PLAYERSTATS   |");
+	if (useteams)
+		dprint("    team    |");
+	dprint(" kill | weapon | ping | IP\n");
+	dprint("-----------------+");
+	if (useteams)
+		dprint("------------+");
+	dprint("------+--------+------+----------------\n");
 
+	player = elohim_sentinel.owner.next_player;
     while (player)
     {
         dprint(" ", player.name15text, " | ");
@@ -608,7 +621,11 @@ void () console_show_stats =
         console_print_percent4(kfrac, ktot);
         dprint(" |  ");
         console_print_percent4(wfrac, wtot);
-		dprint("\n");
+		dprint("  | ");
+		console_print_ping(player);
+		dprint(" | ");
+		p = AddInt(AddInt(&player.qs, 4 * QS_ADDRESS + %32), PQUAKEC_TO_PSTRING);
+		dprint(@p, "\n");
 		player = player.next_player;
     }
     dprint("\n");
@@ -653,7 +670,7 @@ void () console_show_teamstats =
 		return;
 	}
 
-	dprint("               ");
+	dprint("   TEAMSTATS   ");
 	pteam = elohim_sentinel.owner.next_team;
 	while (pteam)
 	{
@@ -745,11 +762,16 @@ void () console_show_teamstats =
 //
 void () console_autodump = 
 {
+	local string temp;
+
 	if (elohim_playmode & ELOHIM_AUTOSTATS)
 	{
 		dprint("\n");
 		dprint("- CRMod Match Statistics - \n");
 		dprint("\n");
+		dprint(ftos(elohim_timelimit), " minute ");
+		temp = ftos(elohim_maxsize);
+		dprint(temp, "v", temp, " match on ", mapname, "\n\n");
 		console_show_stats();
 		console_show_quadstats();
 		if ((elohim_playmode & ELOHIM_MATCH_MODE) && teamplay)

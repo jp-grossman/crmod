@@ -373,7 +373,7 @@ void () stats_show_teamstats =
 		return;
 	}
 
-	sprint(self, "          ");
+	sprint(self, "TEAM STATS");
 	pteam = elohim_sentinel.owner.next_team;
 	while (pteam)
 	{
