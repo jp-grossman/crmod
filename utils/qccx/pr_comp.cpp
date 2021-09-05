@@ -748,6 +748,7 @@ void PR_ParseStatement (void)
 	dstatement_t		*patch1, *patch2;
 	int					old_numstatements, numtemp;
 	dstatement_t		temp[32];
+	int			i;
 	int					linenum[32];
 	
 	if (PR_Check ("{"))
