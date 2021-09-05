@@ -306,6 +306,104 @@ void (float f) utils_cprint_int3 =
 	dprint(ftos(n));
 };
 
+void (float f) utils_print_int5_gold =
+{
+   	local float n;
+   	local float d;
+   	local float temp;
+   	local string s;
+
+	n = rint(#);
+
+//-- f>10000
+   	d = floor(n / 10000);
+   	temp = floor(n / 10000);
+   	s = " ";
+   	if (d) s = strings_ftos_gold(d);
+        else if (f >= 10000)  s="’";
+	n = n - (d * 10000);
+  	sprint(self, s);
+
+//-- f>1000
+	d = floor(n / 1000);
+   	temp = floor(n / 1000);
+   	s = " ";
+   	if (d)  s = strings_ftos_gold(d);
+           else if (f >= 1000) s="’";
+     	n = n - (d * 1000);
+  	sprint(self, s);
+  	
+//-- f>100
+   	d = floor(n / 100);
+   	temp = floor(n / 100);
+   	s = " ";
+   	if (d)  s = strings_ftos_gold(d);
+           else if (f >= 100)  s="’";
+   	n = n - (d * 100);
+  	sprint(self, s);
+  	
+//-- f>10
+   	d = floor(n / 10);
+           s = " ";
+   	if (temp || d) 	s = strings_ftos_gold(d);
+   	else if (f >= 10) s="’";
+           n = n - (d * 10);     
+   	sprint(self, s);
+   	
+// < 10   	
+   	s = strings_ftos_gold(n);
+   	sprint(self, s);
+};
+
+void (float f) utils_cprint_int5 =
+{
+   	local float n;
+   	local float d;
+   	local float temp;
+   	local string s;
+
+	n = rint(#);
+
+//-- f>10000
+   	d = floor(n / 10000);
+   	temp = floor(n / 10000);
+   	s = " ";
+   	if (d) s = ftos(d);
+        else if (f >= 10000)  s="0";
+	n = n - (d * 10000);
+  	dprint(s);
+
+//-- f>1000
+	d = floor(n / 1000);
+   	temp = floor(n / 1000);
+   	s = " ";
+   	if (d) s = ftos(d);
+           else if (f >= 1000) s="0";
+     	n = n - (d * 1000);
+  	dprint(s);
+  	
+//-- f>100
+   	d = floor(n / 100);
+   	temp = floor(n / 100);
+   	s = " ";
+   	if (d) s = ftos(d);
+           else if (f >= 100)  s="0";
+   	n = n - (d * 100);
+  	dprint(s);
+  	
+//-- f>10
+   	d = floor(n / 10);
+           s = " ";
+   	if (temp || d) s = ftos(d);
+   	else if (f >= 10) s="0";
+           n = n - (d * 10);     
+  	dprint(s);
+   	
+// < 10   	
+   	s = ftos(d);
+  	dprint(s);
+};
+
 //
 //  P R I N T  V E C
 //
@@ -787,3 +885,4 @@ void () utils_decrement_developer =
 	d = cvar("developer");
 	utils_set_cvar("developer", d - 1);
 };
+

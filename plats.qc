@@ -72,9 +72,15 @@ void() plat_go_up =
 
 void() plat_center_touch =
 {
+	if (elohim_state & ELOHIM_MATCH_PAUSED)
+		return;
+
 	if (other.classname != "player")
 		return;
-		
+
+	if ((!(elohim_state & ELOHIM_MATCH_STARTED)) && ((elohim_state & ELOHIM_TIMER_STARTED)))//Sput: $(w0lv) 'Make the lifts unusable at the 10 second countdown mark'.
+		return;
+
 	if (other.health <= 0)
 		return;
 

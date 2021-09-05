@@ -25,7 +25,7 @@ float SV_SIGNON_DATA			= %1403;
 float SV_SIGNON_MAXSIZE			= %1404;
 float SV_SIGNON_CURSIZE			= %1405;
 float SV_SIGNON_BUF				= %1406;
-
+float CL_SPAM_TIME      	;// = %2069;
 float CL_HUNK			;// = %-16; - might need to change this for linux/mac
 float CL_ACTIVE			;// = %0; - might need to change this for linux/mac
 float CL_SPAWNED		;// = %1; - might need to change this for linux/mac
@@ -410,7 +410,7 @@ void () InternalInit =
 		CL_DROPASAP			= %2;
 		CL_PRIVILEGED		= %3;
 		CL_SENDSIGNON		= %4;
-
+		CL_SPAM_TIME      	= %2069;
 		QS_ADDR				= %4118;
 		QS_IN_ADDR			= %4119;
 		QS_ADDRESS			= %4122;
@@ -434,7 +434,7 @@ void () InternalInit =
 		CL_DROPASAP			= %3;
 		CL_PRIVILEGED		= %4;
 		CL_SENDSIGNON		= %5;
-
+		CL_SPAM_TIME      	= %2068;
 		QS_ADDR				= %4117;
 		QS_IN_ADDR			= %4118;
 		QS_ADDRESS			= %4121;

@@ -265,7 +265,7 @@ void () training_respawn =
 	
 	self.view_ofs = '0 0 22';
 
-    makevectors(self.angles);
+    makevectors(self.v_angle);
     spawn_tfog (self.origin + v_forward*20);
 
     elohim_put_client_in_server();

@@ -26,6 +26,7 @@ float  zone_ban_names_text;
 float  zone_pcstring;	// used for strcats
 float  zone_pstring;	// used for strcats
 string zone_string;		// used for strcats
+entity zone_player_stat_id; //sput: testing
 
 // used for writing strings
 float zone_strlen;
@@ -72,6 +73,7 @@ void (float context) zone_init_world =
 	zone_string = @AddInt(zone_pstring, PQUAKEC_TO_PSTRING);
 	zone_ban_names = AddInt(context, %4096);
 	zone_ban_names_text = AddInt(context, %6144);
+	zone_player_stat_id = *AddInt(context, %8196);//Sput: testing
 	zone_check_clear();
 };
 

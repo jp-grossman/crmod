@@ -4,7 +4,7 @@
 // This is the main file for CRMod++.  CRMod++ was derived from the
 // Elohim server, which is why everything is still called "elohim".
 //
-// Developed by J.P. Grossman (a.k.a. ùMephistopheles) and Paul Baker
+// Developed by J.P. Grossman (a.k.a. ï¿½Mephistopheles) and Paul Baker
 //
 // All code by J.P. Grossman unless otherwise commented.
 //
@@ -136,7 +136,7 @@
 // .jump_flag
 // .swim_flag
 // .bubble_count
-// 
+//
 // Teams:
 //
 // .next_player   - first player in team
@@ -169,12 +169,12 @@
 // .movetarget    - which team has control
 // .owner         - pointer for stats
 // .cnt			  - number of seconds elapsed in match
-//  
+//
 // Match timer:
 //
 // .lip		- minutes remaining
 // .count	- seconds remaining
-// .dest	- time intervals for countdown (fast/normal) 
+// .dest	- time intervals for countdown (fast/normal)
 // .cnt		- stores nextthing during pause
 //
 // Scoreboard:
@@ -265,9 +265,9 @@ void () elohim_init_world =
     local string szmode;
     local float temp;
 
-    elohim_version       = "\bClanRing CRMod++ V\6.\6.\1";
-    elohim_version_info  = "CRMod++ V6.6.1 8:54am 3/26/2017";
-    crmod_version_number = "6.6.1";  
+    elohim_version       = "\bClanRing CRMod++ V\6.\6.\2";
+    elohim_version_info  = "CRMod++ V6.6.2 09/05/2021";
+    crmod_version_number = "6.6.2";
 
     elohim_playmode = cvar("samelevel");
 
@@ -308,7 +308,7 @@ void () elohim_init_world =
 	quaketag_init_world();
 	qsmack_init_world();
 	display_init_world();
-    
+
     // Hack to allow console to emulate an administrator
 	world.style = ELOHIM_ADMINISTRATOR;
 
@@ -374,11 +374,11 @@ void () elohim_init_world =
 		elohim_level = cvar("scratch4");
 		elohim_levelcount = 0;
     }
-	else 
+	else
 		elohim_levelcount = -1;
 
     // Set global variables
-    elohim_player_ids = 1;
+    //elohim_player_ids = 1; *UNUSED: Sputnik
     elohim_devparam = 0;
     elohim_nextcheck = time;
 	elohim_nextcheck2 = time;
@@ -434,9 +434,170 @@ void () elohim_init_world =
 };
 
 //
+// C L E A R   A F K   S T A T U S
+//
+
+void (entity client) clear_afk_status =
+{
+	if (time > 20)
+		client.last_active = time;
+};
+
+//
+//  L O G I N  E N T E R  C O D E
+//
+//  Prompts the client for the 7-digit player id passcode
+//
+
+void () elohim_login_enter_code =
+{
+	if (self.finaldest_z > 9)
+		return;
+
+	if ((self.count == 0) && (self.finaldest_z == 0))	//Sputnik: first number can not be zero.
+	{
+		sprint(self, "\bZero\b can not be used as the first digit, try again:\n");
+		return;
+	}
+
+	self.count = self.count * 10 + self.finaldest_z;
+	self.lip = self.lip + 1;
+
+	if (self.lip > 7)
+	{
+		local string s;
+		local float p;
+
+		p = AddInt(AddInt(&self.qs, 4 * QS_ADDRESS + %32), PQUAKEC_TO_PSTRING);
+
+		if (zone_player_stat_id[(self.state * %1)] == self.count)
+		{
+			self.elohim_player_id = self.state;
+			s = ftos(self.elohim_player_id);
+			sprint(self, "You are now logged in with id: ",s,"\n");
+			dprint("Login: GOOD ",self.netname," (",@p,") ");//output the player's name and ip address
+			dprint("id: ",s,"\n");
+			name_fix();//Change the 'READY' to white when they are logged in.
+		}
+		else
+		{
+			sprint(self, "Invalid passcode.\n");
+			self.elohim_player_id = 0;
+
+			self.id_hack_count = self.id_hack_count + 1;
+			if (self.id_hack_count > 3)
+			{
+				s = ftos(self.state);
+				bprint(self.netname, " kicked for login hacking\n");
+				dprint("Login: FAIL ",self.netname," (",@p,") ");
+				dprint("id: ",s," \n");
+				elohim_kick_player(self);
+			}
+		}
+		self.state = 0;
+		self.count = 0;
+		self.lip = 0;
+		self.use = SUB_Null;
+	}
+	else
+		sprint(self, "Enter the next passcode digit:\n");
+};
+
+//
+// C H E C K  S T A T  I D
+//
+// Check if someone is already using that number
+//
+float (float pcode) elohim_check_stat_id =
+{
+	local entity p;
+
+	p = find (world, classname, "player");
+
+	while (p)
+	{
+		if (p.elohim_player_id == pcode)
+		{
+			sprint(self,p.netname, " \bis already using that id number.\n");
+			return TRUE;
+		}
+		p = find(p, classname, "player");
+	}
+	return FALSE;
+};
+
+//
+//  L O G I N  E N T E R  I D
+//
+//  Prompts the client for a 3 digit player id number
+//
+void () elohim_login_enter_id =
+{
+	if (self.finaldest_z > 9)
+		return;
+
+	self.count = self.count * 10 + self.finaldest_z;
+	self.lip = self.lip + 1;
+
+	if (self.lip > 3)
+	{
+		if (elohim_check_stat_id(self.count)) //someone is using this code!
+		{
+			self.state = 0;
+			self.count = 0;
+			self.lip = 0;
+			self.use = SUB_Null;
+			sprint(self, "\b**ERROR!\n");//something generic
+			return;
+		}
+		self.state = self.count;
+		self.count = 0;
+		self.lip = 1;
+		self.use = elohim_login_enter_code;
+		sprint(self, "\b-------------------------------\b\n");
+		sprint(self, "Enter the first passcode digit:\n");
+	}
+	else
+		sprint(self, "Enter the next id digit:\n");
+};
+
+//
+//  L O G I N  S T A R T
+//
+void () elohim_login_start =
+{
+	local string s;
+
+	if (!(elohim_playmode & ELOHIM_MATCH_MODE))
+	{
+		sprint(self, "Command only available in \bMatch\b mode.\n");
+		return;
+	}
+
+	if ((elohim_state & ELOHIM_MATCH_STARTED) && (!(self.style & ELOHIM_OBSERVER)))
+	{
+		sprint(self, "You may not login after the match has started.\n");
+		return;
+	}
+
+	if (self.elohim_player_id > 0)
+	{
+		s = ftos(self.elohim_player_id);
+		sprint(self, "You are already logged in with id: ",s,"\n");
+		return;
+	}
+
+	sprint(self, "Enter the first id digit:\n");
+	self.count = 0;
+	self.state = 0;
+	self.lip = 1;
+	self.use = elohim_login_enter_id;
+};
+
+//
 //  R E M O V E  S T A R T  T E L E P O R T
 //
-void () elohim_remove_start_teleport = 
+void () elohim_remove_start_teleport =
 {
 	if (mapname == "start")
 	{
@@ -457,7 +618,7 @@ void () elohim_remove_start_teleport =
 //
 //  F I N D  P O W E R U P S
 //
-void () elohim_find_powerups = 
+void () elohim_find_powerups =
 {
 	elohim_quad = find(world, classname, "item_artifact_super_damage");
 	elohim_pent = find(world, classname, "item_artifact_invulnerability");
@@ -467,7 +628,7 @@ void () elohim_find_powerups =
 //
 //  E X E C  C O N F I G S
 //
-void () elohim_exec_configs = 
+void () elohim_exec_configs =
 {
 	if (cvar("deathmatch") == 0)
 		utils_set_cvar("deathmatch", 1);
@@ -521,8 +682,8 @@ void (float value) elohim_set_teamplay =
 //  S E T  F R A G L I M I T
 //
 //  Sets the fraglimit server variable to show fraglimit, "CRMod++",
-//  and either "FFA", "Practice", "Match" or "Individual" depending on the 
-//  current mode.  If value = -1 then the fraglimit variable is preserved; 
+//  and either "FFA", "Practice", "Match" or "Individual" depending on the
+//  current mode.  If value = -1 then the fraglimit variable is preserved;
 //  otherwise it is changed to 'value'.
 //
 void (float value) elohim_set_fraglimit =
@@ -566,7 +727,7 @@ void () elohim_set_aliases =
 		remove(self);
 		return;
 	}
-    
+
     sprint(self, "Sending ", elohim_version, " bindings\n");
 
     stuffcmd(self, "alias ready impulse 120\n");
@@ -627,6 +788,7 @@ void () elohim_set_aliases =
 		stuffcmd(self, "alias -teamscores \"-showscores;impulse 132\"\n");
 		stuffcmd(self, "alias rockets impulse 133\n");
 		stuffcmd(self, "alias timer impulse 134\n");
+		stuffcmd(self, "alias login impulse 135\n");
 		stuffcmd(self, "alias observer impulse 140\n");
 		stuffcmd(self, "alias walk impulse 141\n");
 		stuffcmd(self, "alias flyme impulse 142\n");
@@ -671,7 +833,7 @@ void () elohim_set_aliases =
 //
 //  P R E  S E T  A L I A S E S
 //
-void () elohim_pre_set_aliases = 
+void () elohim_pre_set_aliases =
 {
 	sprint(self.owner, "Checking bindings..\n");
 	sprint(self.owner, "\bUse \b-zone 512 \bif quake crashes\n");
@@ -683,9 +845,9 @@ void () elohim_pre_set_aliases =
 //
 //  S E N D  I G N O R E  T H I S
 //
-void () elohim_send_ignore_this = 
+void () elohim_send_ignore_this =
 {
-	// test for binds 
+	// test for binds
 	sprint(self.owner, "stuffing ignorethis\n");
     stuffcmd(self.owner, "ignorethis;wait;wait\n");
 
@@ -725,7 +887,7 @@ void () elohim_init_think =
 		sound(world, CHAN_AUTO, "wizard/wsight.wav", 1, ATTN_NONE);
 	if (utils_illegal_name(self.netname))
 		stuffcmd(self, "name player\n");
-	
+
 	name_send_names();
 
     self = temp;
@@ -760,7 +922,7 @@ void () elohim_show_mode =
 //  Figure out if they're using DOSQuake, WINQuake or GLQuake.  Also send
 //  a little gift for screenshots.
 //
-void () elohim_send_detect = 
+void () elohim_send_detect =
 {
     local entity temp;
     temp = self;
@@ -790,7 +952,7 @@ void () elohim_send_detect =
 //
 //  P U T  P L A Y E R  I N  L I S T
 //
-void () elohim_put_player_in_list = 
+void () elohim_put_player_in_list =
 {
 	self.next_player = elohim_sentinel.next_player;
 	elohim_sentinel.next_player = self;
@@ -799,7 +961,7 @@ void () elohim_put_player_in_list =
 //
 //  R E M O V E  P L A Y E R  F R O M  L I S T
 //
-void () elohim_remove_player_from_list = 
+void () elohim_remove_player_from_list =
 {
 	local entity plast;
 
@@ -836,10 +998,13 @@ void () elohim_client_connect =
 			utils_make_scheduled_event(qsmack_detect, 1.5);
 
 		// Give the player a unique ID
+		parm11 = 0; //parm11 will now carry our stat_id# (Sputnik)
+/* Sputnik: this is *UNUSED*
 		parm11 = elohim_player_ids;
 		elohim_player_ids = elohim_player_ids + 1;
 		if (elohim_player_ids > 65535)
-			elohim_player_ids = 1;
+		elohim_player_ids = 1;
+*/
 
 		// Get rid of the new client flag
 		parm10 = parm10 - ELOHIM_NEW_CLIENT;
@@ -885,8 +1050,8 @@ void () elohim_client_connect =
 
 	// This is to prevent a condition where one player is another player's
 	// movetarget, which can confuse the auto module.
-	self.movetarget = world;        
-	
+	self.movetarget = world;
+
     parm10 = parm10 - (parm10 &
 		(ELOHIM_READY | ELOHIM_KICK_CONFIRM | ELOHIM_MOTD |
 		 ELOHIM_SETTING_OPTIONS | ELOHIM_SCOREBOARD |
@@ -918,6 +1083,7 @@ void () elohim_client_disconnect =
 			elohim_remove_player_from_list();
 	}
 
+	self.oflags = self.oflags - (self.oflags & OBSERVER_QUAKETV);	//Sputnik
     // Check to see if anyone was observing this client
 	// Don't do this until the player has been removed from the list!
     observer_disconnect_notify(self);
@@ -928,7 +1094,7 @@ void () elohim_client_disconnect =
     // Check to see if we were debugging this client
     if (elohim_debug_client == self)
 		elohim_debug_client = world;
-	
+
     // CRMOD Qsmack Reset
     self.qsmack_level = 0;
     self.qsmack_trylevel = 0;
@@ -974,8 +1140,7 @@ void () elohim_put_client_in_server =
 {
     utils_make_scheduled_event(elohim_bf_think, 0.1);
 
-    if ((self.style & ELOHIM_OBSERVER) || (self.style & CRMOD_QSMACK) ||
-		((elohim_playmode & ELOHIM_MATCH_MODE) && (!(self.style & ELOHIM_READY))))
+    if ((self.style & ELOHIM_OBSERVER) || (self.style & CRMOD_QSMACK) || (self.oflags & OBSERVER_QUAKETV) || ((elohim_playmode & ELOHIM_MATCH_MODE) && (!(self.style & ELOHIM_READY))))
     {
 		observer_start();
 		utils_make_scheduled_event(elohim_observer_start_think, 0.6);
@@ -984,7 +1149,7 @@ void () elohim_put_client_in_server =
     {
 		player_stand1();
 		spawn_tdeath (self.origin, self);
-		makevectors(self.angles);
+		makevectors(self.v_angle);
 		spawn_tfog (self.origin + v_forward*20);
 
 		if (elohim_state & ELOHIM_MATCH_PAUSED)
@@ -992,7 +1157,7 @@ void () elohim_put_client_in_server =
 
 		// quaketag!
 		if (crmod_qtag_it == self)
-			self.effects = self.effects | EF_BRIGHTFIELD;	
+			self.effects = self.effects | EF_BRIGHTFIELD;
     }
 
     // Prevent fire-on-respawn (in case player used attack button to respawn)
@@ -1095,56 +1260,56 @@ void () elohim_info =
 void () elohim_commands =
 {
     // regular user commands
-    sprint(self, " vinfo®®®®®®®®®®\1\1\7 help-server®®®\1\0\0\n");
-    sprint(self, " help-misc®®®®®®\1\0\5 help-match®®®®\1\2\9\n");
-    sprint(self, " help-observer®®\1\0\1 help-walk®®®®®\1\4\4\n");
-    sprint(self, " help-fly®®®®®®®\1\4\5 help-chase®®®®\1\4\6\n");
-    sprint(self, " help-camera®®®®\1\5\6 commands®®®®®®\1\0\6\n");
-	sprint(self, " levels®®®®®®®®®\1\0\7 autoweapon®®®®\1\1\4\n");
-    sprint(self, " autoweaponon®®®\1\1\1 motd®®®®®®®®®®\1\0\9\n");
-    sprint(self, " observer®®®®®®®\1\4\0 walk®®®®®®®®®®\1\4\1\n");
-    sprint(self, " flyme®®®®®®®®®®\1\4\2 chase®®®®®®®®®\1\4\3\n");
-    sprint(self, " eyecam®®®®®®®®®\1\4\9 camera®®®®®®®®\1\5\3\n");
-	sprint(self, " autochase®®®®®®\1\5\5 autocam®®®®®®®\1\5\4\n");
-    sprint(self, " headsup®®®®®®®®\1\4\8 smooth®®®®®®®®N/A\n");
-    sprint(self, " tourney®®®®®®®®\1\5\1 yes®®®®®®®®®®®\1\1\5\n");
-    sprint(self, " no®®®®®®®®®®®®®\1\1\6 ready®®®®®®®®®\1\2\0\n");
-    sprint(self, " notready®®®®®®®\1\2\1 ready?®®®®®®®®\1\2\3\n");
-    sprint(self, " unlock®®®®®®®®®\1\2\2 lock®®®®®®®®®®\1\3\0\n");
-    sprint(self, " timerstop®®®®®®\1\2\4 timerstart®®®®\1\2\5\n");
-	sprint(self, " +teamscores®®®®N/A -teamscores®®®N/A\n");
-    sprint(self, " timeset®®®®®®®®\2\1\5 otset®®®®®®®®®\2\1\6\n");
-    sprint(self, " ghostcode®®®®®®N/A ghost®®®®®®®®®\1\2\7\n");
-    sprint(self, " score®®®®®®®®®®\1\2\8 nogibs®®®®®®®®\2\2\5\n");
-    sprint(self, " lowgibs®®®®®®®®\2\2\6 highgibs®®®®®®\2\2\7\n");
-    sprint(self, " setquad®®®®®®®®\2\2\1 setpent®®®®®®®\2\2\2\n");
-    sprint(self, " setring®®®®®®®®\2\2\3 normal®®®®®®®®\2\1\7\n");
-    sprint(self, " practice®®®®®®®\2\1\8 match®®®®®®®®®\2\1\9\n");
-	sprint(self, " individual®®®®®\2\2\0 ticrate®®®®®®®\1\1\8\n");
-    sprint(self, " killstats®®®®®®\1\7\0 efficiency®®®®\1\7\1\n");
-    sprint(self, " stats®®®®®®®®®®\1\7\2 quadstats®®®®®\1\7\3\n");
-	sprint(self, " badstats®®®®®®®\1\7\4 autostats®®®®®\1\7\8\n"); 
-	sprint(self, " help-stats®®®®®\1\7\9 commentary®®®®\1\4\7\n");
-	sprint(self, " obits®®®®®®®®®®\2\1\1 rules®®®®®®®®®\1\0\3\n");
-	sprint(self, " rockets®®®®®®®®\1\3\3 autopause®®®®®\2\1\0\n");
-	sprint(self, " admins®®®®®®®®®\1\1\0 teamstats®®®®®\1\7\5\n");
-	sprint(self, " timer®®®®®®®®®®\1\3\4 pq®®®®®®®®®®®®\1\1\2\n");
-	sprint(self, " faststart®®®®®®\2\0\9 admin®®®®®®®®®\1\0\8\n");
-	sprint(self, " vote-admin®®®®®\2\5\1 ratings®®®®®®®\1\8\3\n");
+    sprint(self, " vinfoï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½\1\1\7 help-serverï¿½ï¿½ï¿½\1\0\0\n");
+    sprint(self, " help-miscï¿½ï¿½ï¿½ï¿½ï¿½ï¿½\1\0\5 help-matchï¿½ï¿½ï¿½ï¿½\1\2\9\n");
+    sprint(self, " help-observerï¿½ï¿½\1\0\1 help-walkï¿½ï¿½ï¿½ï¿½ï¿½\1\4\4\n");
+    sprint(self, " help-flyï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½\1\4\5 help-chaseï¿½ï¿½ï¿½ï¿½\1\4\6\n");
+    sprint(self, " help-cameraï¿½ï¿½ï¿½ï¿½\1\5\6 commandsï¿½ï¿½ï¿½ï¿½ï¿½ï¿½\1\0\6\n");
+	sprint(self, " levelsï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½\1\0\7 autoweaponï¿½ï¿½ï¿½ï¿½\1\1\4\n");
+    sprint(self, " autoweapononï¿½ï¿½ï¿½\1\1\1 motdï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½\1\0\9\n");
+    sprint(self, " observerï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½\1\4\0 walkï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½\1\4\1\n");
+    sprint(self, " flymeï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½\1\4\2 chaseï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½\1\4\3\n");
+    sprint(self, " eyecamï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½\1\4\9 cameraï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½\1\5\3\n");
+	sprint(self, " autochaseï¿½ï¿½ï¿½ï¿½ï¿½ï¿½\1\5\5 autocamï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½\1\5\4\n");
+    sprint(self, " headsupï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½\1\4\8 smoothï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½N/A\n");
+    sprint(self, " tourneyï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½\1\5\1 yesï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½\1\1\5\n");
+    sprint(self, " noï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½\1\1\6 readyï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½\1\2\0\n");
+    sprint(self, " notreadyï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½\1\2\1 ready?ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½\1\2\3\n");
+    sprint(self, " unlockï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½\1\2\2 lockï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½\1\3\0\n");
+    sprint(self, " timerstopï¿½ï¿½ï¿½ï¿½ï¿½ï¿½\1\2\4 timerstartï¿½ï¿½ï¿½ï¿½\1\2\5\n");
+	sprint(self, " +teamscoresï¿½ï¿½ï¿½ï¿½N/A -teamscoresï¿½ï¿½ï¿½N/A\n");
+    sprint(self, " timesetï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½\2\1\5 otsetï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½\2\1\6\n");
+    sprint(self, " ghostcodeï¿½ï¿½ï¿½ï¿½ï¿½ï¿½N/A ghostï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½\1\2\7\n");
+    sprint(self, " scoreï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½\1\2\8 nogibsï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½\2\2\5\n");
+    sprint(self, " lowgibsï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½\2\2\6 highgibsï¿½ï¿½ï¿½ï¿½ï¿½ï¿½\2\2\7\n");
+    sprint(self, " setquadï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½\2\2\1 setpentï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½\2\2\2\n");
+    sprint(self, " setringï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½\2\2\3 normalï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½\2\1\7\n");
+    sprint(self, " practiceï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½\2\1\8 matchï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½\2\1\9\n");
+	sprint(self, " individualï¿½ï¿½ï¿½ï¿½ï¿½\2\2\0 ticrateï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½\1\1\8\n");
+    sprint(self, " killstatsï¿½ï¿½ï¿½ï¿½ï¿½ï¿½\1\7\0 efficiencyï¿½ï¿½ï¿½ï¿½\1\7\1\n");
+    sprint(self, " statsï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½\1\7\2 quadstatsï¿½ï¿½ï¿½ï¿½ï¿½\1\7\3\n");
+	sprint(self, " badstatsï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½\1\7\4 autostatsï¿½ï¿½ï¿½ï¿½ï¿½\1\7\8\n");
+	sprint(self, " help-statsï¿½ï¿½ï¿½ï¿½ï¿½\1\7\9 commentaryï¿½ï¿½ï¿½ï¿½\1\4\7\n");
+	sprint(self, " obitsï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½\2\1\1 rulesï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½\1\0\3\n");
+	sprint(self, " rocketsï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½\1\3\3 autopauseï¿½ï¿½ï¿½ï¿½ï¿½\2\1\0\n");
+	sprint(self, " adminsï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½\1\1\0 teamstatsï¿½ï¿½ï¿½ï¿½ï¿½\1\7\5\n");
+	sprint(self, " timerï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½\1\3\4 pqï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½\1\1\2\n");
+	sprint(self, " faststartï¿½ï¿½ï¿½ï¿½ï¿½ï¿½\2\0\9 adminï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½\1\0\8\n");
+	sprint(self, " vote-adminï¿½ï¿½ï¿½ï¿½ï¿½\2\5\1 ratingsï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½\1\8\3\n");
 
     // admin commands
     if (self.style & ELOHIM_ADMINISTRATOR)
     {
-		sprint(self, " help-admin®®®®®\2\0\0 options®®®®®®®\2\2\9\n");
-		sprint(self, " safepractice®®®\2\2\4 crkick®®®®®®®®\2\1\3\n");
-		sprint(self, " abortmatch®®®®®\2\1\4 ghostlist®®®®®\2\1\2\n");
-		sprint(self, " modevote®®®®®®®\2\2\8 spot®®®®®®®®®®\2\5\0\n");
-		sprint(self, " nextspawn®®®®®®\2\4\6 makespawn®®®®®\2\4\7\n");
-		sprint(self, " nextcam®®®®®®®®\2\4\8 makecam®®®®®®®\2\4\9\n");
-		sprint(self, " dmset®®®®®®®®®®\2\0\7 qsmack®®®®®®®®\3\7\n");
-		sprint(self, " maxteams®®®®®®®\2\0\8 autoss®®®®®®®®\2\0\4\n");
-		sprint(self, " crban®®®®®®®®®®\2\0\5 unban®®®®®®®®®\1\9\8\n");
-		sprint(self, " ips®®®®®®®®®®®®\2\0\6 bans®®®®®®®®®®\1\9\7\n");
+		sprint(self, " help-adminï¿½ï¿½ï¿½ï¿½ï¿½\2\0\0 optionsï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½\2\2\9\n");
+		sprint(self, " safepracticeï¿½ï¿½ï¿½\2\2\4 crkickï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½\2\1\3\n");
+		sprint(self, " abortmatchï¿½ï¿½ï¿½ï¿½ï¿½\2\1\4 ghostlistï¿½ï¿½ï¿½ï¿½ï¿½\2\1\2\n");
+		sprint(self, " modevoteï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½\2\2\8 spotï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½\2\5\0\n");
+		sprint(self, " nextspawnï¿½ï¿½ï¿½ï¿½ï¿½ï¿½\2\4\6 makespawnï¿½ï¿½ï¿½ï¿½ï¿½\2\4\7\n");
+		sprint(self, " nextcamï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½\2\4\8 makecamï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½\2\4\9\n");
+		sprint(self, " dmsetï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½\2\0\7 qsmackï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½\3\7\n");
+		sprint(self, " maxteamsï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½\2\0\8 autossï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½\2\0\4\n");
+		sprint(self, " crbanï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½\2\0\5 unbanï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½\1\9\8\n");
+		sprint(self, " ipsï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½\2\0\6 bansï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½\1\9\7\n");
     }
     elohim_help_change();
 };
@@ -1204,7 +1369,7 @@ void () elohim_vinfo =
 //
 //  T I C R A T E
 //
-void () elohim_ticrate = 
+void () elohim_ticrate =
 {
 	if (elohim_playmode & ELOHIM_DEDICATED_SERVER)
 	{
@@ -1225,58 +1390,58 @@ void () elohim_show_rules =
 {
 	local float temp;
 
-	if (elohim_playmode & ELOHIM_MATCH_MODE) 
+	if (elohim_playmode & ELOHIM_MATCH_MODE)
 	{
-		if (teamplay) 
-			sprint(self, "match mode\n");
+		if (teamplay)
+			sprint(self, "ï¿½match modeï¿½\n");
 		else
-			sprint(self, "individual mode\n");
+			sprint(self, "ï¿½individual modeï¿½\n");
 	}
 	else if (elohim_playmode & ELOHIM_PRACTICE_MODE)
-		sprint (self,"practice mode\n");
+		sprint (self,"ï¿½practice modeï¿½\n");
 	else
-		sprint (self,"normal mode\n");
+		sprint (self,"ï¿½normal modeï¿½\n");
 
 	temp = cvar ("deathmatch");
-	sprint(self,"deathmatch®®®");
+	sprint(self,"deathmatchï¿½ï¿½ï¿½");
 	utils_print_float (temp);
 	temp = cvar ("teamplay");
-	sprint(self,"teamplay®®®®®");
+	sprint(self,"teamplayï¿½ï¿½ï¿½ï¿½ï¿½");
 	utils_print_float (temp);
-	sprint(self,"timelimit®®®®");
-	if (elohim_playmode & ELOHIM_MATCH_MODE) 
+	sprint(self,"timelimitï¿½ï¿½ï¿½ï¿½");
+	if (elohim_playmode & ELOHIM_MATCH_MODE)
 	{
 		utils_print_float(elohim_timelimit);
-		if (elohim_overtime > 0) 
+		if (elohim_overtime > 0)
 		{
-			sprint (self,"overtime®®®®®");
+			sprint (self,"overtimeï¿½ï¿½ï¿½ï¿½ï¿½");
 			utils_print_float (elohim_overtime);
 		}
 		else if (elohim_overtime == ADMIN_NORMAL_MODE)
-			sprint (self,"overtime®®®®®disabled\n");
+			sprint (self,"overtimeï¿½ï¿½ï¿½ï¿½ï¿½disabled\n");
 		else
-			sprint (self,"overtime®®®®®sudden death\n");
+			sprint (self,"overtimeï¿½ï¿½ï¿½ï¿½ï¿½sudden death\n");
 	}
 	else
 	{
 		temp = cvar ("timelimit");
 		utils_print_float (temp);
 		temp = cvar ("fraglimit");
-		sprint(self,"fraglimit®®®®");
+		sprint(self,"fraglimitï¿½ï¿½ï¿½ï¿½");
 		utils_print_float (temp);
 		temp = cvar ("noexit");
-		sprint(self,"noexit®®®®®®®");
+		sprint(self,"noexitï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
 		utils_print_float (temp);
 	}
 	if (elohim_playmode & (ELOHIM_NO_QUAD | ELOHIM_NO_PENT | ELOHIM_NO_RING))
 	{
 		if (elohim_playmode & ELOHIM_NO_QUAD)
-			sprint(self, "Quad is ÏÆÆ");
+			sprint(self, "ï¿½Quad is ï¿½ï¿½ï¿½");
 		if (elohim_playmode & ELOHIM_NO_PENT)
-			sprint(self, "Pent is ÏÆÆ");
+			sprint(self, "ï¿½Pent is ï¿½ï¿½ï¿½");
 		if (elohim_playmode & ELOHIM_NO_RING)
-			sprint(self, "Ring is ÏÆÆ");
-        sprint(self, "\n");
+			sprint(self, "ï¿½Ring is ï¿½ï¿½ï¿½");
+        sprint(self, "ï¿½\n");
 	}
 };
 
@@ -1285,7 +1450,7 @@ void () elohim_show_rules =
 //
 //  List the server admins and the codes they used
 //
-void () elohim_admins = 
+void () elohim_admins =
 {
 	local entity e;
 	local string s;
@@ -1304,8 +1469,8 @@ void () elohim_admins =
 		sprint(self, "There are no administrators\n");
 		return;
 	}
-	
-	sprint(self, "\n      name       ü code \n");
+
+	sprint(self, "\n      name       ï¿½ code \n");
 	sprint(self, "\b-----------------+------\n");
 	e = find(world, classname, "player");
 	while (e)
@@ -1316,7 +1481,7 @@ void () elohim_admins =
 				s = "V";
 			else
 				s = ftos(e.crmod_hack_count);
-			sprint(self, " ", e.name15, " ü  ", s, "\n");
+			sprint(self, " ", e.name15, " ï¿½  ", s, "\n");
 		}
 		e = find(e, classname, "player");
 	}
@@ -1325,7 +1490,7 @@ void () elohim_admins =
 //
 //  W I N G L  D E T E C T
 //
-void (float quakever) elohim_wingl_detect = 
+void (float quakever) elohim_wingl_detect =
 {
 	if (!(self.style & ELOHIM_WINQUAKE) || !(self.style & ELOHIM_GLQUAKE))
 	{
@@ -1369,7 +1534,11 @@ void () elohim_impulse =
 			qsmack_impulse();
 	}
     // CRMOD END
-    
+   	else if (self.impulse == 135)//Sputnik
+	{
+		elohim_login_start();
+	}
+
     else if (self.impulse >= 190)
 		admin_impulse();
     else if (self.impulse >= 120 && self.impulse <= 139)
@@ -1494,7 +1663,7 @@ float () elohim_client_suicide =
 //
 //  Prevent "observer spamming": rapid observer/ready in normal/practice mode
 //
-float () elohim_client_ready = 
+float () elohim_client_ready =
 {
     local string temp;
 
@@ -1515,6 +1684,10 @@ float () elohim_client_ready =
     }
     return ELOHIM_SUICIDE_OK;
 };
+
+
+entity (entity e) observer_find_target;
+entity (entity e) observer_find_camera;
 
 //
 //  P E R I O D I C  C H E C K S
@@ -1561,23 +1734,32 @@ void () elohim_periodic_checks =
 
 	if (elohim_kick_afk && minutes > elohim_kick_afk - 5)
 	{
-		if (minutes >= elohim_kick_afk)
+		if ((self.style & ELOHIM_ADMINISTRATOR) == FALSE)
 		{
-			announce2(self.netname, " kicked for being afk\n");
-			elohim_kick_player(self);
-			return;
-		}
-		if (minutes > 10 || (elohim_kick_afk - minutes == 1 && elohim_kick_afk > 1))
-		{
-			if (idle - (minutes * 60) < 1)
+			if (minutes >= elohim_kick_afk)
 			{
-				local string sz, pl;
-				sz = ftos(elohim_kick_afk - minutes);
-				if (elohim_kick_afk - minutes == 1)
-					pl = "";
-				else
-					pl = "s";
-				sprint(self, "\{1}AFK: you will be kicked in ", sz, " minute", pl, "\nPress jump or fire to stay connected\n");
+				announce2(self.netname, " kicked for being afk\n");
+				elohim_kick_player(self);
+				return;
+			}
+			if (minutes > 10 || (elohim_kick_afk - minutes == 1 && elohim_kick_afk > 1))
+			{
+				if (idle - (minutes * 60) < 1)
+				{
+					local string sz, pl;
+					sz = ftos(elohim_kick_afk - minutes);
+					if (elohim_kick_afk - minutes == 1)
+						pl = "";
+					else
+						pl = "s";
+
+					//Sputnik added client-side sound.
+					stuffcmd (self, "play ");
+					stuffcmd (self, "demon/idle1");
+					stuffcmd (self, "\n");
+
+					sprint(self, "\{1}AFK: you will be kicked in ", sz, " minute", pl, "\nPress jump or fire to stay connected\n");
+				}
 			}
 		}
 	}
@@ -1600,6 +1782,28 @@ void () elohim_periodic_checks =
 
 		// check for 'squished'
 		observer_check_size();
+
+		if (self.oflags & OBSERVER_QUAKETV) //Sputnik: reset between map loads.
+		{
+			if (!(self.movetarget))
+			{
+		        self.movetarget = observer_find_camera(world);// see if we can find a camera
+				if (self.movetarget)
+				{
+					self.oflags = self.oflags | OBSERVER_GO_AUTO;
+					observer_camera_start();
+				}
+				else
+				{
+					self.movetarget = observer_find_target(world);// see if we can find a player
+					if (self.movetarget)
+					{
+						self.oflags = self.oflags | OBSERVER_GO_AUTO;
+						observer_chase_start();
+					}
+				}
+			}
+		}
     }
 	else if (!self.deadflag)
 		auto_compute_score();
@@ -1613,7 +1817,7 @@ void () elohim_periodic_checks =
 //
 //  R E S T O R E  M O V E T Y P E
 //
-void () elohim_restore_movetype = 
+void () elohim_restore_movetype =
 {
 	if (self.movetype == MOVETYPE_NOCLIP)
 	{
@@ -1635,7 +1839,7 @@ void () elohim_restore_movetype =
 //
 //  Used to set "developer" back to 0 at the end of each frame
 //
-void () elohim_end_frame = 
+void () elohim_end_frame =
 {
 	if (sv[SV_NUM_EDICTS] == self[0])
 	{
@@ -1676,7 +1880,7 @@ void () elohim_start_frame =
 	e.think = elohim_end_frame;
 
 	if (!gameover)
-	{    
+	{
 		if (!(elohim_playmode & ELOHIM_MATCH_MODE))
 		{
 			if (timelimit)
@@ -1746,7 +1950,7 @@ void () elohim_start_frame =
 				{
 					dprint("levels.cfg: finished\n");
 					if (nextmap == "")
-						nextmap = elohim_firstlevel;						
+						nextmap = elohim_firstlevel;
 					if (nextmap == "")
 						dprint("no nextmap found\n");
 					else

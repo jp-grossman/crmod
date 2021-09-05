@@ -20,6 +20,8 @@ void () stats_reset_player =
     self.dest1 = self.dest2 = self.dest = self.mangle = '0 0 0';
 	self.crmod_qdwep = self.crmod_qdkill = self.crmod_badstats = '0 0 0';
     self.crmod_did_damage = 0; // CRMOD moved here from put_client_in_server
+	self.dmg_taken	= 0;
+	self.dmg_given	= 0;
 };
 
 //
@@ -492,8 +494,8 @@ void () stats_help =
 	sprint(self, " quadstats  - list player quad stats\n");
 	sprint(self, " badstats   - team game blunders\n");
 	sprint(self, " teamstats  - various team statistics\n");
-	sprint(self, " autostats - automatically dump stats\n");
-	sprint(self, "             at the end of matches\n");
+	sprint(self, " autostats  - automatically dump stats\n");
+	sprint(self, "              at the end of matches\n");
 };	
 
 //

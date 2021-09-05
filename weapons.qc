@@ -10,18 +10,18 @@ void() SuperDamageSound;
 // called by worldspawn
 void() W_Precache =
 {
-	precache_sound ("weapons/r_exp3.wav");	// new rocket explosion
+	precache_sound ("weapons/r_exp3.wav");		// new rocket explosion
 	precache_sound ("weapons/rocket1i.wav");	// spike gun
 	precache_sound ("weapons/sgun1.wav");
-	precache_sound ("weapons/guncock.wav");	// player shotgun
-	precache_sound ("weapons/ric1.wav");	// ricochet (used in c code)
-	precache_sound ("weapons/ric2.wav");	// ricochet (used in c code)
-	precache_sound ("weapons/ric3.wav");	// ricochet (used in c code)
-	precache_sound ("weapons/spike2.wav");	// super spikes
-	precache_sound ("weapons/tink1.wav");	// spikes tink (used in c code)
-	precache_sound ("weapons/grenade.wav");	// grenade launcher
+	precache_sound ("weapons/guncock.wav");		// player shotgun
+	precache_sound ("weapons/ric1.wav");		// ricochet (used in c code)
+	precache_sound ("weapons/ric2.wav");		// ricochet (used in c code)
+	precache_sound ("weapons/ric3.wav");		// ricochet (used in c code)
+	precache_sound ("weapons/spike2.wav");		// super spikes
+	precache_sound ("weapons/tink1.wav");		// spikes tink (used in c code)
+	precache_sound ("weapons/grenade.wav");		// grenade launcher
 	precache_sound ("weapons/bounce.wav");		// grenade bounce
-	precache_sound ("weapons/shotgn2.wav");	// super shotgun
+	precache_sound ("weapons/shotgn2.wav");		// super shotgun
 };
 
 float() crandom =
@@ -506,6 +506,7 @@ LightningDamage
 */
 void(vector p1, vector p2, entity from, float damage) LightningDamage =
 {
+//Sputnik, this function is bogus. iD tried to make 3 parallel lines 16 units apart, but instead the two outer traces point in the wrong direction
 	local entity		e1, e2;
 	local vector		f;
 	
@@ -545,6 +546,7 @@ void(vector p1, vector p2, entity from, float damage) LightningDamage =
 		particle (trace_endpos, '0 0 100', 225, damage*4);
 		T_Damage (trace_ent, from, from, damage);
 	}
+
 };
 
 
@@ -610,8 +612,9 @@ void() W_FireLightning =
 	// CRMOD - count damage fired with quad.
     if (self.super_damage_finished > time)                     // CRMOD - stats
     	self.crmod_qdwep_y = self.crmod_qdwep_y + 120;             // CRMOD - stats
-    	
-	LightningDamage (self.origin, trace_endpos + v_forward*4, self, 30);
+
+
+	LightningDamage (org, trace_endpos + v_forward*4, self, 30);	//Sput was self.origin
 };
 
 

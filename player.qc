@@ -428,17 +428,17 @@ local float		rs;
 void() PlayerDead =
 {
 	self.nextthink = -1;
-// allow respawn after a certain time
+	// allow respawn after a certain time
 	self.deadflag = DEAD_DEAD;
 
 	self.jump_flag = 0; // ELOHIM_MOD - fix "falling after discharge" bug
 
-    // ELOHIM_MOD - autorespawn after 5 seconds in match mode
-    if (elohim_playmode & ELOHIM_MATCH_MODE)
-    {
-        self.nextthink = time + 5;
-        self.think = respawn;
-    }
+	// ELOHIM_MOD - autorespawn after 5 seconds in match mode
+	if (elohim_playmode & ELOHIM_MATCH_MODE)
+	{
+		self.nextthink = time + 5;
+		self.think = respawn;
+	}
 };
 
 vector(float dm) VelocityForDamage =
@@ -557,7 +557,7 @@ void() PlayerDie =
 
 	// ELOHIM_MOD - need this to get rid of glow
 	self.items = self.items - (self.items & IT_QUAD);
-	self.effects = self.effects - (self.effects & EF_DIMLIGHT);
+	self.effects = (self.effects - (self.effects & (EF_DIMLIGHT | EF_RED | EF_BLUE)));//Sputnik
 	// END_MOD
 
 	// ELOHIM_MOD - keep track of RLs in match mode

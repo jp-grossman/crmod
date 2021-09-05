@@ -51,6 +51,7 @@ float OBSERVER_GO_AUTO = 128;		// player entering an auto mode
 float OBSERVER_COMMENTARY = 256;	// see running commentary
 float ELOHIM_SENT_BINDINGS = 512;	// ran out of room in flags
 float ELOHIM_AFK = 1024;			// ran out of room in flags
+float OBSERVER_QUAKETV = 2048;		// Sputnik: added this for streaming via quaketv
 
 // CRMOD qsmack variables
 .float qsmack_level;
@@ -221,3 +222,12 @@ float elohim_pass_max; // used to see if there is a password set
 .float last_active;			// used for detecting afk players
 
 float CRMOD_ANGLE_SMOOTHING = 0.6; // CRMOD use this instead of typing the number a billion times
+
+//-Sputnik: added new variables------------------------------------------------------------------------------------------
+.float elohim_player_id;    // used for assigning unique player ID's (Sputnik: changed to .float from float)
+.float id_hack_count;		// used to count how many attempts to login
+.float dmg_taken;			// damage taken from opponents for stats
+.float dmg_given;			// damage given to opponents for stats
+float EF_BLUE = 64;			// Colored dynamic light for Quad
+float EF_RED = 128;			// Colored dynamic light for Pent
+void (entity client) clear_afk_status;

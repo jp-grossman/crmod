@@ -149,7 +149,14 @@ void () name_fix =
 		if (self.oflags & ELOHIM_AFK)
 			p2 = *AddInt(&"\b AFK", PSTRING_TO_PQUAKEC);
 		else
-			p2 = *AddInt(&"\b READY", PSTRING_TO_PQUAKEC);
+		{
+			if (self.elohim_player_id)
+			{
+				p2 = *AddInt(&" READY", PSTRING_TO_PQUAKEC);//Sputnik, use White chars if they are logged in, bronze if they aren't.
+			}
+			else
+				p2 = *AddInt(&"\b READY", PSTRING_TO_PQUAKEC);
+		}
 		p = *AddInt(&p, %47);
 		p[0] = p2[0];
 		p[%1] = p2[%1];

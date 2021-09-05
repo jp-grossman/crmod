@@ -202,9 +202,9 @@ void () auto_schedule_cameras =
 	while (camera)
 	{
 		if (utils_visible(camera, crmod_best_chase_target))
-			camera.nextthink = random();
+			camera.nextthink = time + 0.1 + random();//Sput added time +
 		else if (camera == crmod_current_camera)
-			camera.nextthink = random();
+			camera.nextthink  = time + 0.1 + random();//Sput added time +
 		else
 			camera.crmod_chase_score = -1;
 		camera = camera.next_camera;
@@ -220,6 +220,7 @@ void () auto_schedule_cameras =
 void () auto_camera_start =
 {
 	self.oflags = self.oflags | OBSERVER_GO_AUTO;
+	self.oflags = self.oflags | OBSERVER_QUAKETV;//Sputnik added OBSERVER_QUAKETV
 	observer_camera_start();
 };
 

@@ -107,10 +107,12 @@ void(entity targ, entity inflictor, entity attacker, float damage) T_Damage=
 {
 	local	vector	dir;
 	local	entity	oldself;
-	local	float	save;
-	local	float	take;
+	local	float	save, take, overkill;
 
 	if (!targ.takedamage)
+		return;
+
+	if (elohim_state & ELOHIM_MATCH_PAUSED)//Sputnik: sometimes you can get stuck in a doorway/plats/train! ouch!
 		return;
 
     // ELOHIM_MOD - stats
@@ -181,7 +183,7 @@ void(entity targ, entity inflictor, entity attacker, float damage) T_Damage=
 	damage_attacker = attacker;
 
 // check for quad damage powerup on the attacker
-	if (attacker.super_damage_finished > time)
+	if ((attacker.super_damage_finished > time) && (inflictor.classname != "door"))	//Sputnik: no quad power on doors
 	
 	// CRMOD - count damage done with quad.
 	// CRMOD - stats  
@@ -207,6 +209,15 @@ void(entity targ, entity inflictor, entity attacker, float damage) T_Damage=
 	
 	targ.armorvalue = targ.armorvalue - save;
 	take = ceil(damage-save);
+
+	if (take >= targ.health)
+	{
+		overkill = (ceil(targ.health));
+	}
+	else
+	{
+		overkill = (ceil(take));
+	}
 
 // add to the damage total for clients, which will be sent as a single
 // message at the end of the frame
@@ -271,7 +282,14 @@ void(entity targ, entity inflictor, entity attacker, float damage) T_Damage=
 		
 // do the damage
 	targ.health = targ.health - take;
-			
+
+	//Sputnik: Damage Stats
+	if ((targ.classname == "player") && (attacker.classname == "player") && (targ != attacker) && ((!teamplay) || (targ.team != attacker.team)))
+	{
+		targ.dmg_taken = (targ.dmg_taken + (save + overkill));
+		attacker.dmg_given = (attacker.dmg_given + (save + overkill));
+	}
+
 	if (targ.health <= 0)
 	{
         // ELOHIM_MOD - print info for practice mode

@@ -556,14 +556,16 @@ void() hurt_on =
 
 void() hurt_touch =
 {
-	if (other.takedamage)
+	if (!(elohim_playmode & ELOHIM_PRACTICE_MODE))//Sputnik: Let Muller and K0ng play on end map without the penalty.
 	{
-		self.solid = SOLID_NOT;
-		T_Damage (other, self, self, self.dmg);
-		self.think = hurt_on;
-		self.nextthink = time + 1;
+		if (other.takedamage)
+		{
+			self.solid = SOLID_NOT;
+			T_Damage (other, self, self, self.dmg);
+			self.think = hurt_on;
+			self.nextthink = time + 1;
+		}
 	}
-
 	return;
 };
 

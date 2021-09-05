@@ -35,13 +35,12 @@ void() SetChangeParms =
 {
 	if (self.health <= 0)
 	{
-        SetNewParms2 ();
+		SetNewParms2 ();
 		return;
 	}
 
 // remove items
-	self.items = self.items - (self.items & 
-	(IT_KEY1 | IT_KEY2 | IT_INVISIBILITY | IT_INVULNERABILITY | IT_SUIT | IT_QUAD) );
+	self.items = self.items - (self.items & (IT_KEY1 | IT_KEY2 | IT_INVISIBILITY | IT_INVULNERABILITY | IT_SUIT | IT_QUAD) );
 	
 // cap super health
 	if (self.health > 100)
@@ -61,17 +60,17 @@ void() SetChangeParms =
 	parm8 = self.weapon;
 	parm9 = self.armortype * 100;
 
-    // ELOHIM_MOD - parms10-13 contains elohim player flags
-    parm10 = self.style;    // player flags
-    parm11 = self.state;    // player ID
-    parm12 = self.oflags;   // CRMOD observer flags
-	parm13 = self.crmod_hack_count;  // hack count / admin level
-	parm14 = time - self.last_active;
-    // END_MOD
+	// ELOHIM_MOD - parms10-13 contains elohim player flags
+	parm10 = self.style;			// player flags
+	parm11 = self.elohim_player_id;		// Sputnik: changed was self.state; // player ID
+	parm12 = self.oflags;			// CRMOD observer flags
+	parm13 = self.crmod_hack_count;		// hack count / admin level
+	parm14 = time - self.last_active; 
+	// END_MOD
     
-    // ELO ratings
-    parm15 = self.rating;
-    parm16 = self.fights;
+	// ELO ratings
+	parm15 = self.rating;
+	parm16 = self.fights;
 };
 
 //
@@ -88,20 +87,19 @@ void() SetChangeParms =
 
 void() SetPracticeParms =
 {
-    parm1 = IT_SHOTGUN | IT_AXE | IT_ROCKET_LAUNCHER | IT_ARMOR3 |
-            IT_SUPER_SHOTGUN | IT_NAILGUN | IT_GRENADE_LAUNCHER |
-            IT_LIGHTNING | IT_SUPER_NAILGUN | IT_ARMOR3;
+	parm1 = IT_SHOTGUN | IT_AXE | IT_ROCKET_LAUNCHER | IT_ARMOR3 | IT_SUPER_SHOTGUN | IT_NAILGUN | IT_GRENADE_LAUNCHER | IT_LIGHTNING | IT_SUPER_NAILGUN | IT_ARMOR3;
+
 	if (elohim_arena_health)
 		parm2 = elohim_arena_health;
 	else
 		parm2 = 100;
-    parm3 = 200;
-    parm4 = 100;
-    parm5 = 200;
-    parm6 = 100;
-    parm7 = 100;
-    parm8 = 32;
-    parm9 = 80.001;
+	parm3 = 200;
+	parm4 = 100;
+	parm5 = 200;
+	parm6 = 100;
+	parm7 = 100;
+	parm8 = 32;
+	parm9 = 80.001;
 };
 
 //
@@ -118,14 +116,14 @@ void() SetNewParms =
 	parm7 = 0;
 	parm8 = 1;
 	parm9 = 0;
-    parm10 = ELOHIM_NEW_CLIENT; // CRMOD observer flags moved | ELOHIM_OBSERVER_WALK; // elohim player flags
-    parm11 = 0;				// player ID.. will be set by elohim_client_connect
-    parm12 = OBSERVER_WALK; // CRMOD observer flags
-    parm13 = 0;				// crmod_hack_count
-    if (elohim_playmode & ELOHIM_PRACTICE_MODE)
-        SetPracticeParms();
-    parm15 = 1000; // ELO ratings (initial rating)
-    parm16 = 0;    // ELO ratings (# fights)
+	parm10 = ELOHIM_NEW_CLIENT;	// CRMOD observer flags moved | ELOHIM_OBSERVER_WALK; // elohim player flags
+	parm11 = 0;			// player ID.. will be set by elohim_client_connect
+	parm12 = OBSERVER_WALK;		// CRMOD observer flags
+	parm13 = 0;			// crmod_hack_count
+	if (elohim_playmode & ELOHIM_PRACTICE_MODE)
+	   SetPracticeParms();
+	parm15 = 1000; // ELO ratings (initial rating)
+	parm16 = 0;    // ELO ratings (# fights)
 };
 
 //
@@ -142,41 +140,40 @@ void() SetNewParms2 =
 	parm7 = 0;
 	parm8 = 1;
 	parm9 = 0;
-    parm10 = self.style; // elohim player flags
-    parm11 = self.state; // player ID
-    parm12 = self.oflags; // CRMOD observer flags
+	parm10 = self.style; // elohim player flags
+	parm11 = self.elohim_player_id;	//Sputnik: changed was self.state; // player ID
+	parm12 = self.oflags; // CRMOD observer flags
 	parm13 = self.crmod_hack_count;
-    if (elohim_playmode & ELOHIM_PRACTICE_MODE)
-        SetPracticeParms();
-    parm15 = self.rating; // ELO ratings (rating)
-    parm16 = self.fights; // ELO ratings (# fights)
-};
+	if (elohim_playmode & ELOHIM_PRACTICE_MODE)
+		SetPracticeParms();
+	parm15 = self.rating; // ELO ratings (rating)
+	parm16 = self.fights; // ELO ratings (# fights)
+};	
 // END_MOD
 
 void() DecodeLevelParms =
 {
-    //
-    // ELOHIM_MOD
-    //
-    // First restore player elohim flags *then* check to see if level = start.
-    // Also, reset player status at start level even if serverflags = 0.
+	//
+	// ELOHIM_MOD
+	//
+	// First restore player elohim flags *then* check to see if level = start.
+	// Also, reset player status at start level even if serverflags = 0.
 	// Finally, reset status if fresh spawns are on.
-    // Changed SetNewParms to SetNewParms2.
-    self.style = parm10;
-    self.state = parm11;
-    self.oflags = parm12;  // CRMOD observer flags
-	self.crmod_hack_count = parm13;
-	self.last_active = time - parm14;
-	self.rating = parm15;  // ELO ratings (rating)
-	self.fights = parm16;  // ELO ratings (# fights)
+	// Changed SetNewParms to SetNewParms2.
+	self.style		= parm10;
+	self.elohim_player_id	= parm11;	//Sputnik: was self.state
+	self.oflags		= parm12;	// CRMOD observer flags
+	self.crmod_hack_count	= parm13;
+	self.last_active	= time - parm14;
+	self.rating		= parm15;	// ELO ratings (rating)
+	self.fights		= parm16;	// ELO ratings (# fights)
 
 	if (!(elohim_playmode & ELOHIM_PRACTICE_MODE))
 	{
 		if (world.model == "maps/start.bsp" || (elohim_playmode & ELOHIM_FRESH_SPAWNS))
 			SetNewParms2 ();   // take away all stuff on starting new episode
 	}
-
-    // END_MOD
+	// END_MOD
 	
 	self.items = parm1;
 	self.health = parm2;
@@ -368,14 +365,14 @@ void() IntermissionThink =
 	if (!self.button0 && !self.button2) // CRMOD - got rid of button1
 		return;
 
-    GotoNextMap ();  // ELOHIM_MOD  ExitIntermission -> GotoNextMap
+	GotoNextMap ();  // ELOHIM_MOD  ExitIntermission -> GotoNextMap
 };
 
 void() execute_changelevel =
 {
 	local entity	pos;
 
-    intermission_running = 1;
+	intermission_running = 1;
 
 // ELOHIM_MOD - deathmatch is never zero
 // enforce a wait time before allowing changelevel
@@ -423,10 +420,10 @@ void() changelevel_touch =
 {
 	local entity	pos;
 
-    // ELOHIM_MOD - do nothing in match mode
-    if (elohim_playmode & ELOHIM_MATCH_MODE)
-        return;
-    // END_MOD
+	// ELOHIM_MOD - do nothing in match mode
+	if (elohim_playmode & ELOHIM_MATCH_MODE)
+		return;
+	// END_MOD
 
 	if (other.classname != "player")
 		return;
@@ -450,7 +447,7 @@ void() changelevel_touch =
 	}
 	// END_MOD
     
-    gameover = TRUE;  // ELOHIM_MOD - so that clients can't suicide during intermission
+	gameover = TRUE;  // ELOHIM_MOD - so that clients can't suicide during intermission
 
 // ELOHIM_MOD - deathmatch is never zero; use announce instead
 /*
@@ -665,6 +662,7 @@ entity() SelectSpawnPoint =
         // replaced this whole section with code to find a random
         // spawn point. 
         //
+
         pcount = random() * (elohim_num_spawns - 0.001);
         pcount = floor(pcount);
         spot = find(world, classname, "info_player_deathmatch");
@@ -686,8 +684,7 @@ entity() SelectSpawnPoint =
                     thing = findradius(spot.origin, 128); // ELOHIM_MOD 32 => 128
                     while(thing)
                     {
-                        if ((thing.classname == "player") && (thing.style & ELOHIM_CONNECTED) &&
-							!(thing.style & ELOHIM_OBSERVER))
+                        if ((thing.classname == "player") && (thing.style & ELOHIM_CONNECTED) && !(thing.style & ELOHIM_OBSERVER))//Sputnik: should also check for thing.health?
 						{
                             pcount = 1;
 							thing = world;
@@ -700,17 +697,17 @@ entity() SelectSpawnPoint =
 					return spot;
 				pcount = 0;
 			}
-			spot = find(spot, classname, "info_player_deathmatch");
+
+			spot = find(spot, classname, "info_player_deathmatch"); 
             if (spot == lastspawn)
             {
                 // Can't find a spot!
 				// Check self.trigger_field one last time
 				pcount = 0;
-                thing = findradius(self.trigger_field.origin, 128);
+                thing = findradius(self.trigger_field.origin, 128); 
                 while(thing)
                 {
-                    if ((thing.classname == "player") && (thing.style & ELOHIM_CONNECTED) &&
-						!(thing.style & ELOHIM_OBSERVER))
+                    if ((thing.classname == "player") && (thing.style & ELOHIM_CONNECTED) && !(thing.style & ELOHIM_OBSERVER))
 					{
                         pcount = 1;
 						thing = world;
@@ -726,6 +723,7 @@ entity() SelectSpawnPoint =
         // END_MOD
 	}
 
+//the below will never be reached...
 	if (serverflags)
 	{	// return with a rune to start
 		spot = find (world, classname, "info_player_start2");
@@ -758,7 +756,8 @@ void() PutClientInServer =
 	utils_increment_developer(); // CRMOD - for dprints
 
 	spot = SelectSpawnPoint ();
-    self.trigger_field = spot;  // ELOHIM_MOD
+	
+	self.trigger_field = spot;  // ELOHIM_MOD
 
 	DecodeLevelParms ();
 
@@ -766,8 +765,8 @@ void() PutClientInServer =
 		return;
 
 	self.classname = "player";
-	self.takedamage = DAMAGE_AIM;
-    self.solid = SOLID_SLIDEBOX;
+	self.takedamage = DAMAGE_AIM;    
+	self.solid = SOLID_SLIDEBOX;
 	self.finaldest_y = self.movetype = MOVETYPE_WALK;
 	self.show_hostile = 0;
 	self.max_health = 100;
@@ -794,8 +793,10 @@ void() PutClientInServer =
 	
 //	spot = SelectSpawnPoint ();
 
-	self.origin = spot.origin + '0 0 1';
-	self.angles = spot.angles;
+	setorigin(self, spot.origin + '0 0 1');//Sputnik: update our origin and relink out edict.
+	self.oldorigin = self.origin;//Sputnik: update oldorigin so we dont respawn where we died.
+
+	self.angles = self.v_angle = spot.angles; //Sputnik: update v_angle too.
 	self.fixangle = TRUE;		// turn this way immediately
     self.velocity = '0 0 0'; // ELOHIM_MOD - bugfix
 
@@ -815,7 +816,7 @@ void() PutClientInServer =
     /* CRMOD jp told me too :) n (prevent observers from making fog)
     if (deathmatch || coop)
     {
-        makevectors(self.angles);
+        makevectors(self.v_angle);
         spawn_tfog (self.origin + v_forward*20);
     }
 	*/
@@ -1458,9 +1459,12 @@ void() CheckPowerups =
 			self.invincible_finished = 0;
 		}
 		if (self.invincible_finished > time)
+		{
 			self.effects = self.effects | EF_DIMLIGHT;
+			self.effects = self.effects | EF_RED;
+		}
 		else
-			self.effects = self.effects - (self.effects & EF_DIMLIGHT);
+			self.effects = self.effects - (self.effects & (EF_DIMLIGHT | EF_RED));
 	}
 
 // super damage
@@ -1493,9 +1497,12 @@ void() CheckPowerups =
 			self.super_time = 0;
 		}
 		if (self.super_damage_finished > time)
+		{
 			self.effects = self.effects | EF_DIMLIGHT;
+			self.effects = self.effects | EF_BLUE;
+		}
 		else
-			self.effects = self.effects - (self.effects & EF_DIMLIGHT);
+			self.effects = self.effects - (self.effects & (EF_DIMLIGHT | EF_BLUE));
 	}	
 
 // suit	
