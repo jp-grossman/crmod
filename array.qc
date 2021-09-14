@@ -37,8 +37,8 @@ void() array_init_world =
 	array_user_map = *%500;
 	array_password = *%540;
 	array_kick = *%580;
-	array_training_spawn = *%644;
-	array_ftos4 = *AddInt(&ftos4, PSTRING_TO_PQUAKEC);
+	array_training_spawn = *%644;	
+	array_ftos4 = *AddInt(&ftos4, PSTRING_TO_PQUAKEC);	
 };
 
 //

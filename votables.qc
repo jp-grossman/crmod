@@ -139,6 +139,9 @@ void () votables_send_aliases =
 		stuffcmd(self, "alias ignorethis \"impulse 180;w5;w5;impulse 181 ; sm0\"\n"); 
 	}
 	self.oflags = self.oflags | ELOHIM_SENT_BINDINGS;
+	
+	if (elohim_playmode & ELOHIM_MATCH_MODE)
+		stuffcmd(self, "logstatson\n"); 
 
     self = temp;
     remove(self);
@@ -147,27 +150,28 @@ void () votables_send_aliases =
 //
 //  C H A N G E  L E V E L
 //
-//  Called when a request to change level passses.  The level name is
+//  Called when a request to change level passes.  The level name is
 //  stored in request_mapname.
 //
 void () votables_change_level =
 {
-    if (elohim_state & ELOHIM_MATCH_STARTED)
+	if (elohim_state & ELOHIM_MATCH_STARTED)
 		return;
 
 	utils_set_cvar("timelimit", elohim_timelimit);
-    if (request_mapname == "start0")
-    {
-        serverflags = 0;
-        changelevel("start");
-    }
-    else if (request_mapname == "start1")
-    {
-        serverflags = 15;
-        changelevel("start");
-    }
-    else
-        changelevel(request_mapname);
+
+	if (request_mapname == "start0")
+	{
+		serverflags = 0;
+		changelevel("start");
+	}
+	else if (request_mapname == "start1")
+	{
+		serverflags = 15;
+		changelevel("start");
+	}
+	else
+		changelevel(request_mapname);
 };
 
 //
@@ -342,7 +346,7 @@ void (float newmode) votables_request_set_mode =
 		    sprint(self, "Already in ", mode, " mode\n");
         return;
     }
-    mode = strings_get_mode(newmode);
+    mode = strings_get_mode(newmode);//Sputnik: why here again?
 
     if (elohim_state & ELOHIM_MATCH_STARTED)
     {

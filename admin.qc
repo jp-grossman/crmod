@@ -74,8 +74,8 @@ void () admin_create =
 	else
 		s = ftos(self.crmod_hack_count);
     self.style = self.style | ELOHIM_ADMINISTRATOR;
-	if (!self.crmod_hack_count && ((self.style & ELOHIM_OBSERVER) || (elohim_playmode & ELOHIM_PRACTICE_MODE)))
-		self.cl[CL_PRIVILEGED] = TRUE;
+//	if (!self.crmod_hack_count && ((self.style & ELOHIM_OBSERVER) || (elohim_playmode & ELOHIM_PRACTICE_MODE)))
+//		self.cl[CL_PRIVILEGED] = TRUE;
     self.use = SUB_Null;
     centerprint(self, "You are now an administrator");
     announce4(self.netname, " has become an administrator (code ", s, ")");
@@ -478,7 +478,7 @@ void () admin_next_spawn_point =
     self.angles = self.owner.angles;
 	self.fixangle = TRUE;           // turn this way immediately
     self.velocity = '0 0 0';
-    makevectors(self.angles);
+    makevectors(self.v_angle);
     observer_spawn_tfog(self.origin + v_forward*20);
 };
 
@@ -1199,7 +1199,10 @@ void () admin_impulse =
     else if (self.impulse == 213)
         admin_start_kick(KICK_KICK);
     else if (self.impulse == 214)
-        match_end();
+	{
+//        dprint("match aborted\n");//Sputnik todo?
+		match_end();
+	}
     else if (self.impulse == 224)
 		utils_toggle_sflag(ELOHIM_NO_SPOOGE, "Safe practice mode");
     else if (self.impulse == 228)
@@ -1238,7 +1241,7 @@ void (entity player) admin_disconnect_notify =
 
 	for (index = %1 ; index < %16 ; index = index + %1)
 	{
-		if (self == *array_kick[index])
+		if (player == *array_kick[index])
 			array_kick[index] = %0;
 	}
 };

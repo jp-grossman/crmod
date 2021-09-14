@@ -35,7 +35,7 @@ void () votables_set_mode;
 //
 //  Returns TRUE if successful, FALSE otherwise.
 //
-void (string s1, string s2, void () accept) vote_init =
+float (string s1, string s2, void () accept) vote_init =
 {
     // Check to see if there's already a vote in progress
     if (elohim_request)
@@ -50,6 +50,8 @@ void (string s1, string s2, void () accept) vote_init =
 		sprint(self, "Match observers cannot initiate votes\n");
 		return FALSE;
 	}
+
+	clear_afk_status(self);//Sputnik 
 
     elohim_request = spawn();
     elohim_request.classname = "elohim_request";
@@ -85,9 +87,19 @@ void () vote_clear =
 //
 void () vote_yes =
 {
+	local string s;
+
+	clear_afk_status(self);//Sputnik 
+
+	if (self.crmod_hack_count == 10)
+		s = "V";
+	else
+		s = ftos(self.crmod_hack_count);
+
     if (self.style & ELOHIM_ADMINISTRATOR)
     {
         // accept immediately
+		announce4(self.netname," passed the vote as admin(",s,").\n");
         vote_accept();
         return;
     }
@@ -97,6 +109,11 @@ void () vote_yes =
         sprint(self, "\nWise man say: \"Vote early, vote often\"\n");
         return;
     }
+
+	if (self != elohim_request.owner)
+	{
+		bprint (self.netname, " voted yes.\n");
+	}
 
     self.style = self.style | ELOHIM_YES;
     if (vote_majority())
@@ -110,13 +127,23 @@ void () vote_yes =
 //
 void () vote_no =
 {
+	local string s;
+
+	clear_afk_status(self);//Sputnik 
+
+	if (self.crmod_hack_count == 10)
+		s = "V";
+	else
+		s = ftos(self.crmod_hack_count);
+
     if (self.style & ELOHIM_ADMINISTRATOR)
     {
         // reject immediately
+		announce4(self.netname," rejected the vote as admin(",s,").\n");
         vote_reject();
         return;
     }
-
+	bprint (self.netname, " voted \bno.\n");
     vote_clear();
 };
 
@@ -126,37 +153,99 @@ void () vote_no =
 //  Return TRUE if the majority of players have responded 'yes',
 //  FALSE otherwise.  Observers only get x% of a vote based on number of players.
 //
+
+float () vote_majority =
+{
+	local entity player;
+	local float vote_count;
+
+	vote_count = 0;
+
+	player = find(world, classname, "player");
+	
+	while (player)
+	{
+		if ((player.style & ELOHIM_CONNECTED) && !(player.style & CRMOD_QSMACK) && !(player.oflags & ELOHIM_AFK))
+		{			
+			if (player.style & ELOHIM_YES || player == self)
+			{
+				if (elohim_state & ELOHIM_MATCH_STARTED)//QuakeC is limited so this is weird
+				{
+					if (player.style & ELOHIM_OBSERVER)
+					{
+						vote_count = vote_count + 0;
+					}
+					else
+						vote_count = vote_count + 1;
+				}
+				else
+					vote_count = vote_count + 1;
+
+				// special case.. set mode to match if there are 4 yes votes
+				if ((elohim_request.use == votables_set_mode) && (elohim_request.map == strings_get_mode(ADMIN_MATCH_MODE)))
+				{
+					if (vote_count >= 4)
+						return TRUE;
+				}				
+			}
+			else
+			{
+				if (elohim_state & ELOHIM_MATCH_STARTED)
+				{
+					if (player.style & ELOHIM_OBSERVER)
+					{
+						vote_count = vote_count - 0;
+					}
+					else
+						vote_count = vote_count - 1;
+				}
+				else
+					vote_count = vote_count - 1;
+			}
+		}
+		player = find(player, classname, "player");
+	}
+
+	if (vote_count > 0)
+		return TRUE;
+	
+	return FALSE;
+};
+
+/*
 float () vote_majority =
 {
     local entity player;
     local float vote_count, players, observers, obs_vote;
-  
-    // CRMOD observers weight now 'equals' that of the players
+
     players = observers = vote_count = 0;                                                
 	
-	player = find(world, classname, "player");
-	while (player)
+	if (elohim_state & ELOHIM_MATCH_STARTED)//Sputnik: If match has started then observers only get a x% of the player vote.
 	{
-		if ((player.style & ELOHIM_CONNECTED) && !(player.style & CRMOD_QSMACK) && !(player.oflags & ELOHIM_AFK))
-        {
-			if (player.style & ELOHIM_OBSERVER)
-				observers = observers + 1;
-			else
-				players = players + 1;
+		player = find(world, classname, "player");
+		while (player)
+		{
+			if ((player.style & ELOHIM_CONNECTED) && !(player.style & CRMOD_QSMACK) && !(player.oflags & ELOHIM_AFK))
+			{
+				if (player.style & ELOHIM_OBSERVER)
+					observers = observers + 1;
+				else
+					players = players + 1;
+			}
+			player = find(player, classname, "player");
 		}
-		player = find(player, classname, "player");
-	}
-	
-	if ((players) && (observers))
-	{	
-		obs_vote = 99 * players / observers;
-		if (obs_vote > 99)
-			obs_vote = 99;
+		
+		if ((players) && (observers))
+		{	
+			obs_vote = 99 * players / observers;
+			if (obs_vote > 99)
+				obs_vote = 99;
+		}
+		else
+			obs_vote = 100;
 	}
 	else
-		obs_vote = 100;
-	
-	// CRMOD END
+		obs_vote = 100;//Sputnik: Else all clients' votes are counted equally.
 
     player = find(world, classname, "player");
     while (player)
@@ -181,8 +270,8 @@ float () vote_majority =
 		if (vote_count > 100)
 			return TRUE;
 	}
-	else if (vote_count > 0)
-        return TRUE;
+	else if (vote_count > 1)//Sputnik: This has to be 1 or else a 'player' will pass a vote immediately when initiated in matchmode.
+return TRUE;
 
 	// special case.. set mode to match if there are 4 yes votes
 	if ((elohim_request.use == votables_set_mode) && (elohim_request.map == strings_get_mode(ADMIN_MATCH_MODE)))
@@ -201,7 +290,7 @@ float () vote_majority =
 
     return FALSE;
 };
-
+*/
 //
 //  R E P E A T
 //
@@ -211,8 +300,9 @@ float () vote_majority =
 //
 void () vote_repeat =
 {
-    bprint("\{1}Request to ", elohim_request.wad, elohim_request.map, "\n");
-    bprint("Type 'yes' or 'no' in console to vote\n");
+    bprint((elohim_request.owner.netname)," ςερυεστσ το \b", elohim_request.wad, elohim_request.map, "\n");
+    bprint("Type \byes\b or \bno\b in console to vote\n");
+	sound (world, CHAN_AUTO, "misc/talk.wav", 1, ATTN_NONE);
     elohim_request.nextthink = time + 7;
     elohim_request.count = elohim_request.count + 1;
     if (elohim_request.count == 3)

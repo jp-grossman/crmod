@@ -75,21 +75,21 @@ void () match_init_world =
 //
 void () match_show_timelimit =
 {
-    local string temp;
+	local string temp;
 
-    localcmd("timelimit \"");
-    if (!(elohim_state & ELOHIM_TIMER_STARTED))
-    {
-        if (elohim_state & ELOHIM_MATCH_OVER)
-        {
-            localcmd("Final Score is ");
-            temp = ftos(elohim_first_place.frags);
-            if (elohim_first_place.frags < 0)
-                localcmd("<");
-            localcmd(temp);
-            if (elohim_first_place.frags < 0)
-                localcmd(">");
-            localcmd(" - ");
+	localcmd("timelimit \"");
+	if (!(elohim_state & ELOHIM_TIMER_STARTED))
+	{
+		if (elohim_state & ELOHIM_MATCH_OVER)
+		{
+			localcmd("Final Score is ");
+			temp = ftos(elohim_first_place.frags);
+			if (elohim_first_place.frags < 0)
+				localcmd("<");
+			localcmd(temp);
+			if (elohim_first_place.frags < 0)
+				localcmd(">");
+			localcmd(" - ");
 			if (elohim_second_place != elohim_sentinel)
 			{
 				temp = ftos(elohim_second_place.frags);
@@ -101,26 +101,26 @@ void () match_show_timelimit =
 			}
 			else
 				localcmd("???");
-            localcmd("\"\n");
-        }
-        else
-        {
-            temp = ftos(elohim_timelimit);
-            localcmd4(temp, " : Waiting for ", elohim_szteam, "s\"\n");
-        }
-    }
-    else if (!(elohim_state & ELOHIM_MATCH_STARTED))
-    {
-        temp = ftos(elohim_timelimit);
-        localcmd2(temp, " : Match Starting\"\n");
-    }
-    else if (elohim_match_timer.lip < 0)
+			localcmd("\"\n");
+		}
+		else
+		{
+			temp = ftos(elohim_timelimit);
+			localcmd4(temp, " : Waiting for ", elohim_szteam, "s\"\n");
+		}
+	}
+	else if (!(elohim_state & ELOHIM_MATCH_STARTED))
+	{
+		temp = ftos(elohim_timelimit);
+		localcmd2(temp, " : Match Starting\"\n");
+	}
+	else if (elohim_match_timer.lip < 0)
 		localcmd("Sudden death\"\n");
 	else
-    {
-        temp = ftos(elohim_match_timer.lip);
-        localcmd2(temp, "\"\n");
-    }
+	{
+		temp = ftos(elohim_match_timer.lip);
+		localcmd2(temp, "\"\n");
+	}
 };
 
 //
@@ -130,7 +130,7 @@ void () match_show_timelimit =
 //
 void () match_item_reset =
 {
-    self.nextthink = -1;
+	self.nextthink = -1;
 };
 
 //
@@ -140,9 +140,9 @@ void () match_item_reset =
 //
 void () match_init_player =
 {
-    self.style = self.style - (self.style & ELOHIM_READY);
-    self.finaldest_x = time; // So we don't get autokickedd!!
-    observer_start();
+	self.style = self.style - (self.style & ELOHIM_READY);
+	self.finaldest_x = time; // So we don't get autokickedd!!
+	observer_start();
 };
 
 //
@@ -150,7 +150,7 @@ void () match_init_player =
 //
 void () match_unready_player =
 {
-    self.style = self.style - (self.style & ELOHIM_READY);
+	self.style = self.style - (self.style & ELOHIM_READY);
 };
 
 //
@@ -158,25 +158,25 @@ void () match_unready_player =
 //
 void () match_reset =
 {
-    elohim_state = elohim_state - (elohim_state & ELOHIM_MATCH_WAIT);
+	elohim_state = elohim_state - (elohim_state & ELOHIM_MATCH_WAIT);
 
-    // prevent items from respawning
-    utils_do_items(match_item_reset);
+	// prevent items from respawning
+	utils_do_items(match_item_reset);
 
-    // remove all backpacks
-    utils_do_item(SUB_Remove, "item_backpack");
+	// remove all backpacks
+	utils_do_item(SUB_Remove, "item_backpack");
 
-    // unready all players
-    utils_do_players(match_unready_player);
+	// unready all players
+	utils_do_players(match_unready_player);
 
-    // remove all ghosts
-    utils_do_item(SUB_Remove, "elohim_ghost");
+	// remove all ghosts
+	utils_do_item(SUB_Remove, "elohim_ghost");
 
 	if (teamplay)
 		announce("No teams present");
 
-    if (self.classname == "elohim_match_timer")
-        remove(self);
+	if (self.classname == "elohim_match_timer")
+		remove(self);
 };
 
 //
@@ -187,25 +187,66 @@ void () match_reset =
 //
 void () match_gib_player =
 {
-    if (self.style & ELOHIM_OBSERVER)
-        stuffcmd(self, "color 0\n");
-    else if (!(self.style & ELOHIM_READY))
-        observer_start();
-    else
-    {
-        self.health = -99;
-        GibPlayer();
-        self.deadflag = DEAD_DYING;
-        self.think = respawn;
-        self.nextthink = time + 1;
-        if (elohim_state & ELOHIM_MATCH_STARTED)
-        {
-            // start of match
-            self.frags = 0;
-            stats_reset_player();
+	if (self.style & ELOHIM_OBSERVER)
+		stuffcmd(self, "color 0\n");
+	else if (!(self.style & ELOHIM_READY))
+		observer_start();
+	else
+	{
+		self.health = -99;
+		GibPlayer();
+		self.deadflag = DEAD_DYING;
+		self.think = respawn;
+		self.nextthink = time + 1;
+		if (elohim_state & ELOHIM_MATCH_STARTED)
+		{
+			// start of match
+			self.frags = 0;
+			stats_reset_player();
+			name_fix();//Sputnik: oddly, sometimes the names do not clear the 'ready' after match start...testing.
 			name_broadcast(self.netname);
-        }
-    }
+		}
+	}
+};
+
+//
+// R E P O R T  M O S T  V A L U A B L E  P L A Y E R	
+// by Sputnik
+//
+void () match_report_mvp =
+{
+	local 	entity	current_player;
+	local	float 	mvp, score;
+	local	string	name;
+
+	mvp = 0;
+	name = "No one";
+
+	current_player = find(world, classname, "player");//todo: Let's use the stat linked-list in case someone lagged out?
+
+	while (current_player)
+	{
+		score = 0;
+
+		if (!(current_player.style & ELOHIM_OBSERVER))
+		{
+			if (current_player.cl[CL_ACTIVE] == %1)
+			{
+				if (current_player.dmg_given + current_player.dmg_taken)
+				{
+					score = current_player.dmg_given * (current_player.dmg_given / (current_player.dmg_given + current_player.dmg_taken)); 
+				}
+				if (score > mvp)
+				{
+					mvp = score;
+					name = current_player.netname;
+				}
+			}
+		}
+		current_player = find(current_player, classname, "player");
+	}	
+
+	announce2(name," was the match MVP.");
 };
 
 //
@@ -213,12 +254,12 @@ void () match_gib_player =
 //
 void () match_bprint_score =
 {
-    local string score;
-    local string temp;
+	local string score;
+	local string temp;
 
-    score = ftos(elohim_first_place.frags);
-    temp = strings_szplural(elohim_first_place.frags);
-    announce6(elohim_szthe, elohim_first_place.netname, " has ", score, " frag", temp);
+	score = ftos(elohim_first_place.frags);
+	temp = strings_szplural(elohim_first_place.frags);
+	announce6(elohim_szthe, elohim_first_place.netname, " has ", score, " frag", temp);
 	if (elohim_second_place != elohim_sentinel)
 	{
 		score = ftos(elohim_second_place.frags);
@@ -229,62 +270,62 @@ void () match_bprint_score =
 
 void () match_ffa_bprint_score = 
 {
-    local entity player, next, sorted_players, prev;
-    local string score, srank, tie;
-    local float i, rank, prev_frags;
+	local entity player, next, sorted_players, prev;
+	local string score, srank, tie;
+	local float i, rank, prev_frags;
 
-    // Initialize the sort
-    sorted_players = elohim_sentinel.next_player;
-    player = sorted_players.next_player;
-    sorted_players.next_player = world;
+	// Initialize the sort
+	sorted_players = elohim_sentinel.next_player;
+	player = sorted_players.next_player;
+	sorted_players.next_player = world;
 
-    // Sort the players
-    while (player)
-    {
-        next = player.next_player;
+	// Sort the players
+	while (player)
+	{
+		next = player.next_player;
 
-        if (player.frags > sorted_players.frags)
-        {
-            // Insert at the start of the list
-            player.next_player = sorted_players;
-            sorted_players = player;
-        }
-        else
-        {
-            // Insert after some other player
-            prev = sorted_players;
-            while (prev.next_player != world && prev.next_player.frags >= player.frags)
-                prev = prev.next_player;
-            player.next_player = prev.next_player;
-            prev.next_player = player;
-        }
+		if (player.frags > sorted_players.frags)
+		{
+			// Insert at the start of the list
+			player.next_player = sorted_players;
+			sorted_players = player;
+		}
+		else
+		{
+			// Insert after some other player
+			prev = sorted_players;
+			while (prev.next_player != world && prev.next_player.frags >= player.frags)
+				prev = prev.next_player;
+			player.next_player = prev.next_player;
+			prev.next_player = player;
+		}
 
-        player = next;
-    }
-    elohim_sentinel.next_player = sorted_players;
+		player = next;
+	}
+	elohim_sentinel.next_player = sorted_players;
 
-    // Print the scores
-    i = 1;
-    prev_frags = -1;
-    for (player = sorted_players ; player ; player = player.next_player)
-    {
-        // Check for a tie
-        if (player.frags == prev_frags || (player.next_player != world && player.next_player.frags == player.frags))
-            tie = "\b*\] ";
-        else
-            tie = " \] ";
+	// Print the scores
+	i = 1;
+	prev_frags = -1;
+	for (player = sorted_players ; player ; player = player.next_player)
+	{
+		// Check for a tie
+		if (player.frags == prev_frags || (player.next_player != world && player.next_player.frags == player.frags))
+			tie = "\b*\] ";
+		else
+			tie = " \] ";
 
-        // Update the rank
-        if (player.frags != prev_frags)
-            rank = i;
-        prev_frags = player.frags;
+		// Update the rank
+		if (player.frags != prev_frags)
+			rank = i;
+		prev_frags = player.frags;
 
-        // Print the score
-        score = ftos(player.frags);
-        srank = strings_ftos_gold2(rank);
-        announce6("\[", srank, tie, player.name15, " \b- ", score);
-        i = i + 1;
-    }
+		// Print the score
+		score = ftos(player.frags);
+		srank = strings_ftos_gold2(rank);
+		announce6("\[", srank, tie, player.name15, " \b- ", score);
+		i = i + 1;
+	}
 };
 
 //
@@ -318,7 +359,7 @@ void () match_bprint_time =
 //
 void () match_sprint_status =
 {
- 	if (!(elohim_state & (ELOHIM_MATCH_STARTED | ELOHIM_MATCH_OVER)))
+	if (!(elohim_state & (ELOHIM_MATCH_STARTED | ELOHIM_MATCH_OVER)))
 	{
 		if (elohim_state & ELOHIM_TIMER_STARTED)
 		{
@@ -329,27 +370,27 @@ void () match_sprint_status =
 		}
 		else
 			sprint(self, "Waiting for ", elohim_szteam, "s\n");
-        return;
+		return;
 	}
 
-    if (elohim_state & ELOHIM_MATCH_OVER)
-        sprint(self, "Match over\n");
-    else if (elohim_match_timer.lip < 0)
+	if (elohim_state & ELOHIM_MATCH_OVER)
+		sprint(self, "Match over\n");
+	else if (elohim_match_timer.lip < 0)
 		sprint(self, "Sudden death overtime\n");
 	else
-    {
-        local string temp;
-    
-        temp = ftos(elohim_match_timer.lip);
-        sprint(self, "Time remaining:  ", temp, ":");
-        temp = ftos(elohim_match_timer.count);
-        if (elohim_match_timer.count < 10)
-            sprint(self, "0");
-        sprint(self, temp, "\n");
-    }
+	{
+		local string temp;
+	
+		temp = ftos(elohim_match_timer.lip);
+		sprint(self, "Time remaining:  ", temp, ":");
+		temp = ftos(elohim_match_timer.count);
+		if (elohim_match_timer.count < 10)
+			sprint(self, "0");
+		sprint(self, temp, "\n");
+	}
 
-    local string score;
-    local string temp;
+	local string score;
+	local string temp;
 
 	if (elohim_first_place != elohim_sentinel)
 	{
@@ -378,8 +419,8 @@ void () match_check_autoss =
 		elohim_state = elohim_state - ELOHIM_DELAYED_AUTOSS;
 	}
 
-    elohim_match_timer.think = match_reset;
-    elohim_match_timer.nextthink = time + 2;
+	elohim_match_timer.think = match_reset;
+	elohim_match_timer.nextthink = time + 2;
 };
 
 //
@@ -399,14 +440,14 @@ void () match_overtime_think =
 //
 void () match_end =
 {
-    local entity player;
+	local entity player;
 
-    if (self.classname == "elohim_match_timer")
-    {
-        // Regular match end (timer ran out)
-        if ((elohim_first_place.frags == elohim_second_place.frags) && elohim_overtime)
-        {
-            // go into overtime
+	if (self.classname == "elohim_match_timer")
+	{
+		// Regular match end (timer ran out)
+		if ((elohim_first_place.frags == elohim_second_place.frags) && elohim_overtime)
+		{
+			// go into overtime
 			self.lip = elohim_overtime;
 			self.count = 0;
 			match_show_timelimit();
@@ -423,39 +464,39 @@ void () match_end =
 				match_overtime_think();
 			}
 			return;
-        }
-    }
-    else
-    {
-        // Administrator aborted the match
-        if (!(elohim_state & ELOHIM_MATCH_STARTED))
+		}
+	}
+	else
+	{
+		// Administrator aborted the match
+		if (!(elohim_state & ELOHIM_MATCH_STARTED))
 		{
 			sprint(self, "No match in progress\n");
-            return;
+			return;
 		}
-    
+	
 		match_unpause();
 		elohim_numteams = 0;
-    }
+	}
 
-    elohim_state = elohim_state - ELOHIM_MATCH_STARTED;
-    elohim_state = elohim_state - ELOHIM_TIMER_STARTED;
-    elohim_state = elohim_state | ELOHIM_MATCH_OVER | ELOHIM_MATCH_WAIT;
-    utils_do_players(match_gib_player); 
-    match_show_timelimit();       
-    announce("The match is over");
-    if (teamplay)
-        match_bprint_score();
-    else
-        match_ffa_bprint_score();
+	elohim_state = elohim_state - ELOHIM_MATCH_STARTED;
+	elohim_state = elohim_state - ELOHIM_TIMER_STARTED;
+	elohim_state = elohim_state | ELOHIM_MATCH_OVER | ELOHIM_MATCH_WAIT;
+	utils_do_players(match_gib_player); 
+	match_show_timelimit();       
+//    announce("The match is over");//Sputnik: moved below stats output
+	if (teamplay)
+		match_bprint_score();
+	else
+		match_ffa_bprint_score();
 
-    if (elohim_first_place.frags == elohim_second_place.frags)
-        announce("Tie game!");
-    else
-        announce3(elohim_szthe, elohim_first_place.netname, " has won");
+	if (elohim_first_place.frags == elohim_second_place.frags)
+		announce("Tie game!");
+	else
+		announce3(elohim_szthe, elohim_first_place.netname, " has won");
 
-    elohim_match_timer.think = match_check_autoss;
-    elohim_match_timer.nextthink = time + 3;
+	elohim_match_timer.think = match_check_autoss;
+	elohim_match_timer.nextthink = time + 3;
 
 	elohim_numteams = 0;
 	elohim_sentinel.movetarget = world;
@@ -466,6 +507,13 @@ void () match_end =
 	utils_do_players(stats_autodump);
 	console_autodump();
 
+	if (teamplay)
+		match_report_mvp();//Sputnik
+
+	//Sputnik: Moved down here so that autodemo will catch the autostats output.
+	bprint("\n");
+	announce("The match is over");
+//	bprint("\n");
 	// Backup all statistics so that they don't go away
 	stats_copy_statistics();
 };
@@ -490,7 +538,7 @@ void () match_print_time =
 //
 void () match_timer_think2 =
 {
-    local string temp;
+	local string temp;
 
 	self.count = self.count - 1;
 	if (self.count < 0)
@@ -498,7 +546,7 @@ void () match_timer_think2 =
 		self.count = 59;
 		self.lip = self.lip - 1;
 	}
-    self.nextthink = time + 1;
+	self.nextthink = time + 1;
 
 	display_update_all();
 
@@ -527,17 +575,17 @@ void () match_timer_think2 =
 			match_bprint_score();
 		}
 	}
-    else if (self.count == 30)
-    {
-        announce("Match ends in 30 seconds");
-        if (elohim_overtime > 0)
-        {
-            temp = ftos(elohim_overtime);
-            announce2(temp, " minute overtime in case of tie");
-        }
+	else if (self.count == 30)
+	{
+		announce("Match ends in 30 seconds");
+		if (elohim_overtime > 0)
+		{
+			temp = ftos(elohim_overtime);
+			announce2(temp, " minute overtime in case of tie");
+		}
 		else if (elohim_overtime < 0)
 			announce("Sudden death overtime in case of tie");
-    }
+	}
 	else if (self.count <= 10)
 	{
 		local string plural;
@@ -559,8 +607,8 @@ void () match_timer_think2 =
 //
 void () match_add_spawn =
 {
-    self.mdl = "elohim_start_point";
-    self.classname = "info_player_deathmatch";
+	self.mdl = "elohim_start_point";
+	self.classname = "info_player_deathmatch";
 };
 
 //
@@ -571,8 +619,8 @@ void () match_add_spawn =
 //
 void () match_remove_start =
 {
-    if (self.mdl == "elohim_start_point")
-        self.classname = self.mdl;
+	if (self.mdl == "elohim_start_point")
+		self.classname = self.mdl;
 };
 
 //
@@ -582,8 +630,8 @@ void () match_remove_start =
 //
 void () match_remove_starts =
 {
-    utils_do_item(match_remove_start, "info_player_deathmatch");
-    elohim_num_spawns = elohim_num_spawns - elohim_num_starts;
+	utils_do_item(match_remove_start, "info_player_deathmatch");
+	elohim_num_spawns = elohim_num_spawns - elohim_num_starts;
 	remove(self);
 };
 
@@ -665,25 +713,30 @@ void () match_check_team_colours =
 //
 void () match_begin =
 {
-    local string temp;
+	local string temp;
 
-    elohim_state = elohim_state | ELOHIM_MATCH_STARTED;
-    utils_do_players(match_gib_player);
+	elohim_state = elohim_state | ELOHIM_MATCH_STARTED;
 
-    // Set the team size so that unwanted A-holes can't join in
+	announce("The match has begun!");//Sputnik: for cl_autodemo 2	
+
+	utils_do_players(match_gib_player);	
+
+	// Set the team size so that unwanted A-holes can't join in
 	match_get_maxsize();
-    temp = ftos(elohim_maxsize);
+	
+	temp = ftos(elohim_maxsize);
+
 	if (teamplay)
 		announce4("Match is ", temp, "v", temp);
 
-    temp = ftos(elohim_timelimit);
-    announce2(temp, " minutes remaining");
+	temp = ftos(elohim_timelimit);
+	announce2(temp, " minutes remaining");
 
-    self.think = match_timer_think2;
-    self.nextthink = time + 1;
-    self.lip = elohim_timelimit;
+	self.think = match_timer_think2;
+	self.nextthink = time + 1;
+	self.lip = elohim_timelimit;
 	self.count = 0;
-    match_show_timelimit();
+	match_show_timelimit();
 	display_update_all();
 
 	// reset rocket launcher count and number of seconds elapsed count
@@ -694,13 +747,13 @@ void () match_begin =
 	utils_do_item(match_reset_owner, "item_artifact_invulnerability");
 	utils_do_item(match_reset_owner, "item_super_damage");
 
-    // Temporarily turn the extra start points into spawn points if necessary
-    if (match_count_players() > elohim_num_spawns)
-    {
-        utils_do_item(match_add_spawn, "elohim_start_point");
-        elohim_num_spawns = elohim_num_spawns + elohim_num_starts;
-        utils_make_scheduled_event(match_remove_starts, 2);
-    }
+	// Temporarily turn the extra start points into spawn points if necessary
+	if (match_count_players() > elohim_num_spawns)
+	{
+		utils_do_item(match_add_spawn, "elohim_start_point");
+		elohim_num_spawns = elohim_num_spawns + elohim_num_starts;
+		utils_make_scheduled_event(match_remove_starts, 2);
+	}
 
 	score_resend_scoreboard();
 
@@ -754,7 +807,7 @@ void () match_reset_powerup =
 //
 void () match_timer_think1 =
 {
-    local string temp, plural;
+	local string temp, plural;
 
 	self.count = self.count - 1;
 	self.nextthink = time + 1;
@@ -764,55 +817,56 @@ void () match_timer_think1 =
 	if (self.count == self.dest_x)
 	{
 		match_bprint_timelimit();
-        bprint("Use '\btimeset\b' to change timelimit\n");
+		bprint("Use '\btimeset\b' to change timelimit\n");
 	}
-    if (self.count == self.dest_y)
-    {
-        // respawn all items; reset information
-        utils_do_items(SUB_regen);
-	    utils_do_item(match_reset_powerup, "item_artifact_invulnerability");
-	    utils_do_item(match_reset_powerup, "item_artifact_super_damage");
-        announce("All items have respawned");
+	if (self.count == self.dest_y)
+	{
+		// respawn all items; reset information
+		utils_do_items(SUB_regen);
+		utils_do_item(match_reset_powerup, "item_artifact_invulnerability");
+		utils_do_item(match_reset_powerup, "item_artifact_super_damage");
+
+		announce("All items have respawned");
 		if (elohim_playmode & (ELOHIM_NO_QUAD | ELOHIM_NO_PENT | ELOHIM_NO_RING))
-            dprint("- ");
-        if (elohim_playmode & ELOHIM_NO_QUAD)
+			dprint("- ");
+		if (elohim_playmode & ELOHIM_NO_QUAD)
 		{
-            bprint("ŽQuad is ÏÆÆ");
+			bprint("ŽQuad is ÏÆÆ");
 			dprint("Quad is OFF - ");
-            utils_do_item(votables_disable_item, "item_artifact_super_damage");
+			utils_do_item(votables_disable_item, "item_artifact_super_damage");
 		}
-        if (elohim_playmode & ELOHIM_NO_PENT)
+		if (elohim_playmode & ELOHIM_NO_PENT)
 		{
-            bprint("ŽPent is ÏÆÆ");
+			bprint("ŽPent is ÏÆÆ");
 			dprint("Pent is OFF - ");
-            utils_do_item(votables_disable_item, "item_artifact_invulnerability");
+			utils_do_item(votables_disable_item, "item_artifact_invulnerability");
 		}
-        if (elohim_playmode & ELOHIM_NO_RING)
+		if (elohim_playmode & ELOHIM_NO_RING)
 		{
-            bprint("ŽRing is ÏÆÆ");
+			bprint("ŽRing is ÏÆÆ");
 			dprint("Ring is OFF - ");
-            utils_do_item(votables_disable_item, "item_artifact_invisibility");
+			utils_do_item(votables_disable_item, "item_artifact_invisibility");
 		}
 		if (elohim_playmode & (ELOHIM_NO_QUAD | ELOHIM_NO_PENT | ELOHIM_NO_RING))
 		{
-            bprint("Ž\n");
+			bprint("Ž\n");
 			dprint("\n");
 		}
 
 		if (self.count == 30)
 			announce("Match begins in 30 seconds");
 		match_bprint_timelimit();
-    }
-    else if (self.count == self.dest_z)
-    {
+	}
+	else if (self.count == self.dest_z)
+	{
 		match_get_maxsize();
-        temp = ftos(elohim_maxsize);
+		temp = ftos(elohim_maxsize);
 		if (teamplay)
 			announce4("Match is currently ", temp, "v", temp);
 		if (self.count == 20)
 			announce("Match begins in 20 seconds");
 		match_bprint_timelimit();
-    }
+	}
 	else if (self.count <= 10)
 	{
 		if (self.count == 10)
@@ -864,11 +918,11 @@ float () match_put_player_in_team =
 {
 	local entity pteam;
 
-    if (self.team == 1)
-    {
-        sprint(self, "Invalid pants color\n");
-        return FALSE;
-    }
+	if (self.team == 1)
+	{
+		sprint(self, "Invalid pants color\n");
+		return FALSE;
+	}
 
 	if (elohim_state & ELOHIM_MATCH_OVER)
 	{
@@ -877,7 +931,7 @@ float () match_put_player_in_team =
 		score_resend_scoreboard();
 	}
 
-    self.height = self.team - 1;
+	self.height = self.team - 1;
 	self.colours = self.cl[CL_COLORS];
 
 	if (!teamplay)  // Individual mode
@@ -967,7 +1021,7 @@ float () match_put_player_in_team =
 		local string temp;
 
 		temp = ftos(elohim_maxteams);
-        sprint(self, "There are already ", temp, " teams:\n");
+		sprint(self, "There are already ", temp, " teams:\n");
 		pteam = elohim_sentinel.next_team;
 		while (pteam)
 		{
@@ -975,7 +1029,7 @@ float () match_put_player_in_team =
 			sprint(self, pteam.netname, " (colour ", temp, ")\n");
 			pteam = pteam.next_team;
 		}
-        return FALSE;
+		return FALSE;
 	}
 
 	// create the team
@@ -1000,12 +1054,12 @@ float () match_put_player_in_team =
 	pteam.colormap = floor(self.colours / %16);
 	proquake_new_team(MSG_ALL, pteam.height, pteam.colormap);
 
-    announce2(pteam.netname, " created");
-    announce3(self.netname, " has joined the ", pteam.netname);
-    if (elohim_numteams == 1)
-        announce("Only one team present");
+	announce2(pteam.netname, " created");
+	announce3(self.netname, " has joined the ", pteam.netname);
+	if (elohim_numteams == 1)
+		announce("Only one team present");
 
-    return TRUE;
+	return TRUE;
 };
 
 //
@@ -1015,16 +1069,16 @@ float () match_put_player_in_team =
 //
 float () match_all_ready =
 {
-    local entity player;
+	local entity player;
 
-    player = find(world, classname, "player");
-    while (player)
-    {
-        if (!(player.style & (ELOHIM_OBSERVER | ELOHIM_READY)) && (player.style & ELOHIM_CONNECTED))
-            return FALSE;
-        player = find(player, classname, "player");
-    }
-    return TRUE;
+	player = find(world, classname, "player");
+	while (player)
+	{
+		if (!(player.style & (ELOHIM_OBSERVER | ELOHIM_READY)) && (player.style & ELOHIM_CONNECTED))
+			return FALSE;
+		player = find(player, classname, "player");
+	}
+	return TRUE;
 };
 
 //
@@ -1037,13 +1091,13 @@ void () match_start_timer =
 	if (elohim_state & ELOHIM_TIMER_STARTED)
 		return;
 
-    elohim_match_timer = spawn();
-    elohim_match_timer.classname = "elohim_match_timer";
-    elohim_match_timer.think = match_timer_think1;
-    elohim_match_timer.nextthink = floor(time) + 2;
+	elohim_match_timer = spawn();
+	elohim_match_timer.classname = "elohim_match_timer";
+	elohim_match_timer.think = match_timer_think1;
+	elohim_match_timer.nextthink = floor(time) + 2;
 
-    elohim_state = elohim_state | ELOHIM_TIMER_STARTED;
-    match_show_timelimit();
+	elohim_state = elohim_state | ELOHIM_TIMER_STARTED;
+	match_show_timelimit();
 
 	if (elohim_playmode & ELOHIM_FAST_START)
 	{
@@ -1068,12 +1122,12 @@ void () match_start_timer =
 //
 entity (float code) match_find_ghost =
 {
-    local entity e;
+	local entity e;
 
-    e = find(world, classname, "elohim_ghost");
-    while ((e != world) && (e.count != code))
-        e = find(e, classname, "elohim_ghost");
-    return e;
+	e = find(world, classname, "elohim_ghost");
+	while ((e != world) && (e.count != code))
+		e = find(e, classname, "elohim_ghost");
+	return e;
 };
 
 //
@@ -1092,7 +1146,7 @@ void () match_send_ghost_aliases =
 	stuffcmd(self, "alias ghostcode echo Your ghost code is ");
 	stuffcmd(self, temp);
 	stuffcmd(self, "\n");
-    stuffcmd(self, "alias ghost \"impulse 127;w5;impulse ");
+	stuffcmd(self, "alias ghost \"impulse 127;w5;impulse ");
 	digit = floor(self.owner.count / 10);
 	temp = ftos(digit + 230);
 	stuffcmd(self, temp);
@@ -1111,23 +1165,23 @@ void () match_send_ghost_aliases =
 //
 void () match_make_ghost =
 {
-    // can't have two ghosts
-    if (self.owner)
-        remove(self.owner);
+	// can't have two ghosts
+	if (self.owner)
+		remove(self.owner);
 
-    // create ghost code
-    local float ghostcode;
-    ghostcode = 10 + floor(89.99 * random());
-    while (match_find_ghost(ghostcode))
-        ghostcode = 10 + floor(89.99 * random());
+	// create ghost code
+	local float ghostcode;
+	ghostcode = 10 + floor(89.99 * random());
+	while (match_find_ghost(ghostcode))
+		ghostcode = 10 + floor(89.99 * random());
 
-    // initialize ghost
-    self.owner = spawn();
-    self.owner.classname = "elohim_ghost";
-    self.owner.owner = self;
-    self.owner.frags = 0;
-    self.owner.height = self.height;
-    self.owner.count = ghostcode;
+	// initialize ghost
+	self.owner = spawn();
+	self.owner.classname = "elohim_ghost";
+	self.owner.owner = self;
+	self.owner.frags = 0;
+	self.owner.height = self.height;
+	self.owner.count = ghostcode;
 	self.owner.state = 0;
 	self.owner.movetype = MOVETYPE_NONE;
 
@@ -1143,22 +1197,22 @@ void () match_make_ghost =
 //
 void () match_request_restore_ghost =
 {
-    if (!(elohim_state & ELOHIM_MATCH_STARTED))
-    {
-        sprint(self, "There is no match in progress\n");
-        return;
-    }
+	if (!(elohim_state & ELOHIM_MATCH_STARTED))
+	{
+		sprint(self, "There is no match in progress\n");
+		return;
+	}
 
-    // only uncomitted players can ghost themselves
-    if (self.style & ELOHIM_READY)
-    {
-        sprint(self, "You are already in the match\n");
-        return;
-    }
+	// only uncomitted players can ghost themselves
+	if (self.style & ELOHIM_READY)
+	{
+		sprint(self, "You are already in the match\n");
+		return;
+	}
 
-    sprint(self, "Enter the first ghost code digit:\n");
-    self.count = 0;
-    self.use = match_enter_ghost_code;
+	sprint(self, "Enter the first ghost code digit:\n");
+	self.count = 0;
+	self.use = match_enter_ghost_code;
 };
 
 //
@@ -1169,32 +1223,32 @@ void () match_request_restore_ghost =
 //
 void () match_enter_ghost_code =
 {
-    if (self.finaldest_z > 9)
-        return;
-    self.count = self.count * 10 + self.finaldest_z;
-    if (!self.count)
-        return;
+	if (self.finaldest_z > 9)
+		return;
+	self.count = self.count * 10 + self.finaldest_z;
+	if (!self.count)
+		return;
 
-    if (self.count < 10)
-        sprint(self, "Enter the second ghost code digit:\n");
-    else
-    {
-        // ghost code has been entered
-        local entity e;
+	if (self.count < 10)
+		sprint(self, "Enter the second ghost code digit:\n");
+	else
+	{
+		// ghost code has been entered
+		local entity e;
 
-        e = match_find_ghost(self.count);
-        if (!e)
-            sprint(self, "Ghost not found\n");
-        else
-        {
-            // Check to make sure the client is gone
-            if (e.owner.owner == e)
-                sprint(self, e.owner.netname, " owns this ghost\n");
-            else
-                match_restore_ghost(e);
-        }
-        self.use = SUB_Null;
-    }
+		e = match_find_ghost(self.count);
+		if (!e)
+			sprint(self, "Ghost not found\n");
+		else
+		{
+			// Check to make sure the client is gone
+			if (e.owner.owner == e)
+				sprint(self, e.owner.netname, " owns this ghost\n");
+			else
+				match_restore_ghost(e);
+		}
+		self.use = SUB_Null;
+	}
 };
 
 //
@@ -1207,29 +1261,32 @@ void () match_enter_ghost_code =
 //
 void (entity ghostent) match_restore_ghost =
 {
-    local string temp, plural;
+	local string temp, plural;
 
-    self.team = ghostent.height + 1;
-    if (!match_put_player_in_team())
+	self.team = ghostent.height + 1;
+	if (!match_put_player_in_team())
 		return;
 
 	self.style = self.style | ghostent.style | ELOHIM_READY;
 	self.crmod_hack_count = ghostent.crmod_hack_count;
 
-    // Must ready before observer_end, or will be made observer again
-    // Must observer_end before setting frags, or frags will be set to 0
-    observer_end();
+	// Must ready before observer_end, or will be made observer again
+	// Must observer_end before setting frags, or frags will be set to 0
+	observer_end();
 
 	// copy always data
-    self.frags = ghostent.frags;
-    self.dest = ghostent.dest;
-    self.dest1 = ghostent.dest1;
-    self.dest2 = ghostent.dest2;
-    self.mangle = ghostent.mangle;
+	self.frags = ghostent.frags;
+	self.dest = ghostent.dest;
+	self.dest1 = ghostent.dest1;
+	self.dest2 = ghostent.dest2;
+	self.mangle = ghostent.mangle;
 	self.crmod_qdwep = ghostent.crmod_qdwep;
 	self.crmod_qdkill = ghostent.crmod_qdkill;
 	self.colours = ghostent.colours;
 	self.rating = ghostent.rating;
+	self.elohim_player_id = ghostent.elohim_player_id;//Sputnik
+	self.dmg_taken = ghostent.dmg_taken;//Sputnik
+	self.dmg_given = ghostent.dmg_given;//Sputnik
 	
 	// check for copy-on-pause data
 	if (ghostent.state)
@@ -1297,21 +1354,21 @@ void (entity ghostent) match_restore_ghost =
 		ghostent.state = 0;
 	}
 
-    self.owner = ghostent;
-    ghostent.owner = self;
-    stuffcmd(self, "color ");
-    temp = ftos(floor(self.colours / %16));
-    stuffcmd(self, temp);
+	self.owner = ghostent;
+	ghostent.owner = self;
+	stuffcmd(self, "color ");
+	temp = ftos(floor(self.colours / %16));
+	stuffcmd(self, temp);
 	stuffcmd(self, " ");
-    temp = ftos(self.height);
-    stuffcmd(self, temp);
-    stuffcmd(self, "\n");
+	temp = ftos(self.height);
+	stuffcmd(self, temp);
+	stuffcmd(self, "\n");
 
 	match_send_ghost_aliases();
 
-    temp = ftos(self.frags);
+	temp = ftos(self.frags);
 	plural = strings_szplural(self.frags);
-    announce5(self.netname, " restored from ghost\nwith ", temp, " frag", plural);
+	announce5(self.netname, " restored from ghost\nwith ", temp, " frag", plural);
 
 	// check to see if they're top 2
 	if (!teamplay)
@@ -1346,53 +1403,58 @@ void (entity ghostent) match_restore_ghost =
 //
 void () match_ready =
 {
-    if (elohim_state & ELOHIM_MATCH_WAIT)
-    {
-        sprint(self, "Try again in 5 seconds\n");
-        return;
-    }
-    if (self.style & ELOHIM_READY)
-    {
+	if (elohim_state & ELOHIM_MATCH_WAIT)
+	{
+		sprint(self, "Try again in 5 seconds\n");
+		return;
+	}
+	if (self.style & ELOHIM_READY)
+	{
 		// in case the READY didn't get propagated properly the first time
 		if (!(elohim_state & ELOHIM_MATCH_STARTED))
 		{
 			name_broadcast(self.name_ready);
 			score_name_change();
 		}
-        sprint(self, "You are already committed\n");
-        return;
-    }
+		sprint(self, "You are already committed\n");
+		return;
+	}
 
-    // can't commit while entering ghost code
-    if (self.use == match_enter_ghost_code)
-    {
-        sprint(self, "Finish entering the ghost code\n");
-        return;
-    }
+	// can't commit while entering ghost code
+	if (self.use == match_enter_ghost_code)
+	{
+		sprint(self, "Finish entering the ghost code\n");
+		return;
+	}
 
-    // Try to add the player; colour him white if unsuccessful
-    if (!match_put_player_in_team())
-    {
-        stuffcmd(self, "color 0\n");
-        return;
-    }
+	// Try to add the player; colour him white if unsuccessful
+	if (!match_put_player_in_team())
+	{
+		stuffcmd(self, "color 0\n");
+		return;
+	}
 
 	if (!(elohim_state & ELOHIM_MATCH_STARTED))
 	{
+		name_fix();//Sputnik: had to update the name again, because when logged-in then switching modes, then back to match, it wouldn't keep the white 'READY'.
 		name_broadcast(self.name_ready);
 		score_name_change();
 	}
 
-    self.style = self.style | ELOHIM_READY;
+	self.style = self.style | ELOHIM_READY;
 
-    // Give the player a ghost
-    match_make_ghost();
+	// Give the player a ghost
+	match_make_ghost();
 
-    observer_end();
+	self.oflags = self.oflags - (self.oflags & OBSERVER_QUAKETV);	//Sputnik
+	observer_end();
 
-    // check to see if we need to start the timer
-    if (elohim_numteams > 1 && !(elohim_state & ELOHIM_TIMER_STARTED) && match_all_ready())
-        match_start_timer();
+	if (!self.elohim_player_id) //Sputnik	
+		sprint(self,"You are \bnot\b logged in. Your stats will \bnot\b be recorded for this match.\n");
+
+	// check to see if we need to start the timer
+	if (elohim_numteams > 1 && !(elohim_state & ELOHIM_TIMER_STARTED) && match_all_ready())
+		match_start_timer();
 };
 
 //
@@ -1402,7 +1464,7 @@ void (entity player) match_remove_player =
 {
 	local entity plast;
 
-    // Remove from team & linked list
+	// Remove from team & linked list
 	plast = elohim_sentinel;
 	while (plast.next_player != player) // find previous player in list
 	{
@@ -1452,34 +1514,34 @@ void (entity pteam) match_remove_team =
 //
 void () match_notready =
 {
-    if (elohim_state & ELOHIM_MATCH_WAIT)
-    {
-        sprint(self, "Try again in 5 seconds\n");
-        return;
-    }
-    if (!(self.style & ELOHIM_READY))
-    {
-        sprint(self, "You have not yet committed\n");
-        return;
-    }
-    if (elohim_state & ELOHIM_MATCH_STARTED)
-    {
-        sprint(self, "Cannot uncommit during match\n");
-        sprint(self, "Type 'observer' to leave match\n");
-        return;
-    }
+	if (elohim_state & ELOHIM_MATCH_WAIT)
+	{
+		sprint(self, "Try again in 5 seconds\n");
+		return;
+	}
+	if (!(self.style & ELOHIM_READY))
+	{
+		sprint(self, "You have not yet committed\n");
+		return;
+	}
+	if (elohim_state & ELOHIM_MATCH_STARTED)
+	{
+		sprint(self, "Cannot uncommit during match\n");
+		sprint(self, "Type 'observer' to leave match\n");
+		return;
+	}
 
-    self.style = self.style - ELOHIM_READY;
-    announce2(self.netname, " is not ready");
+	self.style = self.style - ELOHIM_READY;
+	announce2(self.netname, " is not ready");
 	name_broadcast(self.netname);
 	score_name_change();
 
-    // He was ready but the match hadn't started, so remove his ghost
-    remove(self.owner);
-    self.owner = world;
+	// He was ready but the match hadn't started, so remove his ghost
+	remove(self.owner);
+	self.owner = world;
 
 	stuffcmd(self, "alias ghostcode echo You do not have a ghost\n");
-    stuffcmd(self, "alias ghost impulse 127\n");
+	stuffcmd(self, "alias ghost impulse 127\n");
 
 	match_remove_player(self);
 	if (teamplay && !self.next_team.count)
@@ -1490,14 +1552,14 @@ void () match_notready =
 	else if (!elohim_numteams)
 		announce3("No ", elohim_szteam, "s present");
 
-    if (elohim_state & ELOHIM_TIMER_STARTED)
-    {
-        announce("Timer stopped");
-        remove(elohim_match_timer);
-        elohim_state = elohim_state - ELOHIM_TIMER_STARTED;
-        match_show_timelimit();
+	if (elohim_state & ELOHIM_TIMER_STARTED)
+	{
+		announce("Timer stopped");
+		remove(elohim_match_timer);
+		elohim_state = elohim_state - ELOHIM_TIMER_STARTED;
+		match_show_timelimit();
 		score_resend_scoreboard();
-    }
+	}
 };
 
 //
@@ -1507,9 +1569,9 @@ void () match_notready =
 //
 void () match_unlock =
 {
-    elohim_maxsize = 16;
-    announce("Match has been unlocked");
-    announce("New players may join at will");
+	elohim_maxsize = 16;
+	announce("Match has been unlocked");
+	announce("New players may join at will");
 };
 
 //
@@ -1519,25 +1581,25 @@ void () match_unlock =
 //
 void () match_request_unlock =
 {
-    if (!(elohim_state & ELOHIM_MATCH_STARTED))
-    {
-        sprint(self, "No match in progress\n");
-        return;
-    }
-    if (elohim_maxsize == 16)
-    {
-        sprint(self, "Match is already unlocked\n");
-        return;
-    }
+	if (!(elohim_state & ELOHIM_MATCH_STARTED))
+	{
+		sprint(self, "No match in progress\n");
+		return;
+	}
+	if (elohim_maxsize == 16)
+	{
+		sprint(self, "Match is already unlocked\n");
+		return;
+	}
 
-    // Do it right away if we're an administrator, otherwise vote
-    if (self.style & ELOHIM_ADMINISTRATOR)
-        match_unlock();
-    else
-    {
-        if (vote_init("allow new players to join", "", match_unlock))
-            vote_yes();
-    }
+	// Do it right away if we're an administrator, otherwise vote
+	if (self.style & ELOHIM_ADMINISTRATOR)
+		match_unlock();
+	else
+	{
+		if (vote_init("allow new players to join", "", match_unlock))
+			vote_yes();
+	}
 };
 
 //
@@ -1549,7 +1611,7 @@ void () match_lock =
 {
 	match_get_maxsize();
 
-    announce("Match has been locked");
+	announce("Match has been locked");
 	local string s;
 	s = ftos(elohim_maxsize);
 	if (teamplay)
@@ -1567,33 +1629,33 @@ void () match_request_lock =
 {
 	local float temp;
 
-    if (!(elohim_state & ELOHIM_MATCH_STARTED))
-    {
-        sprint(self, "No match in progress\n");
-        return;
-    }
+	if (!(elohim_state & ELOHIM_MATCH_STARTED))
+	{
+		sprint(self, "No match in progress\n");
+		return;
+	}
 
 	temp = elohim_maxsize;
 	match_get_maxsize();
-    if (elohim_maxsize == temp)
-    {
-        sprint(self, "Match is already locked\n");
-        return;
-    }
+	if (elohim_maxsize == temp)
+	{
+		sprint(self, "Match is already locked\n");
+		return;
+	}
 	elohim_maxsize = temp;
 
-    // Do it right away if we're an administrator, otherwise vote
-    if (self.style & ELOHIM_ADMINISTRATOR)
-        match_lock();
-    else if (self.style & ELOHIM_READY)
-    {
-        if (vote_init("lock the match", "", match_lock))
-            vote_yes();
-    }
-    else
-    {
-        sprint(self, "lock comand available to match\n");
-        sprint(self, "participants and administrators only\n");
+	// Do it right away if we're an administrator, otherwise vote
+	if (self.style & ELOHIM_ADMINISTRATOR)
+		match_lock();
+	else if (self.style & ELOHIM_READY)
+	{
+		if (vote_init("lock the match", "", match_lock))
+			vote_yes();
+	}
+	else
+	{
+		sprint(self, "lock comand available to match\n");
+		sprint(self, "participants and administrators only\n");
    }
 };
 
@@ -1602,19 +1664,19 @@ void () match_request_lock =
 //
 void () match_help =
 {
-    sprint(self, "Match commands (for match mode only):\n");
-    sprint(self, " ready    - commit to a team\n");
-    sprint(self, " notready - uncommit yourself\n");
+	sprint(self, "Match commands (for match mode only):\n");
+	sprint(self, " ready    - commit to a team\n");
+	sprint(self, " notready - uncommit yourself\n");
 	sprint(self, " otset    - change overtime\n");
 	sprint(self, " timeset  - change timelimit\n");
-    sprint(self, " ready?   - find out who is not ready\n");
-    sprint(self, " unlock   - allow new players to join\n");
-    sprint(self, " lock     - re-cap the team size\n");
-    sprint(self, " timerstop  - pause the match\n");
-    sprint(self, " timerstart - start/restart the timer\n");
-    sprint(self, " ghostcode  - view your ghost code\n");
-    sprint(self, " ghost - restore yourself from ghost\n");
-    sprint(self, " score - show time left and score\n");
+	sprint(self, " ready?   - find out who is not ready\n");
+	sprint(self, " unlock   - allow new players to join\n");
+	sprint(self, " lock     - re-cap the team size\n");
+	sprint(self, " timerstop  - pause the match\n");
+	sprint(self, " timerstart - start/restart the timer\n");
+	sprint(self, " ghostcode  - view your ghost code\n");
+	sprint(self, " ghost - restore yourself from ghost\n");
+	sprint(self, " score - show time left and score\n");
 	sprint(self, " +teamscores - bind this to a key\n");
 	sprint(self, " rockets  - shows who has an RL\n");
 	sprint(self, " timer    - toggle on-screen timer\n");
@@ -1628,32 +1690,32 @@ void () match_help =
 //
 void () match_show_not_ready =
 {
-    if (match_all_ready())
-    {
-        if (!elohim_numteams)
+	if (match_all_ready())
+	{
+		if (!elohim_numteams)
 			sprint(self, "No ", elohim_szteam, "s present\n");
-        else
-        {
-            sprint(self, "All players are ready\n");
-            if (elohim_numteams == 1)
+		else
+		{
+			sprint(self, "All players are ready\n");
+			if (elohim_numteams == 1)
 				sprint(self, "Only one ", elohim_szteam, " present\n");
-        }
-    }
-    else
-    {
-        local entity player;
+		}
+	}
+	else
+	{
+		local entity player;
 
-        sprint(self, "The following players are not ready:\n");
+		sprint(self, "The following players are not ready:\n");
 
-        player = find(world, classname, "player");
-        while (player)
-        {
-            if (!(player.style & (ELOHIM_OBSERVER | ELOHIM_READY)) && 
+		player = find(world, classname, "player");
+		while (player)
+		{
+			if (!(player.style & (ELOHIM_OBSERVER | ELOHIM_READY)) && 
 				(player.style & ELOHIM_CONNECTED))
-                sprint(self, " ", player.netname, "\n");
-            player = find(player, classname, "player");
-        }
-    }
+				sprint(self, " ", player.netname, "\n");
+			player = find(player, classname, "player");
+		}
+	}
 };
 
 //
@@ -1663,7 +1725,7 @@ void () match_pause_item =
 {
 	if (self.nextthink < 1)
 		return;
-    self.nextthink = self.nextthink + 1000000;
+	self.nextthink = self.nextthink + 1000000;
 	self.crmod_old_velocity = self.velocity;
 	self.velocity = '0 0 0';
 
@@ -1687,7 +1749,7 @@ void () match_pause_player =
 	self.velocity = '0 0 0';
 	if (self.nextthink == -1)
 		return;
-    self.nextthink = self.nextthink + 1000000;
+	self.nextthink = self.nextthink + 1000000;
 };
 
 //
@@ -1697,10 +1759,10 @@ void () match_pause_player =
 //
 void () match_show_pause =
 {
-    WriteByte(MSG_ALL, SVC_CENTERPRINT);
-    WriteString(MSG_ALL, "\{1}\{2}\{2}\{2}\{2}\{2}\{2}\{3}\n„ÐÁÕÓÅÄ†\n‡ˆˆˆˆˆˆ‰");
-    elohim_match_timer.nextthink = time + 0.5;
-    elohim_match_timer.think = match_show_pause;
+	WriteByte(MSG_ALL, SVC_CENTERPRINT);
+	WriteString(MSG_ALL, "\{1}\{2}\{2}\{2}\{2}\{2}\{2}\{3}\n„ÐÁÕÓÅÄ†\n‡ˆˆˆˆˆˆ‰");
+	elohim_match_timer.nextthink = time + 0.5;
+	elohim_match_timer.think = match_show_pause;
 };
 
 //
@@ -1710,12 +1772,12 @@ void () match_show_pause =
 //
 void () match_pause =
 {
-    if (!(elohim_state & ELOHIM_MATCH_STARTED) || (elohim_state & ELOHIM_MATCH_PAUSED))
+	if (!(elohim_state & ELOHIM_MATCH_STARTED) || (elohim_state & ELOHIM_MATCH_PAUSED))
 		return;
 
-    elohim_state = elohim_state | ELOHIM_MATCH_PAUSED;
-    elohim_match_pause_time = time;
-    utils_do_items(match_pause_item);
+	elohim_state = elohim_state | ELOHIM_MATCH_PAUSED;
+	elohim_match_pause_time = time;
+	utils_do_items(match_pause_item);
 	utils_do_item(match_pause_item, "item_backpack");
 	utils_do_item(match_pause_item, "plat");
 	utils_do_item(match_pause_item, "train");
@@ -1725,12 +1787,12 @@ void () match_pause =
 	utils_do_item(match_pause_item, "trigger_multiple");
 	utils_do_projectiles(match_pause_item);
 	utils_do_players(match_pause_player);
-    announce("Match paused");
-    match_bprint_time();
-    match_bprint_score();
-    elohim_match_timer.think1 = elohim_match_timer.think;
-    elohim_match_timer.cnt = elohim_match_timer.nextthink;
-    match_show_pause();
+	announce("Match paused");
+	match_bprint_time();
+	match_bprint_score();
+	elohim_match_timer.think1 = elohim_match_timer.think;
+	elohim_match_timer.cnt = elohim_match_timer.nextthink;
+	match_show_pause();
 };
 
 //
@@ -1738,22 +1800,22 @@ void () match_pause =
 //
 void () match_request_pause =
 {
-    if (!(elohim_state & ELOHIM_MATCH_STARTED))
-    {
-        sprint(self, "No match in progress\n");
-        return;
-    }
-    if (elohim_state & ELOHIM_MATCH_PAUSED)
-    {
-        sprint(self, "Match is already paused\n");
-        return;
-    }
+	if (!(elohim_state & ELOHIM_MATCH_STARTED))
+	{
+		sprint(self, "No match in progress\n");
+		return;
+	}
+	if (elohim_state & ELOHIM_MATCH_PAUSED)
+	{
+		sprint(self, "Match is already paused\n");
+		return;
+	}
 
-    // Do it right away if we're an administrator, otherwise vote
-    if (self.style & ELOHIM_ADMINISTRATOR)
-        match_pause();
-    else if (vote_init("pause the match", (""), match_pause))
-        vote_yes();
+	// Do it right away if we're an administrator, otherwise vote
+	if (self.style & ELOHIM_ADMINISTRATOR)
+		match_pause();
+	else if (vote_init("pause the match", (""), match_pause))
+		vote_yes();
 };
 
 //
@@ -1763,7 +1825,7 @@ void () match_unpause_item =
 {
 	if (self.nextthink < 1)
 		return;
-    self.nextthink = self.nextthink - 1000000 + elohim_match_pause_time;
+	self.nextthink = self.nextthink - 1000000 + elohim_match_pause_time;
 	self.velocity = self.crmod_old_velocity;
 
 	if (self.classname == "grenade")
@@ -1775,16 +1837,16 @@ void () match_unpause_item =
 //
 void () match_unpause_player =
 {
-    if (self.super_damage_finished)
-        self.super_damage_finished = self.super_damage_finished + elohim_match_pause_time;
-    if (self.invisible_finished)
-        self.invisible_finished = self.invisible_finished + elohim_match_pause_time;
-    if (self.invincible_finished)
-        self.invincible_finished = self.invincible_finished + elohim_match_pause_time;
-    if (self.radsuit_finished)
-        self.radsuit_finished = self.radsuit_finished + elohim_match_pause_time;
-    self.air_finished = self.air_finished + elohim_match_pause_time;
-    self.pain_finished = self.pain_finished + elohim_match_pause_time;
+	if (self.super_damage_finished)
+		self.super_damage_finished = self.super_damage_finished + elohim_match_pause_time;
+	if (self.invisible_finished)
+		self.invisible_finished = self.invisible_finished + elohim_match_pause_time;
+	if (self.invincible_finished)
+		self.invincible_finished = self.invincible_finished + elohim_match_pause_time;
+	if (self.radsuit_finished)
+		self.radsuit_finished = self.radsuit_finished + elohim_match_pause_time;
+	self.air_finished = self.air_finished + elohim_match_pause_time;
+	self.pain_finished = self.pain_finished + elohim_match_pause_time;
 	self.attack_finished = self.attack_finished + elohim_match_pause_time;
 
 	if ((self.style & ELOHIM_OBSERVER) || self.deadflag)
@@ -1794,7 +1856,7 @@ void () match_unpause_player =
 	self.velocity = self.crmod_old_velocity;
 	if (self.nextthink == -1)
 		return;
-    self.nextthink = self.nextthink - 1000000 + elohim_match_pause_time;
+	self.nextthink = self.nextthink - 1000000 + elohim_match_pause_time;
 };
 
 //
@@ -1815,10 +1877,10 @@ void () match_unpause =
 	if (!(elohim_state & ELOHIM_MATCH_PAUSED))
 		return;
 
-    elohim_state = elohim_state - ELOHIM_MATCH_PAUSED;
+	elohim_state = elohim_state - ELOHIM_MATCH_PAUSED;
 	elohim_state = elohim_state - (elohim_state & ELOHIM_AUTO_PAUSED);
-    elohim_match_pause_time = time - elohim_match_pause_time;
-    utils_do_items(match_unpause_item);
+	elohim_match_pause_time = time - elohim_match_pause_time;
+	utils_do_items(match_unpause_item);
 	utils_do_item(match_unpause_item, "item_backpack");
 	utils_do_item(match_unpause_item, "plat");
 	utils_do_item(match_unpause_item, "train");
@@ -1827,15 +1889,15 @@ void () match_unpause =
 	utils_do_item(match_unpause_item, "fireball");
 	utils_do_item(match_unpause_item, "trigger_multiple");
 	utils_do_projectiles(match_unpause_item);
-    utils_do_players(match_unpause_player);
+	utils_do_players(match_unpause_player);
 	utils_do_item(match_unpause_ghost, "elohim_ghost");
-    announce("Match unpaused");
-    match_bprint_time();
-    match_bprint_score();
-    elohim_match_timer.nextthink = elohim_match_timer.cnt + elohim_match_pause_time;
-    elohim_match_timer.think = elohim_match_timer.think1;
-    WriteByte(MSG_ALL, SVC_CENTERPRINT);
-    WriteString(MSG_ALL, " ");
+	announce("Match unpaused");
+	match_bprint_time();
+	match_bprint_score();
+	elohim_match_timer.nextthink = elohim_match_timer.cnt + elohim_match_pause_time;
+	elohim_match_timer.think = elohim_match_timer.think1;
+	WriteByte(MSG_ALL, SVC_CENTERPRINT);
+	WriteString(MSG_ALL, " ");
 };
 
 //
@@ -1888,40 +1950,40 @@ void () match_request_unpause =
 	if (elohim_state & ELOHIM_UNPAUSING)
 		return;
 
-    if (!(elohim_state & ELOHIM_MATCH_STARTED))
-    {
-        if (elohim_state & ELOHIM_TIMER_STARTED)
-        {
-            sprint(self, "Timer has already started\n");
-            return;
-        }
-        if (elohim_numteams < 2)
-        {
+	if (!(elohim_state & ELOHIM_MATCH_STARTED))
+	{
+		if (elohim_state & ELOHIM_TIMER_STARTED)
+		{
+			sprint(self, "Timer has already started\n");
+			return;
+		}
+		if (elohim_numteams < 2)
+		{
 			if (!elohim_numteams)
 				sprint(self, "There are no ", elohim_szteam, "s present\n");
 			else
 				sprint(self, "There is only one ", elohim_szteam, " present\n");
-            return;
-        }
-        // request to force the timer to start.
-        // Do it right away if we're an administrator, otherwise vote
-        if (self.style & ELOHIM_ADMINISTRATOR)
-            match_start_timer();
-        else if (vote_init("start the timer", "", match_start_timer))
-            vote_yes();
-        return;
-    }
-    if (!(elohim_state & ELOHIM_MATCH_PAUSED))
-    {
-        sprint(self, "Match is not paused\n");
-        return;
-    }
+			return;
+		}
+		// request to force the timer to start.
+		// Do it right away if we're an administrator, otherwise vote
+		if (self.style & ELOHIM_ADMINISTRATOR)
+			match_start_timer();
+		else if (vote_init("start the timer", "", match_start_timer))
+			vote_yes();
+		return;
+	}
+	if (!(elohim_state & ELOHIM_MATCH_PAUSED))
+	{
+		sprint(self, "Match is not paused\n");
+		return;
+	}
 
-    // Do it right away if we're an administrator, otherwise vote
-    if (self.style & ELOHIM_ADMINISTRATOR)
-        match_start_unpause_countdown();
-    else if (vote_init("unpause the match", "", match_start_unpause_countdown))
-        vote_yes();
+	// Do it right away if we're an administrator, otherwise vote
+	if (self.style & ELOHIM_ADMINISTRATOR)
+		match_start_unpause_countdown();
+	else if (vote_init("unpause the match", "", match_start_unpause_countdown))
+		vote_yes();
 };
 
 //
@@ -1971,17 +2033,18 @@ void () match_impulse =
 	if (elohim_state & ELOHIM_TAKING_AUTOSS)
 		return;
 
-    if (self.impulse == 129)
-        match_help();
+	if (self.impulse == 129)
+		match_help();
 
-    if (!(elohim_playmode & ELOHIM_MATCH_MODE))
-    {
+	if (!(elohim_playmode & ELOHIM_MATCH_MODE))
+	{
 		if (self.impulse == 120)
 		{
 			if (self.style & ELOHIM_OBSERVER)
 			{
 				if (elohim_client_ready() == ELOHIM_TOO_MANY_SUICIDES)
 					return;
+				self.oflags = self.oflags - (self.oflags & OBSERVER_QUAKETV);	//Sputnik
 				observer_end();
 			}
 			else
@@ -1992,27 +2055,27 @@ void () match_impulse =
 			training_sprint_status();
 		else
 			sprint(self, "Command valid in match mode only\n");
-        return;
-    }
+		return;
+	}
 
-    if (self.impulse == 120)
-        match_ready();
-    else if (self.impulse == 121)
-        match_notready();
-    else if (self.impulse == 122)
-        match_request_unlock();
-    else if (self.impulse == 123)
-        match_show_not_ready();
-    else if (self.impulse == 124)
-        match_request_pause();
-    else if (self.impulse == 125)
-        match_request_unpause();
-    else if (self.impulse == 127)
-        match_request_restore_ghost();
-    else if (self.impulse == 128)
-        match_sprint_status();
-    else if (self.impulse == 130)
-        match_request_lock();
+	if (self.impulse == 120)
+		match_ready();
+	else if (self.impulse == 121)
+		match_notready();
+	else if (self.impulse == 122)
+		match_request_unlock();
+	else if (self.impulse == 123)
+		match_show_not_ready();
+	else if (self.impulse == 124)
+		match_request_pause();
+	else if (self.impulse == 125)
+		match_request_unpause();
+	else if (self.impulse == 127)
+		match_request_restore_ghost();
+	else if (self.impulse == 128)
+		match_sprint_status();
+	else if (self.impulse == 130)
+		match_request_lock();
 	else if (self.impulse == 131)
 		score_show_teamscores();
 	else if (self.impulse == 132)
@@ -2039,11 +2102,11 @@ void () match_verify_team =
 		return;
 	}
 
-    if (!(elohim_playmode & ELOHIM_MATCH_MODE) || !(self.style & ELOHIM_CONNECTED))
+	if (!(elohim_playmode & ELOHIM_MATCH_MODE) || !(self.style & ELOHIM_CONNECTED))
 	{
 		self.height = self.team - 1;
 		self.colours = self.cl[CL_COLORS];
-        return;
+		return;
 	}
 
 	if (!(self.style & ELOHIM_READY))
@@ -2065,14 +2128,14 @@ void () match_verify_team =
 		return;
 	}
 
-    stuffcmd(self, "color ");
-    temp = ftos(floor(self.colours / %16));
-    stuffcmd(self, temp);
+	stuffcmd(self, "color ");
+	temp = ftos(floor(self.colours / %16));
+	stuffcmd(self, temp);
 	stuffcmd(self, " ");
 	temp = ftos(self.height);
 	stuffcmd(self, temp);
-    stuffcmd(self, "\n");
-    self.team = self.height + 1;
+	stuffcmd(self, "\n");
+	self.team = self.height + 1;
 
 	// THIS WAS A BUG!  (I'm leaving it in and commented so I don't do it again)
 	// proquake server will not forward colour change if it thinks it's redundant.
@@ -2082,9 +2145,9 @@ void () match_verify_team =
 		announce2(self.netname, " tried to change pants");
 	else
 	{
-        sprint(self, "You cannot change pants after\n");
-        sprint(self, "you have committed\n");
-    }
+		sprint(self, "You cannot change pants after\n");
+		sprint(self, "you have committed\n");
+	}
 };
 
 //
@@ -2100,33 +2163,33 @@ void (entity player) match_disconnect_notify =
 	if (!(player.style & ELOHIM_OBSERVER))
 		match_remove_player(player);
 
-    if (!(player.style & ELOHIM_READY))
-    {
-        // Check to see if we need to start the timer
-        if (!(elohim_state & ELOHIM_MATCH_WAIT))
-        {
-            if (!(elohim_state & ELOHIM_TIMER_STARTED))
-            {
-                if (elohim_numteams > 1)
-                {
-                    if (match_all_ready())
-                        match_start_timer();
-                }
-            }
-        }
-        return;
-    }
+	if (!(player.style & ELOHIM_READY))
+	{
+		// Check to see if we need to start the timer
+		if (!(elohim_state & ELOHIM_MATCH_WAIT))
+		{
+			if (!(elohim_state & ELOHIM_TIMER_STARTED))
+			{
+				if (elohim_numteams > 1)
+				{
+					if (match_all_ready())
+						match_start_timer();
+				}
+			}
+		}
+		return;
+	}
 
-    player.style = player.style - ELOHIM_READY;
+	player.style = player.style - ELOHIM_READY;
 	if (player.style & ELOHIM_CONNECTED)
 	{
 		name_broadcast(self.netname);
 		score_name_change();
 	}
 
-    // Check to see if we need to stop the match
-    if (elohim_state & ELOHIM_MATCH_STARTED)
-    {
+	// Check to see if we need to stop the match
+	if (elohim_state & ELOHIM_MATCH_STARTED)
+	{
 		// Copy his info to his ghost
 		if (!self.owner) // Sanity check added 2/6/99
 			dprint("Internal error #3.  Please send mail to crbug@mpog.com\n");
@@ -2144,6 +2207,9 @@ void (entity player) match_disconnect_notify =
 			self.owner.crmod_hack_count = self.crmod_hack_count;
 			self.owner.colours = self.colours;
 			self.owner.rating = self.rating;
+			self.owner.elohim_player_id = self.elohim_player_id;//Sputnik
+			self.owner.dmg_given = self.dmg_given;//Sputnik
+			self.owner.dmg_taken = self.dmg_taken;//Sputnik
 
 			self.owner.name15 = @AddInt(AddInt(&(self.owner), &movedir * 4), PQUAKEC_TO_PSTRING);
 			strcpy(self.owner.name15, self.name15);
@@ -2218,8 +2284,8 @@ void (entity player) match_disconnect_notify =
 			}
 		}
 
-        // if he's turned himself into an observer, then get rid of his ghost
-        if (self.style & ELOHIM_OBSERVER)
+		// if he's turned himself into an observer, then get rid of his ghost
+		if (self.style & ELOHIM_OBSERVER)
 		{
 			if (self.owner)
 				remove(self.owner);
@@ -2229,26 +2295,26 @@ void (entity player) match_disconnect_notify =
 			stuffcmd(self, "alias ghostcode echo You do not have a ghost\n");
 			stuffcmd(self, "alias ghost impulse 127\n");
 		}
-        self.owner = world;
+		self.owner = world;
 
 		// check to see if he was top 2 in individual mode
 		if (!teamplay && ((self == elohim_first_place) || (self == elohim_second_place)))
 			score_get_top2();
 
-        if (!match_count_players())
-        {
+		if (!match_count_players())
+		{
 			match_unpause();
-            match_reset();
+			match_reset();
 			match_delete_teams();
-            announce("Match aborted");
-            remove(elohim_match_timer);
-            elohim_state = elohim_state - ELOHIM_TIMER_STARTED;
-            elohim_state = elohim_state - ELOHIM_MATCH_STARTED;
-            match_show_timelimit();
+			announce("Match aborted");
+			remove(elohim_match_timer);
+			elohim_state = elohim_state - ELOHIM_TIMER_STARTED;
+			elohim_state = elohim_state - ELOHIM_MATCH_STARTED;
+			match_show_timelimit();
 			score_resend_scoreboard();
-        }
-        return;
-    }
+		}
+		return;
+	}
 	else if (teamplay > 0 && player.next_team.count == 0)
 		match_remove_team(player.next_team);
 	
@@ -2260,25 +2326,25 @@ void (entity player) match_disconnect_notify =
 	if (elohim_state & ELOHIM_MATCH_WAIT)
 		return;
 
-    // He was ready but the match hadn't started, so remove his ghost
+	// He was ready but the match hadn't started, so remove his ghost
 	if (self.owner)
 		remove(self.owner);
 	else  // Sanity check added 5/15/98
 		dprint("Internal error #2.  Please send mail to crbug@mpog.com\n");
-    self.owner = world;
+	self.owner = world;
 	stuffcmd(self, "alias ghostcode echo You do not have a ghost\n");
-    stuffcmd(self, "alias ghost impulse 127\n");
+	stuffcmd(self, "alias ghost impulse 127\n");
 
-    // Check to see if we need to stop the timer
-    if ((elohim_state & ELOHIM_TIMER_STARTED) && elohim_numteams < 2)
-    {
-        announce3("Only one ", elohim_szteam, " present");
-        announce("Timer stopped");
-        remove(elohim_match_timer);
-        elohim_state = elohim_state - ELOHIM_TIMER_STARTED;
-        match_show_timelimit();
-    }
-    
+	// Check to see if we need to stop the timer
+	if ((elohim_state & ELOHIM_TIMER_STARTED) && elohim_numteams < 2)
+	{
+		announce3("Only one ", elohim_szteam, " present");
+		announce("Timer stopped");
+		remove(elohim_match_timer);
+		elohim_state = elohim_state - ELOHIM_TIMER_STARTED;
+		match_show_timelimit();
+	}
+	
 	if (!elohim_numteams)
-        announce3("No ", elohim_szteam, "s present");
+		announce3("No ", elohim_szteam, "s present");
 };

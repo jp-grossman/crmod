@@ -141,6 +141,9 @@ void () console_set_aliases =
 	localcmd("alias setpass8 \"temp1 88;wait\"\n");
 	localcmd("alias setpass9 \"temp1 89;wait\"\n");
 
+	// stat_ids : sputnik (3/15/2017 12:10PM)
+	localcmd("alias setid \"temp1 2000;wait;\"\n");	
+
     //
     // create map aliases - used for reading levels.cfg
     //
@@ -286,7 +289,7 @@ void () console_show_debug_info =
         local string temp;
         temp = ftos(e.colormap);
         if (e.style & ELOHIM_CONNECTED)
-            dprint(temp, " ", e.name15text, " - Connected\n");
+            dprint(temp, " ", e.name15text, " - Connected\n");            
         else
             dprint(temp, " ", e.name15text, " - Disconnected\n");
         e = find(e, classname, "player");
@@ -418,12 +421,15 @@ void () console_show_killstats =
 {
     local entity player;
 
-    dprint("    KILLSTATS    | frags | enemies | self | teammates | killed \n");
-    dprint("-----------------+-------+---------+------+-----------+--------\n");
+    dprint(" Id# |    KILLSTATS    | frags | enemies | self | teammates | killed | dmgGvn | dmgTkn \n");
+    dprint("-----+-----------------+-------+---------+------+-----------+--------+--------+--------\n");
 
 	player = elohim_sentinel.owner.next_player;
     while (player)
-    {
+    {    	
+    	dprint(" ");
+    	utils_cprint_int3(player.elohim_player_id);
+    	dprint(" |");
         dprint(" ", player.name15text, " |  ");
         utils_cprint_int3(player.frags);
         dprint("  |   ");
@@ -432,9 +438,13 @@ void () console_show_killstats =
         utils_cprint_int3(player.mangle_x);
         dprint("  |    ");
         utils_cprint_int3(player.mangle_y);
-        dprint("    |  ");
+        dprint("    |   ");
         utils_cprint_int3(player.mangle_z);
-		dprint("\n");
+		dprint("  |  ");
+		utils_cprint_int5(player.dmg_given);
+		dprint(" |  ");
+		utils_cprint_int5(player.dmg_taken);
+        dprint(" \n");                    
         player = player.next_player;
     }
     dprint("\n");                    
@@ -480,14 +490,17 @@ void () console_show_quadstats =
 	else
 		useteams = FALSE;
 
-	dprint("    QUADSTATS    | quads | efficiency | enemy | self  | teammates \n");
-	dprint("-----------------+-------+------------+-------+-------+-----------\n");
+	dprint(" Id# |    QUADSTATS    | quads | efficiency | enemy | self  | teammates \n");
+	dprint("-----+-----------------+-------+------------+-------+-------+-----------\n");
 	
 	player = elohim_sentinel.owner.next_player;
 	pteam = player.next_team;
 	
     while (player)
     {
+    	dprint(" ");
+    	utils_cprint_int3(player.elohim_player_id);
+    	dprint(" |");
         dprint(" ", player.name15text, " |  ");
         utils_cprint_int3(player.crmod_qdwep_z);
         dprint("  |    ");
@@ -526,14 +539,17 @@ void () console_show_badstats =
 		return;
 	}
 
-    dprint("    BADSTATS     | paks | self | team \n");
-    dprint("-----------------+------+------+------\n");
+    dprint(" Id# |    BADSTATS     | paks | self | team \n");
+    dprint("-----+-----------------+------+------+------\n");
 
     player = elohim_sentinel.owner.next_player;
     while (player)
     {
         tot_enemy = player.dest2_x + player.dest2_y + player.dest2_z + player.dest_y;
 		tot_done = tot_enemy + player.crmod_badstats_y + player.crmod_badstats_z;
+    	dprint(" ");
+    	utils_cprint_int3(player.elohim_player_id);
+    	dprint(" |");
         dprint(" ", player.name15text, " |  ");
         utils_cprint_int3(player.crmod_badstats_x);
         dprint(" | ");
@@ -554,12 +570,16 @@ void () console_show_efficiency =
     local entity player;
     local float tot_fired, tot_done;
 
-    dprint("   EFFICIENCY    | bullets | nails | rockets | lightning | total \n");
-    dprint("-----------------+---------+-------+---------+-----------+-------\n");
+    dprint(" Id# |   EFFICIENCY    | bullets | nails | rockets | lightning | total \n");
+    dprint("-----+-----------------+---------+-------+---------+-----------+-------\n");
 
     player = elohim_sentinel.owner.next_player;
     while (player)
     {
+    	dprint(" ");
+    	utils_cprint_int3(player.elohim_player_id);
+    	dprint(" |");
+ 	
         dprint(" ", player.name15text, " |  ");
         console_print_percent4(player.dest2_x, player.dest1_x);
         dprint("   | ");
@@ -596,11 +616,11 @@ void () console_show_stats =
 	else
 		useteams = FALSE;
 
-	dprint("   PLAYERSTATS   |");
+	dprint(" Id# |   PLAYERSTATS   |");
 	if (useteams)
 		dprint("    team    |");
 	dprint(" kill | weapon | ping | IP\n");
-	dprint("-----------------+");
+	dprint("-----+-----------------+");
 	if (useteams)
 		dprint("------------+");
 	dprint("------+--------+------+----------------\n");
@@ -608,6 +628,10 @@ void () console_show_stats =
 	player = elohim_sentinel.owner.next_player;
     while (player)
     {
+    	dprint(" ");
+    	utils_cprint_int3(player.elohim_player_id);
+    	dprint(" |");
+    	
         dprint(" ", player.name15text, " | ");
         if (useteams)
 		{
@@ -1675,7 +1699,7 @@ void () console_testcmd =
 void (float command) console_command =
 {
     local string temp;
-
+	local float arg;
 	// immediate mode commands
     if (command == 1)
         console_ping();
@@ -1713,7 +1737,7 @@ void (float command) console_command =
 	// config file commands
 	else if ((command >= 20 && command <= 49) || (command >= 80 && command <= 89) || (command >= 200 && command <= 201))
 	{
-		local float arg;
+		//local float arg;
 
 		arg = cvar("skill");
 		cvar_set("skill", "0");
@@ -1914,6 +1938,24 @@ void (float command) console_command =
 	else if (command >= 1000 && command < 1256)
 		console_byte(command - 1000);
     else
+	//Sputnik: stat_ids 	
+	if (command == 2000)
+	{
+		local float pc;
+		local string s;
+
+		arg = cvar("skill");		// ID#
+		cvar_set("skill", "0");
+
+		pc = cvar("registered");	// PASSCODE
+		cvar_set("registered", "0");
+
+		s = ftos(arg);
+		dprint("Setting Player ID: ",s,"\n");
+
+		zone_player_stat_id[arg * %1] = pc; 
+	}
+	else
         dprint("unknown command\n");
 };
 

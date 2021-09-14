@@ -127,9 +127,7 @@ void () observer_check_teleport =
 //
 void () observer_clear_flags =
 {
-    self.oflags = self.oflags - self.oflags & (OBSERVER_WALK | OBSERVER_FLY |
-                                            OBSERVER_CHASE | OBSERVER_DEMO | 
-											OBSERVER_CAMERA | OBSERVER_AUTO);
+    self.oflags = self.oflags - self.oflags & (OBSERVER_WALK | OBSERVER_FLY | OBSERVER_CHASE | OBSERVER_DEMO | OBSERVER_CAMERA | OBSERVER_AUTO);
     self.crmod_othertarget = world;  // CRMOD
 };
 
@@ -198,6 +196,7 @@ void () observer_fly_start =
         sprint(self, "type 'headsup' for fullscreen display\n");
 };
 
+
 // CRMOD
 // C A M E R A  S T A R T
 //   by Paul Baker
@@ -260,7 +259,6 @@ void () observer_camera_start =
         sprint(self, "type 'headsup' for fullscreen display\n");
 	sprint(self, "use proquake to eliminate choppines\n");
 };
-
 
 //
 //  C H A S E  S T A R T
@@ -410,8 +408,8 @@ void () observer_start =
 		}
     }
 
-	if ((self.style & ELOHIM_ADMINISTRATOR) && !self.crmod_hack_count)
-		self.cl[CL_PRIVILEGED] = TRUE;
+//	if ((self.style & ELOHIM_ADMINISTRATOR) && !self.crmod_hack_count)
+//		self.cl[CL_PRIVILEGED] = TRUE;
 
     self.crmod_chase_score = ELOHIM_NEGINF;  // CRMOD make sure they don't have some high rating that can't be beat by the other players
 
@@ -502,11 +500,11 @@ void () observer_end =
 	if (!(self.style & ELOHIM_OBSERVER))
 		return;
 
-    self.style = self.style - ELOHIM_OBSERVER;
+	self.style = self.style - ELOHIM_OBSERVER;
     self.frags = 0;
 
-	if (!(elohim_playmode & ELOHIM_PRACTICE_MODE))
-		self.cl[CL_PRIVILEGED] = FALSE;
+//	if (!(elohim_playmode & ELOHIM_PRACTICE_MODE))
+//		self.cl[CL_PRIVILEGED] = FALSE;
 
     observer_check_demo_end();
     stuffcmd(self, "sm0\n");		// CRMOD - smoothing off
@@ -755,6 +753,7 @@ void () observer_get_target =
 void (entity client) observer_disconnect_notify =
 {
     local entity e, oself;
+	
     
     e = find(world, classname, "player");
     while (e)
@@ -836,6 +835,8 @@ void () observer_find_enemy =
 			self.crmod_othertarget = world;
 		else if (!utils_new_visible(self.movetarget, self.crmod_othertarget))
 			self.crmod_othertarget = world;
+		else if (self.crmod_othertarget.deadflag != DEAD_NO)//Sputnik: deadcam shake
+			self.crmod_othertarget = world;
 	}	
 
 	// If no target, then look for a good one (check next player in list)
@@ -848,7 +849,7 @@ void () observer_find_enemy =
 		potential = self.next_player;
 		if (potential)
 		{
-			if ((potential.team != self.movetarget.team) || !teamplay)
+			if (((potential.team != self.movetarget.team) || !teamplay) && (potential.deadflag == DEAD_NO))//Sputnik: deadcam shake
 			{
 				if (utils_new_visible(self.movetarget, potential))
 					self.crmod_othertarget = potential;
@@ -993,6 +994,7 @@ void () observer_set_camera_position =
 	local entity camera;
 	local vector angle;
 	local entity player;
+	local float seeable;
 	
 	camera = self.movetarget;
 
@@ -1009,9 +1011,13 @@ void () observer_set_camera_position =
 					local vector angle;
 					setorigin(self, crmod_best_camera.origin);
 					if (camera.movetarget)
+					{
 						angle = angles_bestaim(camera.origin, camera.movetarget.origin);
+					}
 					else
+					{
 						angle = camera.angles;
+					}
 					angles_fixangle(angle);
 				}
 			}
@@ -1054,11 +1060,33 @@ void () observer_set_camera_position =
 
 	if (self.button0) // freelook
 		return;
-	
+
+	/*	Sputnik changed -- see below
 	if (camera.movetarget)
 		angle = angles_bestaim(camera.origin, camera.movetarget.origin);
 	else
 		angle = camera.angles;
+	*/
+
+	// Sputnik -start
+	if (camera.movetarget)
+	{
+		angle = angles_bestaim (camera.origin, camera.movetarget.origin);
+		seeable = utils_new_visible (camera, camera.movetarget);
+		if (seeable)
+		{
+			self.crmod_cam_delay = time + 4;// reset this once they are visible.
+		}
+	}
+	else
+	{
+		if (self.crmod_cam_delay > time)	// aim where they were last at
+			angle = self.crmod_oldangle;
+		else
+			angle = camera.angles;			// long enough reset back
+
+	}
+	// Sputnik -end
 
 	angle_x = self.crmod_oldangle_x * (1 - CRMOD_ANGLE_SMOOTHING) + angle_x * CRMOD_ANGLE_SMOOTHING;
 	angle_y = angles_pick_angle(self.crmod_oldangle_y, angle_y, CRMOD_ANGLE_SMOOTHING);
@@ -1200,11 +1228,20 @@ void () observer_impulse =
     if (self.style & ELOHIM_OBSERVER)
     {
         if (self.impulse == 141)
+		{
+			self.oflags = self.oflags - (self.oflags & OBSERVER_QUAKETV);	//Sputnik, the player specifically chose this mode, placing here instead of observer_clear_flags.
             observer_walk_start();
+		}
         else if (self.impulse == 142)
+		{
+			self.oflags = self.oflags - (self.oflags & OBSERVER_QUAKETV);	//Sputnik
             observer_fly_start();
+		}
         else if (self.impulse == 143)
+		{
+			self.oflags = self.oflags - (self.oflags & OBSERVER_QUAKETV);	//Sputnik
             observer_chase_start();
+		}
 		else if (self.impulse == 147)
 			utils_toggle_oflag(OBSERVER_COMMENTARY, "Running commentary");
         else if (self.impulse == 148)
@@ -1220,7 +1257,10 @@ void () observer_impulse =
 		else if (self.impulse == 154)
 			auto_camera_start();
 		else if (self.impulse == 155)
+		{
+			self.oflags = self.oflags - (self.oflags & OBSERVER_QUAKETV);	//Sputnik
 			auto_chase_start();
+		}
     }
     else
     {                                                                              // CRMOD more commands to go observer
